@@ -12,11 +12,11 @@ abstract class BaseService implements BaseServiceInterface
     use HasTransaction;
     protected $repository;
     // protected $perpage = 10;
-    public function __construct()
-    {
-        $this->repository = $this->getRepository();
+    public function __construct(
+        BaseRepository $repository
+    ) {
+        $this->repository = $repository;
     }
-    protected abstract function getRepository();
     // public function specifications(Request $request): array
     // {
     //     return [
@@ -28,13 +28,13 @@ abstract class BaseService implements BaseServiceInterface
     // {
     //     // return $this->repository->;
     // }
-    public function store(Request $request)
+    public function create(Request $request)
     {
         try {
             $this->beginTransaction();
             $fillable = $this->repository->getFillable();
             $payload = $request->only($fillable);
-            $model = $this->repository->store($payload);
+            $model = $this->repository->create($payload);
             $this->commit();
             return $model;
         } catch (\Throwable $th) {

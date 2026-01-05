@@ -20,5 +20,9 @@ class CategoryController extends Controller
     {
         return view('server.pages.categories.save');
     }
-    public function store(StoreCategoryRequest $request) {}
+    public function store(StoreCategoryRequest $request)
+    {
+        $category = $this->service->create($request);
+        return redirect()->route('admin.layouts')->with('success', 'Thêm danh mục thành công');
+    }
 }

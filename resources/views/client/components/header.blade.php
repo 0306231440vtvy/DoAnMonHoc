@@ -56,7 +56,8 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body px-4">
-                                        <form class="m-t" method="POST" action="{{ route('auth.login') }}">
+                                        <form class="m-t" method="POST" action="{{ route('auth.login') }}"
+                                            id="loginForm">
                                             @csrf
                                             <div class="form-group">
                                                 <label class="text-center">Email</label>
@@ -133,12 +134,6 @@
                                             @error('password')
                                                 <div class="alert alert-danger">*{{ $message }}</div>
                                             @enderror
-                                            <div class="form-group">
-                                                <div class="checkbox i-checks"><label> <input type="checkbox"><i></i>
-                                                        Đồng ý với các điều khoản và
-                                                        chính sách
-                                                    </label></div>
-                                            </div>
                                             <button type="submit" class="btn btn-primary block full-width m-b">Đăng
                                                 ký</button>
 

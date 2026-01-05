@@ -23,13 +23,12 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|min:4|max:100',
             'slug' => 'required|string',
             'publish' => 'integer|gte:1|lte:2',
-            'desceiption' => 'string'
         ];
     }
-    public function perpageForvalidation()
+    public function prepareForValidation()
     {
         $this->merge([
             'slug' => Str::slug($this->name)

@@ -31,8 +31,8 @@ Route::prefix('/v1/admin')->group(function () {
 
 
     // =================CATEGORY================//
-    Route::prefix('/category')->group(function () {
+    Route::prefix('/categories')->group(function () {
         Route::get('create', [CategoryController::class, 'create'])->name('categories.create');
-        Route::post('store', [CategoryController::class, 'store']);
+        Route::post('store', [CategoryController::class, 'store'])->name('store');
     });
 })->middleware(['auth']);

@@ -14,8 +14,4 @@ class CategoryService extends BaseService implements CategoryServiceInterface
     ) {
         $this->repository = $repository;
     }
-    public function getRepository()
-    {
-        return $this->repository;
-    }
 }

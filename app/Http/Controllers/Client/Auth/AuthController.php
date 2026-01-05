@@ -56,6 +56,11 @@ class AuthController extends Controller
     public function login(AuthRequest $request): RedirectResponse
     {
         $user = User::where('email', $request->input('email'))->first();
+        // dd($user);
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống'])
+                ->onlyInput('email');
+        }
         if ($user->publish !== 2) {
             return back()->withErrors(['email' => 'Tài khoản của bạn đã bị vô hiệu hóa'])
                 ->onlyInput('email');
