@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Dashboard v.4</title>
+    <link href="{{ asset('server/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('server/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/morris/morris-0.4.3.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('server/css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('server/css/style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="wrapper">
+        @include('server.components.sidebar')
+        <div id="page-wrapper" class="gray-bg">
+            @include('server.components.nav')
+
+
+            <div class="wrapper wrapper-content">
+                @yield('content')
+            </div>
+            @include('server.components.footer')
+        </div>
+    </div>
+    @include('server.components.script')
+</body>
+
+</html>
