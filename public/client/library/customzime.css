@@ -1,0 +1,54 @@
+.account-btn {
+    background: transparent;
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.account-btn:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+}
+
+.account-icon {
+    margin-right: 5px;
+}
+
+.btn-login,
+.btn-register {
+    padding: 10px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.btn-login {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-login:hover {
+    background: #0056b3;
+    color: white;
+}
+
+.btn-register {
+    background: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.btn-register:hover {
+    background: #007bff;
+    color: white;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}

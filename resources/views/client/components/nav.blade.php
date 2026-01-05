@@ -1,40 +1,43 @@
-<div class="header-area">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="user-menu">
-                    <ul>
-                        <li><a href="#"><i class="fa fa-user"></i>Về chúng tôi</a></li>
-                        <li><a href="#"><i class="fa fa-heart"></i>CXP</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="user-menu">
-                    <ul>
-                        <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
-                        <li><a href="#"><i class="fa fa-user"></i> Login</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!-- End header area -->
-<div class="site-branding-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="logo">
-                    <h1><a href="index.html">e<span>Electronics</span></a></h1>
-                </div>
-            </div>
+        <!-- Logo -->
+        <a class="navbar-brand" href="index.html">
+            e<span class="fw-bold">Electronics</span>
+        </a>
 
-            <div class="col-sm-6">
-                <div class="shopping-item">
-                    <a href="cart.html">Cart - <span class="cart-amunt">$800</span> <i class="fa fa-shopping-cart"></i>
-                        <span class="product-count">5</span></a>
-                </div>
-            </div>
+        <!-- Toggle mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="shop.html">Shop page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="single-product.html">Single product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cart.html">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="checkout.html">Checkout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Others</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
         </div>
     </div>
-</div> <!-- End site branding area -->
+</nav>
