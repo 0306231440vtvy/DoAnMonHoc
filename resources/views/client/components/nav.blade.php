@@ -1,41 +1,38 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success">
     <div class="container">
-        <!-- Logo -->
         <a class="navbar-brand" href="index.html">
-            e<span class="fw-bold">Electronics</span>
+            e<span class="fw-bold">Thời trang</span>
         </a>
 
-        <!-- Toggle mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menu -->
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Home</a>
+                    <a class="nav-link active" href="index.html">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="shop.html">Shop page</a>
+                    <a class="nav-link" href="shop.html">Cửa hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="single-product.html">Single product</a>
+                    <a class="nav-link" href="single-product.html">Sản phẩm</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="cart.html">Cart</a>
+                    <a class="nav-link" href="cart.html">Giỏ hàng</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="checkout.html">Checkout</a>
+                    <a class="nav-link" href="checkout.html">Thanh toán</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Category</a>
+                    <a class="nav-link" href="#">Danh mục</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Others</a>
+                    <a class="nav-link" href="#">Tin tức</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="#">Liên hệ</a>
                 </li>
             </ul>
         </div>

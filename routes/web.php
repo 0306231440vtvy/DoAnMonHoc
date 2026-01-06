@@ -7,7 +7,10 @@ use App\Http\Controllers\Client\DashboardClientController;
 use App\Http\Controllers\Server\CategoryController;
 use App\Http\Controllers\Server\DashboardServerController;
 use App\Http\Controllers\Server\UserController;
-
+use App\Http\Controllers\Server\ProductController;
+use App\Http\Controllers\Server\BrandController;
+use App\Http\Controllers\Server\OrderController;
+use App\Http\Controllers\Server\VariantController;
 // ======================================CLIENT==============================================//
 Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
 Route::prefix('/auth')->group(function () {
@@ -34,5 +37,25 @@ Route::prefix('/v1/admin')->group(function () {
     Route::prefix('/categories')->group(function () {
         Route::get('create', [CategoryController::class, 'create'])->name('categories.create');
         Route::post('store', [CategoryController::class, 'store'])->name('store');
+    });
+
+    // =================PRODUCT================//
+    Route::prefix('/products')->group(function () {
+        Route::get('index', [ProductController::class, 'index'])->name('products.index');
+    });
+
+    // =================BRAND================//
+    Route::prefix('/brands')->group(function () {
+        Route::get('index', [BrandController::class, 'index'])->name('brands.index');
+    });
+
+    // =================ORDER================//
+    Route::prefix('/orders')->group(function () {
+        Route::get('index', [OrderController::class, 'index'])->name('orders.index');
+    });
+
+    // =================VARIANT================//
+    Route::prefix('/variants')->group(function () {
+        Route::get('index', [VariantController::class, 'index'])->name('variants.index');
     });
 })->middleware(['auth']);

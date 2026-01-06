@@ -5,7 +5,7 @@
                 <div class="user-menu">
                     <ul>
                         <li><a href="#"><i class="fa fa-user"></i>Về chúng tôi</a></li>
-                        <li><a href="#"><i class="fa fa-heart"></i>CXP</a></li>
+                        <li><a href="#"><i class="fa fa-heart"></i>Sản phẩm yêu thích</a></li>
                     </ul>
                 </div>
             </div>
@@ -16,21 +16,19 @@
                             <li><a href=""><i class="fa fa-user"></i> Register</a></li>
                             <li><a href=""><i class="fa fa-user"></i> Login</a></li>
                         </ul> --}}
-                        <p>User is signed in.</p>
+                        <p>Chào mừng bạn trở lại!</p>
                         <li>
                             <a href="{{ route('auth.logout') }}">
                                 <i class="fa-solid fa-right-from-bracket">
                                 </i>Đăng xuất</a>
                         </li>
                     @else
-                        <!-- Button trigger modal -->
                         <button type="button" class="btn account-btn" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
                             <i class="fa fa-user account-icon"></i>
                             <span class="account-text">Tài khoản</span>
                         </button>
 
-                        <!-- Modal Tài khoản -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-sm">
                                 <div class="modal-content account-modal">
@@ -46,7 +44,6 @@
                             </div>
                         </div>
 
-                        <!-- Modal Đăng nhập -->
                         <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -63,7 +60,7 @@
                                                 <label class="text-center">Email</label>
                                                 <input type="email" name="email"
                                                     class="form-control @error('email') is-invalid @enderror"
-                                                    placeholder="Nhập email" required="" value="{{ old('email') }}">
+                                                    placeholder="Nhập email của bạn" required="" value="{{ old('email') }}">
                                             </div>
                                             @error('email')
                                                 <div class="alert alert-danger">*{{ $message }}</div>
@@ -80,11 +77,11 @@
                                             <button type="submit" class="btn btn-primary block full-width m-b">Đăng
                                                 nhập</button>
                                             <p class="text-muted text-center">
-                                                <small>Do not have an account?</small>
+                                                <small>Bạn chưa có tài khoản thành viên?</small>
                                             </p>
                                             <a href="#" id="switchToRegister"
                                                 class="btn btn-sm btn-white btn-block">
-                                                Create an account
+                                                Tạo tài khoản mới
                                             </a>
                                         </form>
                                     </div>
@@ -92,12 +89,11 @@
                             </div>
                         </div>
 
-                        <!-- Modal Đăng ký -->
                         <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header border-0">
-                                        <h5 class="modal-title w-100 text-center">Đăng ký</h5>
+                                        <h5 class="modal-title w-100 text-center">Đăng ký thành viên</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -106,10 +102,10 @@
                                             method="POST">
                                             @csrf
                                             <div class="form-group">
-                                                <label>Tên đăng nhập </label>
+                                                <label>Họ và tên</label>
                                                 <input type="text"
                                                     class="form-control @error('email') is-invalid @enderror"
-                                                    value="{{ old('name') }}" placeholder="Nhập tên tài khoản"
+                                                    value="{{ old('name') }}" placeholder="Nhập họ tên của bạn"
                                                     name="name" required="">
                                             </div>
                                             @error('name')
@@ -139,7 +135,7 @@
 
                                             <p class="text-muted text-center"><small>Bạn đã có tài khoản?</small></p>
                                             <a href="#" id="switchToLogin"
-                                                class="btn btn-sm btn-white btn-block">SignIn</a>
+                                                class="btn btn-sm btn-white btn-block">Đăng nhập ngay</a>
                                         </form>
                                     </div>
                                 </div>
@@ -151,4 +147,4 @@
             </div>
         </div>
     </div>
-</div> <!-- End header area -->
+</div> ```
