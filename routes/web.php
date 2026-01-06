@@ -11,6 +11,8 @@ use App\Http\Controllers\Server\ProductController;
 use App\Http\Controllers\Server\BrandController;
 use App\Http\Controllers\Server\OrderController;
 use App\Http\Controllers\Server\VariantController;
+use App\Http\Controllers\Server\ContactController;
+use App\Http\Controllers\Server\SlideController;
 // ======================================CLIENT==============================================//
 Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
 Route::prefix('/auth')->group(function () {
@@ -57,5 +59,15 @@ Route::prefix('/v1/admin')->group(function () {
     // =================VARIANT================//
     Route::prefix('/variants')->group(function () {
         Route::get('index', [VariantController::class, 'index'])->name('variants.index');
+    });
+
+    // =================CONTACT================//
+    Route::prefix('/contacts')->group(function () {
+        Route::get('index', [ContactController::class, 'index'])->name('contacts.index');
+    });
+
+    // =================SLIDE================//
+    Route::prefix('/slides')->group(function () {
+        Route::get('index', [SlideController::class, 'index'])->name('slides.index');
     });
 })->middleware(['auth']);

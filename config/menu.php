@@ -68,5 +68,25 @@ return [
                 ['title' => 'Danh sách biến thể', 'route' => 'variants.index'],
             ]
         ],
+        [
+            'name' => 'contacts',
+            'title' => 'Quản lý Liên hệ',
+            'icon' => 'fa fa-list',
+            'route' => 'contacts.index',
+            'children' => [
+                // ['title' => 'Danh sách', 'route' => 'users.index'],
+                ['title' => 'Danh sách liên hệ', 'route' => 'contacts.index'],
+            ]
+        ],
+        [
+            'name' => 'slides',
+            'title' => 'Quản lý Slide',
+            'icon' => 'fa fa-list',
+            'route' => 'slides.index',
+            'children' => [
+                // ['title' => 'Danh sách', 'route' => 'users.index'],
+                ['title' => 'Danh sách slide', 'route' => 'slides.index'],
+            ]
+        ],
     ]
 ];
