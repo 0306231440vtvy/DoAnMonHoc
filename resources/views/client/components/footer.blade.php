@@ -4,11 +4,8 @@
         <div class="row">
             <div class="col-md-3 col-sm-6">
                 <div class="footer-about-us">
-                    <h2>e<span>Electronics</span></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id doloribus vero
-                        quam laborum quas alias dolores blanditiis iusto consequatur, modi aliquid eveniet eligendi
-                        iure eaque ipsam iste, pariatur omnis sint! Suscipit, debitis, quisquam. Laborum commodi
-                        veritatis magni at?</p>
+                    <h2>e<span>Thời trang</span></h2>
+                    <p>Chào mừng bạn đến với eThời trang - Nơi cập nhật những xu hướng phong cách mới nhất. Chúng tôi cam kết mang đến những sản phẩm quần áo chất lượng, thiết kế hiện đại và giá cả hợp lý để giúp bạn tự tin tỏa sáng mỗi ngày.</p>
                     <div class="footer-social">
                         <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
@@ -21,54 +18,51 @@
 
             <div class="col-md-3 col-sm-6">
                 <div class="footer-menu">
-                    <h2 class="footer-wid-title">User Navigation </h2>
+                    <h2 class="footer-wid-title">Tài Khoản </h2>
                     <ul>
-                        <li><a href="#">My account</a></li>
-                        <li><a href="#">Order history</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                        <li><a href="#">Vendor contact</a></li>
-                        <li><a href="#">Front page</a></li>
+                        <li><a href="#">Tài khoản của tôi</a></li>
+                        <li><a href="#">Lịch sử đơn hàng</a></li>
+                        <li><a href="#">Sản phẩm yêu thích</a></li>
+                        <li><a href="#">Liên hệ nhà cung cấp</a></li>
+                        <li><a href="#">Trang chủ</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="col-md-3 col-sm-6">
                 <div class="footer-menu">
-                    <h2 class="footer-wid-title">Categories</h2>
+                    <h2 class="footer-wid-title">Danh Mục</h2>
                     <ul>
-                        <li><a href="#">Mobile Phone</a></li>
-                        <li><a href="#">Home accesseries</a></li>
-                        <li><a href="#">LED TV</a></li>
-                        <li><a href="#">Computer</a></li>
-                        <li><a href="#">Gadets</a></li>
+                        <li><a href="#">Thời trang Nam</a></li>
+                        <li><a href="#">Thời trang Nữ</a></li>
+                        <li><a href="#">Váy & Đầm dạ hội</a></li>
+                        <li><a href="#">Quần Jean & Kaki</a></li>
+                        <li><a href="#">Phụ kiện thời trang</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="col-md-3 col-sm-6">
                 <div class="footer-newsletter">
-                    <h2 class="footer-wid-title">Newsletter</h2>
-                    <p>Sign up to our newsletter and get exclusive deals you wont find anywhere else straight to
-                        your inbox!</p>
+                    <h2 class="footer-wid-title">Bản Tin</h2>
+                    <p>Đăng ký nhận bản tin của chúng tôi để nhận các ưu đãi độc quyền và cập nhật bộ sưu tập mới nhất gửi thẳng vào hộp thư của bạn!</p>
                     <div class="newsletter-form">
                         <form action="#">
-                            <input type="email" placeholder="Type your email">
-                            <input type="submit" value="Subscribe">
+                            <input type="email" placeholder="Nhập email của bạn">
+                            <input type="submit" value="Đăng ký">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> <!-- End footer top area -->
-
-<div class="footer-bottom-area">
+</div> <div class="footer-bottom-area">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="copyright">
-                    <p>&copy; 2015 eElectronics. All Rights Reserved. Coded with <i class="fa fa-heart"></i> by <a
-                            href="http://wpexpand.com" target="_blank">WP Expand</a></p>
+                    <p>&copy; 2024 eThời trang. All Rights Reserved. Coded with <i class="fa fa-heart"></i> by <a
+                            href="#" target="_blank">WP Expand</a></p>
                 </div>
             </div>
 
@@ -82,21 +76,15 @@
             </div>
         </div>
     </div>
-</div> <!-- End footer bottom area -->
-<!-- Latest jQuery form server -->
-<script src="https://code.jquery.com/jquery.min.js"></script>
+</div> <script src="https://code.jquery.com/jquery.min.js"></script>
 
-<!-- Bootstrap JS form CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
-<!-- jQuery sticky menu -->
 <script src="{{ asset('client/js/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('client/js/jquery.sticky.js') }}"></script>
 
-<!-- jQuery easing -->
 <script src="{{ asset('client/js/jquery.easing.1.3.min.js') }}"></script>
 
-<!-- Main Script -->
 <script src="{{ asset('client/js/main.js') }}"></script>
 <script src="{{ asset('client/library/customzime.js') }}"></script>
