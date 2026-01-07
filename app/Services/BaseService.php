@@ -42,4 +42,8 @@ abstract class BaseService implements BaseServiceInterface
             throw $th;
         }
     }
+    public function findByField(string $field, $value)
+    {
+        return $this->repository->findByField($field, $value);
+    }
 }

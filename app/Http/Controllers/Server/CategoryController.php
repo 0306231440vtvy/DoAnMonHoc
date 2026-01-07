@@ -16,6 +16,10 @@ class CategoryController extends Controller
     ) {
         $this->service = $service;
     }
+    public function index(): View
+    {
+        return view('server.pages.categories.index');
+    }
     public function create(): View
     {
         return view('server.pages.categories.save');

@@ -1,6 +1,5 @@
 (function ($) {
     "use strict";
-    var DAMH = {};
     var accountModal = new bootstrap.Modal(document.getElementById("exampleModal"));
     var registerModal = new bootstrap.Modal(document.getElementById("registerModal"));
     var loginModal = new bootstrap.Modal(document.getElementById("loginModal"));

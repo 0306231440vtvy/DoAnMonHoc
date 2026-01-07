@@ -21,6 +21,7 @@ Route::prefix('/auth')->group(function () {
     Route::get('login', [AuthController::class, 'index'])->name('auth.login');
     Route::post('login', [AuthController::class, 'login']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('active-email/{email}', [AuthController::class, 'active'])->name('auth.active.email');
 });
 
 
@@ -60,7 +61,6 @@ Route::prefix('/v1/admin')->group(function () {
     Route::prefix('/variants')->group(function () {
         Route::get('index', [VariantController::class, 'index'])->name('variants.index');
     });
-
     // =================CONTACT================//
     Route::prefix('/contacts')->group(function () {
         Route::get('index', [ContactController::class, 'index'])->name('contacts.index');
