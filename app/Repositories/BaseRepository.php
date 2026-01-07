@@ -30,6 +30,10 @@ class BaseRepository
     {
         return $this->model->select($column)->with($relation)->find($id);
     }
+    public function findByField(string $field, $value, array $relation = [], array $column = ['*']): Model |null
+    {
+        return $this->model->select($column)->with($relation)->where($field, $value)->first();
+    }
     public function getFillable(): array
     {
         return $this->model->getFillable();

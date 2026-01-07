@@ -31,8 +31,8 @@ class ClientRegisterRequest extends FormRequest
     {
         return [
             'email.unique' => 'Email này đã tồn tại trong hệ thống. Vui lòng nhập email mới.',
-            'name.required' => 'Vui lòng nhập tên đăng nhập.',
             'email.required' => 'Vui lòng nhập email.',
+            'name.required' => 'Vui lòng nhập tên đăng nhập.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
         ];
     }

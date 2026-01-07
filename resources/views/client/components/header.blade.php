@@ -60,7 +60,8 @@
                                                 <label class="text-center">Email</label>
                                                 <input type="email" name="email"
                                                     class="form-control @error('email') is-invalid @enderror"
-                                                    placeholder="Nhập email của bạn" required="" value="{{ old('email') }}">
+                                                    placeholder="Nhập email của bạn" required=""
+                                                    value="{{ old('email') }}">
                                             </div>
                                             @error('email')
                                                 <div class="alert alert-danger">*{{ $message }}</div>

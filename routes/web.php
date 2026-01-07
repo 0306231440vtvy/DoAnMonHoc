@@ -19,6 +19,7 @@ Route::prefix('/auth')->group(function () {
     Route::get('login', [AuthController::class, 'index'])->name('auth.login');
     Route::post('login', [AuthController::class, 'login']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('active-email/{email}', [AuthController::class, 'active'])->name('auth.active.email');
 });
 
 
