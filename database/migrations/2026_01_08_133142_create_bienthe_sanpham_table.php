@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anhsanpham', function (Blueprint $table) {
+        Schema::create('bienthe_sanpham', function (Blueprint $table) {
             $table->id();
-            $table->string('duongdan_anh')->nullable();
-            // Khang 08/01/2026 Thêm is_primary và order
-            $table->boolean('is_primary')->default(false); // Ảnh chính
-            $table->integer('order')->default(0); // Thứ tự hiển thị
-            $table->tinyInteger('trangthai')->default(1);
             $table->foreignId('sanpham_id')->constrained('sanpham')->cascadeOnDelete();
+            $table->foreignId('bienthe_id')->constrained('bienthe')->cascadeOnDelete();
+            $table->integer('soluong')->default(0);
+            $table->decimal('giaban', 15, 2)->nullable();
+            $table->string('sku', 50)->unique()->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anhsanpham');
+        Schema::dropIfExists('bienthe_sanpham');
     }
 };
