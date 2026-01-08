@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('bienthe', function (Blueprint $table) {
             $table->id();
-            $table->string('color')->nullable();
-            $table->string('size')->nullable();
-            $table->string('chatlieu')->nullable();
+            // Khang 08/01/2026 Xóa color,size,chất liệu.Thêm name,type,value
+            $table->string('name');
+            $table->string('type');
+            $table->string('value');
             $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
         });

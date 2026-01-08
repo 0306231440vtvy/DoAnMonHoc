@@ -13,6 +13,8 @@ use App\Http\Controllers\Server\OrderController;
 use App\Http\Controllers\Server\VariantController;
 use App\Http\Controllers\Server\ContactController;
 use App\Http\Controllers\Server\SlideController;
+use App\Http\Controllers\Server\RoleController;
+use App\Http\Controllers\Server\PermissionController;
 // ======================================CLIENT==============================================//
 Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
 Route::prefix('/auth')->group(function () {
@@ -34,15 +36,26 @@ Route::prefix('/v1/admin')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('index', [UserController::class, 'index'])->name('users.index');
     });
+    // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
     // =================CATEGORY================//
-    Route::prefix('/categories')->group(function () {
-        Route::get('index', [CategoryController::class, 'index'])->name('categories.index');
-        Route::get('create', [CategoryController::class, 'create'])->name('categories.create');
-        Route::post('store', [CategoryController::class, 'store'])->name('store');
-        Route::post('edit', [CategoryController::class, 'edit'])->name('categories.edit');
-        Route::post('destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::prefix('/categories')->name('categories')->group(function () {
+        Route::get('index', [CategoryController::class, 'index'])->name('.index');
+        Route::get('create', [CategoryController::class, 'create'])->name('.create');
+        Route::post('store', [CategoryController::class, 'store'])->name('.store');
+        Route::post('edit', [CategoryController::class, 'edit'])->name('.edit');
+        Route::post('destroy', [CategoryController::class, 'destroy'])->name('.destroy');
     });
-
+    // =================ROLE================//
+    Route::prefix('/roles')->name('roles')->group(function () {
+        Route::get('index', [RoleController::class, 'index'])->name('.index');
+        Route::get('create', [RoleController::class, 'create'])->name('.create');
+    });
+    // =================PERMISSION================//
+    Route::prefix('/permissions')->name('permissions')->group(function () {
+        Route::get('index', [PermissionController::class, 'index'])->name('.index');
+        Route::get('create', [PermissionController::class, 'create'])->name('.create');
+    });
+    // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
     // =================PRODUCT================//
     Route::prefix('/products')->group(function () {
         Route::get('index', [ProductController::class, 'index'])->name('products.index');

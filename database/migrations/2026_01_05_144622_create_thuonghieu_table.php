@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('thuonghieu', function (Blueprint $table) {
             $table->id();
             $table->string('tenth');
-            $table->text('hinhanh');
+            // Khang 08/01/2026 thêm logo,slug
+            $table->text('logo');
+            $table->string('slug');
+            $table->text('mota')->nullable();
             $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
         });

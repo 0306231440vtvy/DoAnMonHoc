@@ -18,6 +18,27 @@ return [
                 // ['title' => 'Thêm mới', 'route' => 'users.create'],
             ]
         ],
+        // 08-01-2026 thêm vào sidebar roles và permissions
+        [
+            'name' => 'roles',
+            'title' => 'Quản lý Vai Trò',
+            'icon' => 'fa fa-list',
+            'route' => 'roles.index',
+            'children' => [
+                ['title' => 'Danh sách danh mục', 'route' => 'roles.index'],
+                ['title' => 'Thêm mới danh mục', 'route' => 'roles.create'],
+            ]
+        ],
+        [
+            'name' => 'permissions',
+            'title' => 'Quản lý Quyền',
+            'icon' => 'fa fa-list',
+            'route' => 'permissions.index',
+            'children' => [
+                ['title' => 'Danh sách danh mục', 'route' => 'permissions.index'],
+                ['title' => 'Thêm mới danh mục', 'route' => 'permissions.create'],
+            ]
+        ],
         [
             'name' => 'categories',
             'title' => 'Quản lý Danh mục',
