@@ -8,9 +8,9 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-   
-    public function index()
+
+    public function index(): View
     {
-       return view('server.pages.contacts.index');
+        return view('server.pages.contacts.index');
     }
 }

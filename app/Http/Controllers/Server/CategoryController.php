@@ -10,15 +10,18 @@ use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-    protected $service;
+    protected $categoryService;
     public function __construct(
-        CategoryService $service
+        CategoryService $categoryService
     ) {
-        $this->service = $service;
+        $this->categoryService = $categoryService;
     }
     public function index(): View
     {
-        return view('server.pages.categories.index');
+        $categories = $this->categoryService->pagination();
+        return view('server.pages.categories.index', compact(
+            'categories'
+        ));
     }
     public function create(): View
     {
@@ -26,7 +29,9 @@ class CategoryController extends Controller
     }
     public function store(StoreCategoryRequest $request)
     {
-        $category = $this->service->create($request);
+        $category = $this->categoryService->create($request);
         return redirect()->route('admin.layouts')->with('success', 'Thêm danh mục thành công');
     }
+    public function edit() {}
+    public function destroy() {}
 }

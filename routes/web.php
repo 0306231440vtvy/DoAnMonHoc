@@ -34,12 +34,13 @@ Route::prefix('/v1/admin')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('index', [UserController::class, 'index'])->name('users.index');
     });
-
-
     // =================CATEGORY================//
     Route::prefix('/categories')->group(function () {
+        Route::get('index', [CategoryController::class, 'index'])->name('categories.index');
         Route::get('create', [CategoryController::class, 'create'])->name('categories.create');
         Route::post('store', [CategoryController::class, 'store'])->name('store');
+        Route::post('edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::post('destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
     });
 
     // =================PRODUCT================//

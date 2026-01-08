@@ -13,6 +13,7 @@
     <link href="{{ asset('css/plugins/morris/morris-0.4.3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('server/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('server/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('server/library/customzime.css') }}" rel="stylesheet">
 
 </head>
 

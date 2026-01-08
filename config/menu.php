@@ -14,7 +14,7 @@ return [
             'icon' => 'fa fa-user',
             'route' => 'users.index',
             'children' => [
-                ['title' => 'Danh sách', 'route' => 'users.index'],
+                ['title' => 'Danh sách người dùng', 'route' => 'users.index'],
                 // ['title' => 'Thêm mới', 'route' => 'users.create'],
             ]
         ],
@@ -22,9 +22,9 @@ return [
             'name' => 'categories',
             'title' => 'Quản lý Danh mục',
             'icon' => 'fa fa-list',
-            'route' => 'categories.create',
+            'route' => 'categories.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
+                ['title' => 'Danh sách danh mục', 'route' => 'categories.index'],
                 ['title' => 'Thêm mới danh mục', 'route' => 'categories.create'],
             ]
         ],
@@ -38,7 +38,7 @@ return [
                 ['title' => 'Danh sách sản phẩm', 'route' => 'products.index'],
             ]
         ],
-         [
+        [
             'name' => 'brands',
             'title' => 'Quản lý Thương hiệu',
             'icon' => 'fa fa-list',

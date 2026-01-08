@@ -10,6 +10,7 @@ class CategoryRepository extends BaseRepository
     public function __construct(
         Category $model
     ) {
-        parent::__construct($model);
+        // parent::__construct($model);
+        $this->model = $model;
     }
 }

@@ -22,6 +22,10 @@ class BaseRepository
     //             fn($q) => $q->paginate($specs['perpage'])
     //         );
     // }
+    public function index()
+    {
+        return $this->model->all();
+    }
     public function create(array $payload = []): Model | null
     {
         return $this->model->create($payload)->fresh();
