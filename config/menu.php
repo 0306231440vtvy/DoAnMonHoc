@@ -6,7 +6,7 @@ return [
             'name' => 'dashboard',
             'title' => 'Dashboard',
             'icon' => 'fa fa-th-large',
-            'route' => 'admin.layouts',
+            'route' => 'server.layouts',
         ],
         [
             'name' => 'users',
@@ -22,7 +22,7 @@ return [
         [
             'name' => 'roles',
             'title' => 'Quản lý Vai Trò',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa fa-lock',
             'route' => 'roles.index',
             'children' => [
                 ['title' => 'Danh sách danh mục', 'route' => 'roles.index'],
@@ -52,7 +52,7 @@ return [
         [
             'name' => 'products',
             'title' => 'Quản lý Sản phẩm',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa-boxes-stacked',
             'route' => 'products.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
@@ -62,7 +62,7 @@ return [
         [
             'name' => 'brands',
             'title' => 'Quản lý Thương hiệu',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa-building',
             'route' => 'brands.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
@@ -72,7 +72,7 @@ return [
         [
             'name' => 'orders',
             'title' => 'Quản lý Hóa đơn',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa-credit-card',
             'route' => 'orders.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
@@ -82,7 +82,7 @@ return [
         [
             'name' => 'variants',
             'title' => 'Quản lý Biến thể',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa-layer-group',
             'route' => 'variants.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
@@ -92,7 +92,7 @@ return [
         [
             'name' => 'contacts',
             'title' => 'Quản lý Liên hệ',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa-address-book',
             'route' => 'contacts.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
@@ -102,7 +102,7 @@ return [
         [
             'name' => 'slides',
             'title' => 'Quản lý Slide',
-            'icon' => 'fa fa-list',
+            'icon' => 'fa fa-images',
             'route' => 'slides.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],

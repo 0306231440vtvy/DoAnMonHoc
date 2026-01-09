@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 
-class DashboardClientController extends Controller
+class ProfileController extends Controller
 {
     public function __construct()
     {
@@ -13,6 +13,6 @@ class DashboardClientController extends Controller
     }
     public function index(): View
     {
-        return view('client.pages.home');
+        return view('client.pages.profile.index');
     }
 }

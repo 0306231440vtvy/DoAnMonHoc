@@ -1,40 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">
-            e<span class="fw-bold">Thời trang</span>
-        </a>
+   <nav class="bg-white/80 top-0 z-50 shadow-md">
+       <div class="container mx-auto px-4">
+           <div class="flex justify-between items-center py-3">
+               <a href="index.html" class=" text-2xl font-bold">
+                   e<span class="font-extrabold">Thời trang</span>
+               </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Trang chủ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html">Cửa hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="single-product.html">Sản phẩm</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="cart.html">Giỏ hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="checkout.html">Thanh toán</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Danh mục</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Tin tức</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Liên hệ</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+               <ul class="flex gap-4 items-center">
+                   <li><a href="{{ route('layouts') }}"
+                           class="font-medium uppercase hover:text-[#667eea] transition">Trang chủ</a>
+                   </li>
+                   <li><a href="shop.html" class="font-medium uppercase hover:text-[#667eea] transition">Cửa hàng</a>
+                   </li>
+                   <li><a href="{{ route('products') }}"
+                           class="font-medium uppercase hover:text-[#667eea] transition">Sản
+                           phẩm</a>
+                   </li>
+                   <li><a href="{{ route('carts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
+                           <i class="fa fa-shopping-cart mr-1"></i>Giỏ hàng
+                       </a></li>
+                   {{-- <li><a href="{{ route('checkout') }}"
+                           class="font-medium uppercase hover:text-[#667eea] transition">Thanh
+                           toán</a></li> --}}
+                   <li><a href="{{ route('profile') }}"
+                           class="font-medium uppercase hover:text-[#667eea] transition">Tài
+                           khoản</a></li>
+                   <li><a href="{{ route('contact') }}"
+                           class="font-medium uppercase hover:text-[#667eea] transition">Liên hệ</a>
+                   </li>
+               </ul>
+           </div>
+       </div>
+   </nav>

@@ -1,33 +1,33 @@
 @if ($categories !== [])
     @foreach ($categories as $item)
         <tr>
-            <td class="text-center align-middle">
-                <span class="badge badge-secondary">{{ $item->id }}</span>
+            <td class="">
+                <span class="">{{ $item->id }}</span>
             </td>
-            <td class="align-middle">
+            <td class="">
                 <strong>{{ $item->name }}</strong>
             </td>
-            <td class="align-middle">
-                <small class="text-muted">
+            <td class="">
+                <small class="">
                     {{ $item->description ? Str::limit($item->description, 80) : 'Chưa có mô tả' }}
                 </small>
             </td>
-            <td class="align-middle">
+            <td class="">
                 <code>{{ $item->slug }}</code>
             </td>
-            <td class="text-center align-middle">
+            <td class="">
                 @if ($item->publish == 1 || $item->trangthai == 1)
-                    <span class="badge badge-success">
-                        <i class="fa fa-check"></i> Hiển thị
+                    <span class="">
+                        <i class=""></i> Hiển thị
                     </span>
                 @else
-                    <span class="badge badge-secondary">
-                        <i class="fa fa-eye-slash"></i> Ẩn
+                    <span class="">
+                        <i class=""></i> Ẩn
                     </span>
                 @endif
             </td>
-            <td class="text-center align-middle">
-                <a href="{{ route('categories.edit', $item->id) }}" class="btn btn-warning btn-lg">
+            <td class="">
+                <a href="{{ route('categories.edit', $item->id) }}" class="btn btn-outline-edit btn-primary btn-md">
                     <i class="fa fa-edit"></i> Sửa
                 </a>
                 <form action="{{ route('categories.destroy', $item->id) }}" method="POST" class="d-inline"

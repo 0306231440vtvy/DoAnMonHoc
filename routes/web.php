@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\Client\Auth\AuthController;
+use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\ContactController as ClientContactController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Client\DashboardClientController;
+use App\Http\Controllers\Client\ProductController as ClientProductController;
+use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Server\CategoryController;
 use App\Http\Controllers\Server\DashboardServerController;
 use App\Http\Controllers\Server\UserController;
@@ -16,7 +20,14 @@ use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Server\RoleController;
 use App\Http\Controllers\Server\PermissionController;
 // ======================================CLIENT==============================================//
-Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
+// Khang 09/01/2026 thêm routing cho profile,carts,products,contact
+Route::prefix('/')->group(function () {
+    Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/carts', [CartController::class, 'index'])->name('carts');
+    Route::get('/products', [ClientProductController::class, 'index'])->name('products');
+    Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
+});
 Route::prefix('/auth')->group(function () {
     Route::get('register', [AuthController::class, 'create'])->name('auth.register');
     Route::post('register', [AuthController::class, 'register']);
@@ -29,8 +40,8 @@ Route::prefix('/auth')->group(function () {
 
 //========================================SERVER============================================//
 
-Route::prefix('/v1/admin')->group(function () {
-    Route::get('dashboard', [DashboardServerController::class, 'index'])->name('admin.layouts');
+Route::prefix('/server')->group(function () {
+    Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
 
     // ==================USER====================//
     Route::prefix('/user')->group(function () {

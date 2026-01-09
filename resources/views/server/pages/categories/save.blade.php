@@ -5,7 +5,7 @@
             <h2>Thêm danh mục</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{ route('admin.layouts') }}">Trang chủ</a>
+                    <a href="{{ route('server.layouts') }}">Trang chủ</a>
                 </li>
                 <li class="active">
                     <strong>Thêm mới</strong>
