@@ -1,4 +1,4 @@
-<div class="header-area">
+<div class="bg-white/80 text-base/8">
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-6">
@@ -23,10 +23,11 @@
                                 </i>Đăng xuất</a>
                         </li>
                     @else
-                        <button type="button" class="btn account-btn" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
-                            <i class="fa fa-user account-icon"></i>
-                            <span class="account-text">Tài khoản</span>
+                        <button type="button"
+                            class="flex items-center gap-2 px-4 py-2 text-black hover:text-[#667eea] transition"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="fa fa-user"></i>
+                            <span>Tài khoản</span>
                         </button>
 
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
@@ -148,4 +149,4 @@
             </div>
         </div>
     </div>
-</div> ```
+</div>
