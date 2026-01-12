@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Server\Category\StoreCategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -16,9 +17,9 @@ class CategoryController extends Controller
     ) {
         $this->categoryService = $categoryService;
     }
-    public function index(): View
+    public function index(Request $request): View
     {
-        $categories = $this->categoryService->pagination();
+        $categories = $this->categoryService->pagination($request);
         return view('server.pages.categories.index', compact(
             'categories'
         ));

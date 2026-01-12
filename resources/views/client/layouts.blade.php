@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>eElectronics - HTML eCommerce Template</title>
+    <title>@yield('title', 'Trang chủ')</title>
     <link href="{{ asset('server/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     {{-- <link rel="stylesheet" href="{{ asset('client/css/owl.carousel.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('client/style.css') }}">
