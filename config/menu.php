@@ -12,9 +12,9 @@ return [
             'name' => 'users',
             'title' => 'Quản lý người dùng',
             'icon' => 'fa fa-user',
-            'route' => 'users.index',
+            'route' => '',
             'children' => [
-                ['title' => 'Danh sách', 'route' => 'users.index'],
+                ['title' => 'Danh sách người dùng', 'route' => 'server.users.index'],
                 // ['title' => 'Thêm mới', 'route' => 'users.create'],
             ]
         ],
@@ -52,10 +52,10 @@ return [
             'name' => 'orders',
             'title' => 'Quản lý Hóa đơn',
             'icon' => 'fa fa-list',
-            'route' => 'orders.index',
+            'route' => '',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
-                ['title' => 'Danh sách hóa đơn', 'route' => 'orders.index'],
+                ['title' => 'Danh sách hóa đơn', 'route' => 'server.orders.index'],
             ]
         ],
         [

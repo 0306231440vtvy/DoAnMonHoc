@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tensp');
             $table->string('hinhanh')->nullable();
             $table->integer('soluong');
-            $table->decimal('giaban');
+            $table->double('giaban');
             $table->string('slug');
             $table->string('mota')->nullable();
             $table->foreignId('bienthe_id')->constrained('bienthe')->cascadeOnDelete();

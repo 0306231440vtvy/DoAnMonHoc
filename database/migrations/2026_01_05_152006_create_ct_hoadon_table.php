@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('ct_hoadon', function (Blueprint $table) {
             $table->id();
-            $table->decimal('thanhtien');
+            $table->double('thanhtien');
             $table->integer('soluong');
             $table->tinyInteger('trangthai')->default(1);
-            $table->integer('dongia');
+            $table->double('dongia');
             $table->foreignId('hoadon_id')->constrained('hoadon')->cascadeOnDelete();
             $table->foreignId('sanpham_id')->constrained('sanpham')->cascadeOnDelete();
             $table->timestamps();
