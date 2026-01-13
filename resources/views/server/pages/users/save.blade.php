@@ -4,7 +4,7 @@
 @php
     // Logic xác định URL và Tiêu đề dựa trên biến $config từ Controller
     $isEdit = ($config == 'update');
-    $url = $isEdit ? route('server.users.update', $user->id) : route('server.users.store');
+    $url = $isEdit ? route('users.update', $user->id) : route('users.store');
     $title = $isEdit ? 'Cập nhật thành viên: ' . $user->name : 'Thêm mới thành viên';
 @endphp
 
@@ -13,7 +13,7 @@
         <h2>{{ $title }}</h2>
         <ol class="breadcrumb">
             
-            <li><a href="{{ route('server.users.index') }}">Thành viên</a></li>
+            <li><a href="{{ route('users.index') }}">Thành viên</a></li>
             <li class="active"><strong>{{ $isEdit ? 'Cập nhật' : 'Thêm mới' }}</strong></li>
         </ol>
     </div>
@@ -99,7 +99,7 @@
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <button class="btn btn-primary" type="submit">Lưu lại</button>
-                                <a href="{{ route('server.users.index') }}" class="btn btn-white">Hủy bỏ</a>
+                                <a href="{{ route('users.index') }}" class="btn btn-white">Hủy bỏ</a>
                             </div>
                         </div>
                     </form>

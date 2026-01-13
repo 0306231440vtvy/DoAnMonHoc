@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group">
-                <li class="list-group-item active"><a href="{{ route('client.profile.index') }}">Thông tin cá nhân</a></li>
-                <li class="list-group-item"><a href="{{ route('client.orders.index') }}">Đơn hàng của tôi</a></li>
+                <li class="list-group-item active"><a href="{{ route('profile') }}">Thông tin cá nhân</a></li>
+                <li class="list-group-item"><a href="{{ route('orders') }}">Đơn hàng của tôi</a></li>
             </ul>
         </div>
 

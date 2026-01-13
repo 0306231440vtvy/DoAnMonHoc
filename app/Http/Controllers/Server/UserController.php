@@ -32,15 +32,15 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         if ($this->userService->create($request)) {
-            return redirect()->route('server.users.index')->with('success', 'Thêm mới thành viên thành công');
+            return redirect()->route('users.index')->with('success', 'Thêm mới thành viên thành công');
         }
-        return redirect()->route('server.users.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
+        return redirect()->route('users.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
     }
 
     public function edit($id)
     {
         $user = User::find($id);
-        if(!$user) return redirect()->route('server.users.index')->with('error', 'Thành viên không tồn tại');
+        if(!$user) return redirect()->route('users.index')->with('error', 'Thành viên không tồn tại');
         
         return view('server.pages.users.save', ['user' => $user, 'config' => 'update']);
     }
@@ -48,34 +48,34 @@ class UserController extends Controller
     public function update($id, StoreUserRequest $request)
     {
         if ($this->userService->update($id, $request)) {
-            return redirect()->route('server.users.index')->with('success', 'Cập nhật thành viên thành công');
+            return redirect()->route('users.index')->with('success', 'Cập nhật thành viên thành công');
         }
-        return redirect()->route('server.users.index')->with('error', 'Có lỗi xảy ra');
+        return redirect()->route('users.index')->with('error', 'Có lỗi xảy ra');
     }
 
     public function destroy($id)
     {
         if ($id == Auth::id()) {
-            return redirect()->route('server.users.index')->with('error', 'Bạn không thể khóa tài khoản của chính mình!');
+            return redirect()->route('users.index')->with('error', 'Bạn không thể khóa tài khoản của chính mình!');
         }
 
         if ($id == 1) {
-            return redirect()->route('server.users.index')->with('error', 'Không thể khóa tài khoản Super Admin!');
+            return redirect()->route('users.index')->with('error', 'Không thể khóa tài khoản Super Admin!');
         }
 
         if ($this->userService->delete($id)) {
-            return redirect()->route('server.users.index')
+            return redirect()->route('users.index')
                 ->with('success', 'Đã chuyển thành viên sang trạng thái ngừng hoạt động!');
         }
-        return redirect()->route('server.users.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
+        return redirect()->route('users.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
     }
 
     public function restore($id)
     {
         if ($this->userService->restore($id)) {
-            return redirect()->route('server.users.index')
+            return redirect()->route('users.index')
                 ->with('success', 'Đã mở khóa tài khoản thành công! Người dùng có thể đăng nhập lại.');
         }
-        return redirect()->route('server.users.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
+        return redirect()->route('users.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
     }
 }
