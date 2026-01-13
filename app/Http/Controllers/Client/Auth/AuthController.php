@@ -59,7 +59,7 @@ class AuthController extends Controller
     public function login(AuthRequest $request): RedirectResponse
     {
         // $user = User::where('email', $request->input('email'))->first();
-        $user = $this->userService->findByField('email', $request->input('email'));
+        $user = $this->userService->show('email', $request->input('email'));
         // dd($user);
         if (!$user) {
             return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống'])

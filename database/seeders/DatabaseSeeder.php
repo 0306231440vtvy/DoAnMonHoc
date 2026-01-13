@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ThuongHieuSeeder::class,
             ProductSeeder::class,
+            SlidersSeeder::class
         ]);
 
         DB::table('categories')->insertOrIgnore([

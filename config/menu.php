@@ -55,8 +55,8 @@ return [
             'icon' => 'fa fa-boxes-stacked',
             'route' => 'products.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách sản phẩm', 'route' => 'products.index'],
+                ['title' => 'Thêm sản phẩm', 'route' => 'products.create'],
             ]
         ],
         [

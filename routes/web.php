@@ -33,6 +33,7 @@ Route::prefix('/')->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts');
     Route::get('/products', [ClientProductController::class, 'index'])->name('products');
     Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
+    // Route::get('/categories/{slug}',[Catego])
       Route::post('/profile/update', [ProfileController::class, 'update'])
         ->name('client.profile.update');
 
@@ -63,9 +64,9 @@ Route::prefix('/auth')->group(function () {
 
 //========================================SERVER============================================//
 
-Route::prefix('/server')->group(function () {
-    Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
-
+Route::prefix('/server')
+    ->group(['middleware' => ['role:super-admin']], function () {
+        Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
     // ==================USER====================//
     Route::prefix('users')->group(function () {
         Route::get('index', [UserController::class, 'index'])->name('server.users.index');
@@ -101,11 +102,10 @@ Route::prefix('/server')->group(function () {
         Route::get('index', [ProductController::class, 'index'])->name('products.index');
     });
 
-    // =================BRAND================//
-    Route::prefix('/brands')->group(function () {
-        Route::get('index', [BrandController::class, 'index'])->name('brands.index');
-    });
-
+        // =================BRAND================//
+        Route::prefix('/brands')->group(function () {
+            Route::get('index', [BrandController::class, 'index'])->name('brands.index');
+        });
     // =================ORDER================//
     Route::prefix('/orders')->group(function () {
         Route::get('index', [ServerOrderController::class, 'index'])->name('server.orders.index');
@@ -117,17 +117,17 @@ Route::prefix('/server')->group(function () {
         Route::post('update/{id}', [ServerOrderController::class, 'update'])->name('server.orders.update');
     });
 
-    // =================VARIANT================//
-    Route::prefix('/variants')->group(function () {
-        Route::get('index', [VariantController::class, 'index'])->name('variants.index');
-    });
-    // =================CONTACT================//
-    Route::prefix('/contacts')->group(function () {
-        Route::get('index', [ContactController::class, 'index'])->name('contacts.index');
-    });
+        // =================VARIANT================//
+        Route::prefix('/variants')->group(function () {
+            Route::get('index', [VariantController::class, 'index'])->name('variants.index');
+        });
+        // =================CONTACT================//
+        Route::prefix('/contacts')->group(function () {
+            Route::get('index', [ContactController::class, 'index'])->name('contacts.index');
+        });
 
-    // =================SLIDE================//
-    Route::prefix('/slides')->group(function () {
-        Route::get('index', [SlideController::class, 'index'])->name('slides.index');
+        // =================SLIDE================//
+        Route::prefix('/slides')->group(function () {
+            Route::get('index', [SlideController::class, 'index'])->name('slides.index');
+        });
     });
-})->middleware(['auth']);
