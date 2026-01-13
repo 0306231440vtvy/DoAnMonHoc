@@ -11,7 +11,7 @@ abstract class BaseService implements BaseServiceInterface
 {
     use HasTransaction;
     protected $repository;
-    // protected $perpage = 10;
+    protected $perpage = 10;
     public function __construct(
         BaseRepository $repository
     ) {
@@ -24,10 +24,10 @@ abstract class BaseService implements BaseServiceInterface
     //         'perpage' => $request->perpage ?? $this->perpage,
     //     ];
     // }
-    // public function pagination()
-    // {
-    //     // return $this->repository->;
-    // }
+    public function pagination()
+    {
+        return $this->repository->index();
+    }
     public function create(Request $request)
     {
         try {
@@ -41,5 +41,9 @@ abstract class BaseService implements BaseServiceInterface
             $this->rollBack();
             throw $th;
         }
+    }
+    public function findByField(string $field, $value)
+    {
+        return $this->repository->findByField($field, $value);
     }
 }

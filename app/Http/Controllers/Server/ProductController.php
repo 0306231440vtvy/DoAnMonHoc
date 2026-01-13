@@ -9,9 +9,9 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-   
-    public function index()
+
+    public function index(): View
     {
-       return view('server.pages.products.index');
+        return view('server.pages.products.index');
     }
 }

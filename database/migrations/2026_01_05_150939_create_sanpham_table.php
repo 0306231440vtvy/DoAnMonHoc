@@ -16,7 +16,12 @@ return new class extends Migration
             $table->string('tensp');
             $table->string('hinhanh')->nullable();
             $table->integer('soluong');
-            $table->double('giaban');
+            // Khang 08/01/2026 chỉnh lại giá trị sku, thêm discount,view,star
+            $table->string('sku', 50)->unique();
+            $table->decimal('giaban', 15, 2);
+            $table->decimal('discount', 5, 2)->default(0);
+            $table->integer('view')->default(0);
+            $table->integer('star')->nullable();
             $table->string('slug');
             $table->string('mota')->nullable();
             $table->foreignId('bienthe_id')->constrained('bienthe')->cascadeOnDelete();

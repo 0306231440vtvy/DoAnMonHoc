@@ -5,7 +5,9 @@
             <div class="col-md-3 col-sm-6">
                 <div class="footer-about-us">
                     <h2>e<span>Thời trang</span></h2>
-                    <p>Chào mừng bạn đến với eThời trang - Nơi cập nhật những xu hướng phong cách mới nhất. Chúng tôi cam kết mang đến những sản phẩm quần áo chất lượng, thiết kế hiện đại và giá cả hợp lý để giúp bạn tự tin tỏa sáng mỗi ngày.</p>
+                    <p>Chào mừng bạn đến với eThời trang - Nơi cập nhật những xu hướng phong cách mới nhất. Chúng tôi
+                        cam kết mang đến những sản phẩm quần áo chất lượng, thiết kế hiện đại và giá cả hợp lý để giúp
+                        bạn tự tin tỏa sáng mỗi ngày.</p>
                     <div class="footer-social">
                         <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
@@ -45,7 +47,8 @@
             <div class="col-md-3 col-sm-6">
                 <div class="footer-newsletter">
                     <h2 class="footer-wid-title">Bản Tin</h2>
-                    <p>Đăng ký nhận bản tin của chúng tôi để nhận các ưu đãi độc quyền và cập nhật bộ sưu tập mới nhất gửi thẳng vào hộp thư của bạn!</p>
+                    <p>Đăng ký nhận bản tin của chúng tôi để nhận các ưu đãi độc quyền và cập nhật bộ sưu tập mới nhất
+                        gửi thẳng vào hộp thư của bạn!</p>
                     <div class="newsletter-form">
                         <form action="#">
                             <input type="email" placeholder="Nhập email của bạn">
@@ -56,7 +59,8 @@
             </div>
         </div>
     </div>
-</div> <div class="footer-bottom-area">
+</div>
+<div class="footer-bottom-area">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -76,15 +80,4 @@
             </div>
         </div>
     </div>
-</div> <script src="https://code.jquery.com/jquery.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
-<script src="{{ asset('client/js/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('client/js/jquery.sticky.js') }}"></script>
-
-<script src="{{ asset('client/js/jquery.easing.1.3.min.js') }}"></script>
-
-<script src="{{ asset('client/js/main.js') }}"></script>
-<script src="{{ asset('client/library/customzime.js') }}"></script>
+</div>

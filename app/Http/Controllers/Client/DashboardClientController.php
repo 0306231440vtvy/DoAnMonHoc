@@ -13,6 +13,6 @@ class DashboardClientController extends Controller
     }
     public function index(): View
     {
-        return view('client.layouts');
+        return view('client.pages.home');
     }
 }

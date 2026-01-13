@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('anhsanpham', function (Blueprint $table) {
             $table->id();
-            $table->string('duongdan')->nullable();
+            $table->string('duongdan_anh')->nullable();
+            // Khang 08/01/2026 Thêm is_primary và order
+            $table->boolean('is_primary')->default(false); // Ảnh chính
+            $table->integer('order')->default(0); // Thứ tự hiển thị
             $table->tinyInteger('trangthai')->default(1);
             $table->foreignId('sanpham_id')->constrained('sanpham')->cascadeOnDelete();
             $table->timestamps();

@@ -5,7 +5,7 @@
             <h2>Thêm danh mục</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{ route('admin.layouts') }}">Trang chủ</a>
+                    <a href="{{ route('server.layouts') }}">Trang chủ</a>
                 </li>
                 <li class="active">
                     <strong>Thêm mới</strong>
@@ -35,7 +35,7 @@
                         <h5>Thông tin danh mục</h5>
                     </div>
                     <div class="ibox-content">
-                        <form method="POST" action="{{ route('store') }}" class="form-horizontal">
+                        <form method="POST" action="{{ route('categories.store') }}" class="form-horizontal">
                             @csrf
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Tên danh mục <span

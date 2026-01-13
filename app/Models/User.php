@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * Những cột được phép thêm/sửa vào database
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'publish',  // Cột bạn thêm (1: Active, 0: Block)
         'address',  // Nếu có
         'avatar',   // Nếu có
+        'email_verified_at'
     ];
 
     /**

@@ -8,9 +8,9 @@ use Illuminate\View\View;
 
 class SlideController extends Controller
 {
-   
-    public function index()
+
+    public function index(): View
     {
-       return view('server.pages.slides.index');
+        return view('server.pages.slides.index');
     }
 }

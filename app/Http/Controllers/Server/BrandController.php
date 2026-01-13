@@ -8,9 +8,9 @@ use Illuminate\View\View;
 
 class BrandController extends Controller
 {
-   
-    public function index()
+
+    public function index(): View
     {
-       return view('server.pages.brands.index');
+        return view('server.pages.brands.index');
     }
 }
