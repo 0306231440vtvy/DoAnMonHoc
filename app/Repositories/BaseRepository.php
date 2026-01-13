@@ -5,14 +5,20 @@ namespace App\Repositories;
 use App\Trait\HasQuery;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRepository
+abstract class BaseRepository
 {
     use HasQuery;
     protected $model;
-    public function __construct(
-        Model $model
-    ) {
-        $this->model = $model;
+    public function __construct()
+    {
+        $this->setModel();
+    }
+    abstract public function getModel();
+    
+    public function setModel()
+    {
+        // Dùng app()->make() để khởi tạo Model từ chuỗi tên class
+        $this->model = app()->make($this->getModel());
     }
     public function pagination(array $specs = [])
     {
@@ -31,6 +37,19 @@ class BaseRepository
     public function create(array $payload = []): Model | null
     {
         return $this->model->create($payload)->fresh();
+    }
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
+    public function update($id, $attributes = [])
+    {
+        $result = $this->find($id);
+        if ($result) {
+            $result->update($attributes);
+            return $result;
+        }
+        return false;
     }
     public function findById(int $id = 0, array $relation = [], array $column = ['*']): Model | null
     {
