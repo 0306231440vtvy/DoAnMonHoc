@@ -14,21 +14,21 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Những cột được phép thêm/sửa vào database
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'phone',    // Cột bạn thêm
+        'publish',  // Cột bạn thêm (1: Active, 0: Block)
+        'address',  // Nếu có
+        'avatar',   // Nếu có
         'email_verified_at'
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Những cột bị ẩn khi trả về API/Json
      */
     protected $hidden = [
         'password',
@@ -36,15 +36,10 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Định dạng dữ liệu
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 }

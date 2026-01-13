@@ -7,7 +7,7 @@ use App\Services\Interfaces\CategoryServiceInterface;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Paginator::useBootstrap(); // Sử dụng Bootstrap cho phân trang
     }
 }

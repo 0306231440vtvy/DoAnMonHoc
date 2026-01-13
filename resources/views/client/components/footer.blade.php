@@ -22,7 +22,7 @@
                 <div class="footer-menu">
                     <h2 class="footer-wid-title">Tài Khoản </h2>
                     <ul>
-                        <li><a href="#">Tài khoản của tôi</a></li>
+                        <li><a href="{{ route('client.profile.index') }}">Tài khoản của tôi</a></li>
                         <li><a href="#">Lịch sử đơn hàng</a></li>
                         <li><a href="#">Sản phẩm yêu thích</a></li>
                         <li><a href="#">Liên hệ nhà cung cấp</a></li>

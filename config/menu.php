@@ -12,7 +12,7 @@ return [
             'name' => 'users',
             'title' => 'Quản lý người dùng',
             'icon' => 'fa fa-user',
-            'route' => 'users.index',
+            'route' => '',
             'children' => [
                 ['title' => 'Danh sách người dùng', 'route' => 'users.index'],
                 // ['title' => 'Thêm mới', 'route' => 'users.create'],
@@ -76,7 +76,7 @@ return [
             'route' => 'orders.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
-                ['title' => 'Danh sách hóa đơn', 'route' => 'orders.index'],
+                ['title' => 'Danh sách hóa đơn', 'route' => 'server.orders.index'],
             ]
         ],
         [
