@@ -11,8 +11,8 @@
         @endif
         {{-- <td><span class="label label-primary">Điện thoại</span></td> --}}
         <td>
-            <a href="{{ route('products.update') }}" class="btn btn-warning btn-md">Sửa</a>
-            <a href="{{ route('products.destroy', $item->id) }}" class="btn btn-danger btn-md">Xóa</a>
+            {{-- <a href="{{ route('products.update') }}" class="btn btn-warning btn-md">Sửa</a>
+            <a href="{{ route('products.destroy', $item->id) }}" class="btn btn-danger btn-md">Xóa</a> --}}
         </td>
     </tr>
 @endforeach

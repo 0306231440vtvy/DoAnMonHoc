@@ -17,10 +17,10 @@ class UserRepository extends BaseRepository
         $query = $this->model->orderBy('id', 'desc');
 
         if (!empty($filters['keyword'])) {
-            $query->where(function($q) use ($filters) {
-                $q->where('name', 'like', '%'.$filters['keyword'].'%')
-                  ->orWhere('email', 'like', '%'.$filters['keyword'].'%')
-                  ->orWhere('phone', 'like', '%'.$filters['keyword'].'%');
+            $query->where(function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['keyword'] . '%')
+                    ->orWhere('email', 'like', '%' . $filters['keyword'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filters['keyword'] . '%');
             });
         }
 

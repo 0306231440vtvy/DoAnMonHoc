@@ -3,7 +3,7 @@
 @section('content')
     <div class="card">
         <h1 class="text-center">Quản Lý Sản Phẩm</h1>
-        <a href="{{ route('products.create') }}" class="btn btn-primary">Thêm Sản Phẩm</a>
+        {{-- <a href="{{ route('products.create') }}" class="btn btn-primary">Thêm Sản Phẩm</a> --}}
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table">
