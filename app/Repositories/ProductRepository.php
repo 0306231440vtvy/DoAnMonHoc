@@ -13,4 +13,8 @@ class ProductRepository extends BaseRepository
         // parent::__construct($model);
         $this->model = $model;
     }
+    public function getModel()
+    {
+        return Product::class;
+    }
 }

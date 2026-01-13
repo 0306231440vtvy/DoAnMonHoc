@@ -12,7 +12,7 @@ return [
             'name' => 'users',
             'title' => 'Quản lý người dùng',
             'icon' => 'fa fa-user',
-            'route' => '',
+            'route' => 'users.index',
             'children' => [
                 ['title' => 'Danh sách người dùng', 'route' => 'users.index'],
                 // ['title' => 'Thêm mới', 'route' => 'users.create'],
@@ -56,7 +56,7 @@ return [
             'route' => 'products.index',
             'children' => [
                 ['title' => 'Danh sách sản phẩm', 'route' => 'products.index'],
-                ['title' => 'Thêm sản phẩm', 'route' => 'products.create'],
+                // ['title' => 'Thêm sản phẩm', 'route' => 'products.create'],
             ]
         ],
         [
@@ -76,7 +76,7 @@ return [
             'route' => 'orders.index',
             'children' => [
                 // ['title' => 'Danh sách', 'route' => 'users.index'],
-                ['title' => 'Danh sách hóa đơn', 'route' => 'server.orders.index'],
+                ['title' => 'Danh sách hóa đơn', 'route' => 'orders.index'],
             ]
         ],
         [
