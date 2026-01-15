@@ -1,0 +1,2 @@
+@props(['name', 'action'])
+<div>
