@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Http\Controllers\Client;
+
+use App\Http\Controllers\Controller;
+use App\Models\Setting;
+
+class PageController extends Controller
+{
+    private function getSettingPublish($field)
+    {
+        $setting = Setting::where('publish', 1)->value($field);
+        return $setting;
+    }
+    //Thông tin bán hàng
+    public function salesInfo()
+    {
+        return view(
+            'client.pages.statics.sales-info',
+            [
+                'title' => 'Thông tin bán hàng',
+                'content' => $this->getSettingPublish('sales_info') ?? '',
+            ]
+        );
+    }
+    // Dịch vụ bán hàng
+    public function saleService()
+    {
+        return view(
+            'client.pages.statics.sales-service',
+            [
+                'title' => 'Giới thiệu',
+                'content' => $this->getSettingPublish('sales-service') ?? '',
+            ]
+        );
+    }
+    // Chính sách vận chuyển
+    public function sippingPolicy()
+    {
+        return view(
+            'client.pages.statics.sipping-policy',
+            [
+                'title' => 'Giới thiệu',
+                'content' => $this->getSettingPublish('sipping-policy') ?? '',
+            ]
+        );
+    }
+    // Chính sách đổi trả
+    public function returnPolicy()
+    {
+        return view(
+            'client.pages.statics.return-policy',
+            [
+                'title' => 'Giới thiệu',
+                'content' => $this->getSettingPublish('return-policy') ?? '',
+            ]
+        );
+    }
+    // Chính sách bảo hành
+    public function warrantyPolicy()
+    {
+        return view(
+            'client.pages.statics.warranty-policy',
+            [
+                'title' => 'Giới thiệu',
+                'content' => $this->getSettingPublish('warranty-policy') ?? '',
+            ]
+        );
+    }
+    // Trang giới thiệu
+    public function aboutUs()
+    {
+        return view(
+            'client.pages.statics.about-us',
+            [
+                'title' => 'Giới thiệu',
+                'content' => $this->getSettingPublish('about_us') ?? '',
+            ]
+        );
+    }
+    // Chính sách bảo mật thông tin
+    public function privacyPolicy()
+    {
+        return view(
+            'client.pages.statics.privacy-policy',
+            [
+                'title' => 'Giới thiệu',
+                'content' => $this->getSettingPublish('privacy-policy') ?? '',
+            ]
+        );
+    }
+}

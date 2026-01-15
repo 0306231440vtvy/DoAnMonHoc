@@ -17,7 +17,7 @@
                               Sản Phẩm
                           </a>
                       </li>
-                      <li>
+                      {{-- <li>
                           <a href="{{ route('profile') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
                               Tài Khoản
@@ -27,6 +27,12 @@
                           <a href="{{ route('gioi-thieu') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
                               Về chúng tôi
+                          </a>
+                      </li> --}}
+                      <li>
+                          <a href="{{ route('gioi-thieu') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Blog
                           </a>
                       </li>
                       <li>

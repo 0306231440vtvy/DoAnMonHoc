@@ -19,6 +19,7 @@ use App\Http\Controllers\Server\ContactController;
 use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientOrderCOntroller;
+use App\Http\Controllers\Client\PageController;
 // ======================================CLIENT==============================================//
 
 use App\Http\Controllers\Server\RoleController;
@@ -27,10 +28,18 @@ Route::get('/', [HomeController::class, 'index'])->name('layouts');
 Route::get('/products', [ClientProductController::class, 'index'])->name('products');
 Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
 // Route::get('/categories/{slug}',[Catego])
-Route::get('/gioi-thieu', function () {
-    return view('client.pages.gioithieu');
-})->name('gioi-thieu');
-
+// Route::get('/gioi-thieu', function () {
+//     return view('client.pages.gioithieu');
+// })->name('gioi-thieu');
+Route::controller(PageController::class)->group(function () {
+    Route::get('thong-tin-ban-hang', 'salesInfo')->name('thong-tin-ban-hang');
+    Route::get('dich-vu-ban-hang', 'saleService')->name('dich-vu-ban-hang');
+    Route::get('chinh-sach-van-chuyen', 'sippingPolicy')->name('chinh-sach-van-chuyen');
+    Route::get('chinh-sach-doi-tra', 'returnPolicy')->name('chinh-sach-doi-tra');
+    Route::get('chinh-sach-bao-hanh', 'warrantyPolicy')->name('chinh-sach-bao-hanh');
+    Route::get('bao-mat-thong-tin', 'privacyPolicy')->name('bao-mat-thong-tin');
+    Route::get('gioi-thieu', 'aboutUs')->name('gioi-thieu');
+});
 
 Route::middleware('auth')->prefix('/')->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts');

@@ -16,6 +16,13 @@ class Setting extends Model
         'instagram_url',
         'linkedin_url',
         'copyright',
-        'publish'
+        'sales_info',
+        'sales_services',
+        'shipping_policy',
+        'about_us',
+        'return_policy',
+        'warranty_policy',
+        'privacy_policy',
+        'publish',
     ];
 }

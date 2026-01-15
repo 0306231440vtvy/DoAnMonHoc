@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Sanpham;
 use App\Models\Category;
-use App\Models\Setting;
 use App\Services\SlideService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
@@ -42,12 +41,10 @@ class HomeController extends Controller
         $hotProducts = Sanpham::inRandomOrder()
             ->take(4)
             ->get();
-        $setting = Setting::where('publish', 1)->first();
         return view('client.pages.home', compact(
             'newProducts',
             'categories',
             'hotProducts',
-            'setting'
         ));
     }
 }
