@@ -6,7 +6,6 @@ use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\ContactController as ClientContactController;
 
 
-use App\Http\Controllers\Client\DashboardClientController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Server\CategoryController;
@@ -23,40 +22,42 @@ use App\Http\Controllers\Client\ClientOrderCOntroller;
 // ======================================CLIENT==============================================//
 
 use App\Http\Controllers\Server\RoleController;
-use App\Http\Controllers\Server\PermissionController;
 // ======================================CLIENT==============================================//
-// Khang 09/01/2026 thêm routing cho profile,carts,products,contact
-Route::prefix('/')->group(function () {
-    //Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
-    Route::get('/', [HomeController::class, 'index'])->name('layouts');
-    //Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/', [HomeController::class, 'index'])->name('layouts');
+Route::get('/products', [ClientProductController::class, 'index'])->name('products');
+Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
+// Route::get('/categories/{slug}',[Catego])
+Route::get('/gioi-thieu', function () {
+    return view('client.pages.gioithieu');
+})->name('gioi-thieu');
+
+
+Route::middleware('auth')->prefix('/')->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts');
-    Route::get('/products', [ClientProductController::class, 'index'])->name('products');
-    Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
-    // Route::get('/categories/{slug}',[Catego])
-    Route::post('/profile/update', [ProfileController::class, 'update'])
-        ->name('client.profile.update');
-
-    // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
-    // Tên route: client.orders.index
-    Route::get('/profile/orders', [ClientOrderController::class, 'index'])
-        ->name('client.orders.index');
-
-    // Xem chi tiết đơn hàng (nếu cần sau này)
-    Route::get('/profile/orders/{id}', [ClientOrderController::class, 'show'])
-        ->name('client.orders.show');
-
-    // Hủy đơn hàng
-    Route::post('/profile/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
-        ->name('client.orders.cancel');
+    Route::prefix('/profile')->name('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index']);
+        Route::post('/update', [ProfileController::class, 'update'])
+            ->name('.update');
+    });
+    Route::prefix('/order')->name('order')->group(function () {
+        // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
+        // Tên route: orders.index
+        Route::get('/orders', [ClientOrderController::class, 'index'])
+            ->name('.index');
+        // Xem chi tiết đơn hàng (nếu cần sau này)
+        Route::get('/orders/{id}', [ClientOrderController::class, 'show'])
+            ->name('.show');
+        // Hủy đơn hàng
+        Route::post('/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
+            ->name('.cancel');
+    });
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
-Route::prefix('/auth')->group(function () {
+Route::middleware('guest')->prefix('/auth')->group(function () {
     Route::get('register', [AuthController::class, 'create'])->name('auth.register');
     Route::post('register', [AuthController::class, 'register']);
-    Route::get('login', [AuthController::class, 'index'])->name('auth.login');
+    Route::get('login', [AuthController::class, 'index'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
-    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('active-email/{email}', [AuthController::class, 'active'])->name('auth.active.email');
 });
 
@@ -76,7 +77,6 @@ Route::prefix('/server')
             Route::get('delete/{id}', [UserController::class, 'destroy'])->name('.destroy');
             Route::get('restore/{id}', [UserController::class, 'restore'])->name('.restore');
         });
-        // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
         // =================CATEGORY================//
         Route::prefix('/categories')->name('categories')->group(function () {
             Route::get('index', [CategoryController::class, 'index'])->name('.index');
@@ -90,15 +90,12 @@ Route::prefix('/server')
             Route::get('index', [RoleController::class, 'index'])->name('.index');
             Route::get('create', [RoleController::class, 'create'])->name('.create');
         });
-        // =================PERMISSION================//
-        Route::prefix('/permissions')->name('permissions')->group(function () {
-            Route::get('index', [PermissionController::class, 'index'])->name('.index');
-            Route::get('create', [PermissionController::class, 'create'])->name('.create');
-        });
-        // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
         // =================PRODUCT================//
-        Route::prefix('/products')->group(function () {
-            Route::get('index', [ProductController::class, 'index'])->name('products.index');
+        Route::prefix('/products')->name('products')->group(function () {
+            Route::get('index', [ProductController::class, 'index'])->name('.index');
+            Route::get('create', [ProductController::class, 'create'])->name('.create');
+            Route::post('store', [ProductController::class, 'store'])->name('.store');
+            Route::post('delete', [ProductController::class, 'delete'])->name('.delete');
         });
 
         // =================BRAND================//

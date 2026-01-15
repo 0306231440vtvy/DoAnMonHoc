@@ -15,7 +15,6 @@
 </head>
 
 <body>
-    @include('client.components.header')
     @include('client.components.nav')
     @yield('content')
     @include('client.components.footer')

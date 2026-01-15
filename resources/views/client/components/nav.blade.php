@@ -1,85 +1,188 @@
-   <nav class="bg-white/80 top-0 z-50 shadow-md">
-       <div class="container mx-auto px-4">
-           <div class="flex justify-between items-center py-3">
-               <a href="index.html" class=" text-2xl font-bold">
-                   e<span class="font-extrabold">Thời trang</span>
-               </a>
+      <nav class="bg-white/80 top-0 z-50 shadow-md relative">
+          <div class="container mx-auto px-4">
+              <div class="flex justify-between items-center py-3">
+                  <a href="{{ route('layouts') }}" class=" text-2xl font-bold">
+                      e<span class="font-extrabold">Thời trang</span>
+                  </a>
 
-               <ul class="flex gap-4 items-center">
-                   <li><a href="{{ route('layouts') }}"
-                           class="font-medium uppercase hover:text-[#667eea] transition">Trang chủ</a>
-                   </li>
-                   <li><a href="shop.html" class="font-medium uppercase hover:text-[#667eea] transition">Cửa hàng</a>
-                   </li>
-                   <li><a href="{{ route('products') }}"
-                           class="font-medium uppercase hover:text-[#667eea] transition">Sản
-                           phẩm</a>
-                   </li>
-                   <li><a href="{{ route('carts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
-                           <i class="fa fa-shopping-cart mr-1"></i>Giỏ hàng
-                       </a></li>
-                   {{-- <li><a href="{{ route('checkout') }}"
-                           class="font-medium uppercase hover:text-[#667eea] transition">Thanh
-                           toán</a></li> --}}
-                   <li><a href="{{ route('profile') }}"
-                           class="font-medium uppercase hover:text-[#667eea] transition">Tài
-                           khoản</a></li>
-                   {{-- <li><a href="{{ route('gioithieu') }}"
-                           class="font-medium uppercase hover:text-[#667eea] transition">Liên hệ</a>
-                   </li> --}}
-                   <li><a href="{{ route('contact') }}"
-                           class="font-medium uppercase hover:text-[#667eea] transition">Liên hệ</a>
-                   </li>
-               </ul>
-           </div>
-       </div>
-   </nav>
-   <div class="container my-5">
-       <div id="carouselExampleCaptions" class="carousel slide mx-auto" style="max-width: 900px;">
-           <div class="carousel-indicators">
-               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                   aria-current="true" aria-label="Slide 1"></button>
-               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                   aria-label="Slide 2"></button>
-               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                   aria-label="Slide 3"></button>
-           </div>
-           <div class="carousel-inner rounded-3 shadow-lg">
-               <div class="carousel-item active">
-                   <img src="{{ asset('client/img/slide-1.jpg') }}" class="d-block w-100"
-                       style="height: 400px; object-fit: cover;" alt="...">
-                   <div class="carousel-caption d-none d-md-block">
-                       <h5>Amazon có thể sa thải 30.000 nhân viên</h5>
-                       <p>Amazon sắp có đợt cắt giảm nhân sự lớn nhất lịch sử, với số lao động tương đương 10%
-                           nhân viên văn phòng hiện tại.</p>
-                   </div>
-               </div>
-               <div class="carousel-item">
-                   <img src="{{ asset('client/img/slide-2.jpg') }}" class="d-block w-100"
-                       style="height: 400px; object-fit: cover;" alt="...">
-                   <div class="carousel-caption d-none d-md-block">
-                       <h5>Second slide label</h5>
-                       <p>Some representative placeholder content for the second slide.</p>
-                   </div>
-               </div>
-               <div class="carousel-item">
-                   <img src="{{ asset('client/img/slide-3.jpg') }}" class="d-block w-100"
-                       style="height: 400px; object-fit: cover;" alt="...">
-                   <div class="carousel-caption d-none d-md-block">
-                       <h5>Third slide label</h5>
-                       <p>Some representative placeholder content for the third slide.</p>
-                   </div>
-               </div>
-           </div>
-           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-               data-bs-slide="prev">
-               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-               <span class="visually-hidden">Previous</span>
-           </button>
-           <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-               data-bs-slide="next">
-               <span class="carousel-control-next-icon" aria-hidden="true"></span>
-               <span class="visually-hidden">Next</span>
-           </button>
-       </div>
-   </div>
+                  <ul class="flex gap-4 items-center">
+                      <li>
+                          <a href="{{ route('layouts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
+                              Trang chủ
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('products') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Sản Phẩm
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('profile') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Tài Khoản
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('gioi-thieu') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Về chúng tôi
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('contact') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Liên hệ
+                          </a>
+                      </li>
+                      <li>
+                          @if (Auth::check())
+                              <div class="relative">
+                                  <button id="accountBtn"
+                                      class="font-medium uppercase hover:text-[#667eea] 
+                                        transition flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100">
+                                      <i class="fa fa-user"></i>
+                                      <span>Tài khoản</span>
+                                  </button>
+                                  <div id="accountDropdown" style="display: none;"
+                                      class="absolute right-0 mt-2 w-56 
+                                        bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden">
+                                      <div class="px-4 py-3 ">
+                                          <p class="text-xs opacity-90 mb-1">Chào mừng</p>
+                                          <p class="font-semibold truncate">{{ Auth::user()->name }}</p>
+                                      </div>
+                                      <a href="{{ route('profile') }}"
+                                          class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                                          <i class="fa fa-user mr-2"></i>Thông tin
+                                      </a>
+                                      <a href="{{ route('auth.logout') }}"
+                                          class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                                          <i class="fa-solid fa-right-from-bracket mr-2"></i>Đăng xuất
+                                      </a>
+                                  </div>
+                              </div>
+                          @else
+                              <button type="button"
+                                  class="font-medium uppercase hover:text-[#667eea] transition flex items-center gap-1"
+                                  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                  <i class="fa fa-user"></i>
+                                  <span>Tài khoản</span>
+                              </button>
+                          @endif
+                      </li>
+                      <li>
+                          <a href="{{ route('carts') }}" class="text-xl hover:text-[#667eea] transition"
+                              title="Giỏ hàng">
+                              <i class="fa fa-shopping-cart"></i>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+              <div class="modal-content account-modal">
+                  <div class="modal-body text-center">
+                      <button type="button" class="btn btn-login w-100 mb-3" id="btn-login">
+                          Đăng nhập
+                      </button>
+                      <button type="button" class="btn btn-register w-100" id="btn-register">
+                          Đăng ký
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header border-0">
+                      <h5 class="modal-title w-100 text-center">Đăng nhập</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body px-4">
+                      <form class="m-t" method="POST" action="{{ route('login') }}" id="loginForm">
+                          @csrf
+                          <div class="form-group">
+                              <label class="text-center">Email</label>
+                              <input type="email" name="email"
+                                  class="form-control @error('email') is-invalid @enderror"
+                                  placeholder="Nhập email của bạn" required="" value="{{ old('email') }}">
+                          </div>
+                          @error('email')
+                              <div class="alert alert-danger">*{{ $message }}</div>
+                          @enderror
+                          <div class="form-group">
+                              <label>Mật khẩu</label>
+                              <input type="password" name="password"
+                                  class="form-control @error('password') is-invalid @enderror"
+                                  placeholder="Nhập mật khẩu" required="">
+                          </div>
+                          @error('password')
+                              <div class="alert alert-danger">*{{ $message }}</div>
+                          @enderror
+                          <button type="submit" class="btn btn-primary block full-width m-b">Đăng
+                              nhập</button>
+                          <p class="text-muted text-center">
+                              <small>Bạn chưa có tài khoản thành viên?</small>
+                          </p>
+                          <a href="#" id="switchToRegister" class="btn btn-sm btn-white btn-block">
+                              Tạo tài khoản mới
+                          </a>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header border-0">
+                      <h5 class="modal-title w-100 text-center">Đăng ký thành viên</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body px-4">
+                      <form class="m-t" role="form" action="{{ route('auth.register') }}" method="POST">
+                          @csrf
+                          <div class="form-group">
+                              <label>Họ và tên</label>
+                              <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                  value="{{ old('name') }}" placeholder="Nhập họ tên của bạn" name="name"
+                                  required="">
+                          </div>
+                          @error('name')
+                              <div class="alert alert-danger">*{{ $message }}</div>
+                          @enderror
+                          <div class="form-group">
+                              <label>Email</label>
+                              <input type="email" name="email"
+                                  class="form-control @error('email') is-invalid @enderror" placeholder="Nhập email"
+                                  required="" value="{{ old('email') }}">
+                          </div>
+                          @error('email')
+                              <div class="alert alert-danger">*{{ $message }}</div>
+                          @enderror
+                          <div class="form-group">
+                              <label>Mật khẩu</label>
+                              <input type="password" name="password"
+                                  class="form-control @error('password') is-invalid @enderror"
+                                  placeholder="Nhập mật khẩu" required="">
+                          </div>
+                          @error('password')
+                              <div class="alert alert-danger">*{{ $message }}</div>
+                          @enderror
+                          <button type="submit" class="btn btn-primary block full-width m-b">Đăng
+                              ký</button>
+
+                          <p class="text-muted text-center"><small>Bạn đã có tài
+                                  khoản?</small></p>
+                          <a href="#" id="switchToLogin" class="btn btn-sm btn-white btn-block">Đăng nhập
+                              ngay</a>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('tensp');
             $table->string('hinhanh')->nullable();
             $table->integer('soluong');
-            // Khang 08/01/2026 chỉnh lại giá trị sku, thêm discount,view,star
             $table->string('sku', 50)->unique();
             $table->decimal('giaban', 15, 2);
             $table->decimal('discount', 5, 2)->default(0);

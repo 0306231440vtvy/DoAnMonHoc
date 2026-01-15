@@ -6,7 +6,7 @@ use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-class UserService
+class UserService extends BaseService
 {
     protected $userRepository;
 
@@ -27,7 +27,7 @@ class UserService
         try {
             $payload = $request->except(['_token', 're_password', 'send']);
             $payload['password'] = Hash::make($payload['password']); // Mã hóa pass
-            
+
             $user = $this->userRepository->create($payload);
             DB::commit();
             return true;
@@ -42,7 +42,7 @@ class UserService
         DB::beginTransaction();
         try {
             $payload = $request->except(['_token', 're_password', 'send']);
-            
+
             // Nếu không nhập pass mới thì bỏ qua, giữ pass cũ
             if (empty($payload['password'])) {
                 unset($payload['password']);
@@ -58,7 +58,7 @@ class UserService
             return false;
         }
     }
-    
+
     public function delete($id)
     {
         DB::beginTransaction();
@@ -66,11 +66,11 @@ class UserService
             // THAY ĐỔI Ở ĐÂY:
             // Thay vì xóa cứng: $this->userRepository->delete($id);
             // Chúng ta cập nhật trạng thái publish về 0 (0 nghĩa là đã xóa/khóa)
-            
+
             $payload = [
-                'publish' => 0, 
+                'publish' => 0,
             ];
-            
+
             $this->userRepository->update($id, $payload);
 
             DB::commit();
@@ -88,7 +88,7 @@ class UserService
         try {
             // Cập nhật publish = 1 (Hoạt động lại)
             $this->userRepository->update($id, ['publish' => 1]);
-            
+
             DB::commit();
             return true;
         } catch (\Exception $e) {

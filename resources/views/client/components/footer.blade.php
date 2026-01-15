@@ -4,12 +4,12 @@
         <div class="row">
             <div class="col-md-3 col-sm-6">
                 <div class="footer-about-us">
-                    <h2>e<span>Thời trang</span></h2>
+                    <h2>{{ $setting->description }}</h2>
                     <p>Chào mừng bạn đến với eThời trang - Nơi cập nhật những xu hướng phong cách mới nhất. Chúng tôi
                         cam kết mang đến những sản phẩm quần áo chất lượng, thiết kế hiện đại và giá cả hợp lý để giúp
                         bạn tự tin tỏa sáng mỗi ngày.</p>
                     <div class="footer-social">
-                        <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
+                        {{-- <a href="{{ route($setting->facebook_url) }}" target="_blank"><i class="fa fa-facebook"></i></a> --}}
                         <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-youtube"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>

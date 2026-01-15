@@ -23,6 +23,7 @@
         <div id="page-wrapper" class="gray-bg">
             @include('server.components.nav')
             <div class="wrapper wrapper-content">
+                @include('server.components.breadcrumb')
                 @yield('content')
             </div>
             @include('server.components.footer')

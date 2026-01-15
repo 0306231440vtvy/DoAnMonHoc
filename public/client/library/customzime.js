@@ -29,4 +29,24 @@
             loginModal.show();
         }, 300);
     });
+    $(document).ready(function () {
+        const accountBtn = $('#accountBtn');
+        const accountDropdown = $('#accountDropdown');
+        accountBtn.on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            accountDropdown.toggle();
+        });
+        $(document).on('click', function (e) {
+            if (
+                !accountBtn.is(e.target) &&
+                !accountDropdown.is(e.target)
+            ) {
+                accountDropdown.hide();
+            }
+        });
+        accountDropdown.find('a').on('click', function () {
+            accountDropdown.hide();
+        });
+    });
 })(jQuery);

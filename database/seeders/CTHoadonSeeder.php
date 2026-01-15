@@ -16,7 +16,7 @@ class CTHoadonSeeder extends Seeder
         $hoadons = DB::table('hoadon')->get();
 
         if ($hoadons->isEmpty()) {
-            $this->command->warn('⚠️ Không có hóa đơn nào. Vui lòng chạy HoadonSeeder trước.');
+            $this->command->warn('Không có hóa đơn nào. Vui lòng chạy HoadonSeeder trước.');
             return;
         }
 
@@ -27,7 +27,7 @@ class CTHoadonSeeder extends Seeder
             ->get();
 
         if ($sanphams->isEmpty()) {
-            $this->command->warn('⚠️ Không có sản phẩm nào khả dụng. Vui lòng chạy ProductSeeder trước.');
+            $this->command->warn('Không có sản phẩm nào khả dụng. Vui lòng chạy ProductSeeder trước.');
             return;
         }
 
@@ -67,10 +67,10 @@ class CTHoadonSeeder extends Seeder
             DB::table('ct_hoadon')->insert($chunk);
         }
 
-        $this->command->info('✅ Đã tạo ' . count($ctHoadons) . ' chi tiết hóa đơn cho ' . count($hoadons) . ' hóa đơn');
+        $this->command->info('Đã tạo ' . count($ctHoadons) . ' chi tiết hóa đơn cho ' . count($hoadons) . ' hóa đơn');
 
         // Thống kê
-        $this->command->info('📊 Thống kê:');
+        $this->command->info('Thống kê:');
         $avgItemsPerOrder = round(count($ctHoadons) / count($hoadons), 2);
         $this->command->info("   - Trung bình {$avgItemsPerOrder} sản phẩm/hóa đơn");
 

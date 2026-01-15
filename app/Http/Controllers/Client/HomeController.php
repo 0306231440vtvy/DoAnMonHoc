@@ -5,16 +5,32 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Sanpham;
 use App\Models\Category;
+use App\Models\Setting;
+use App\Services\SlideService;
+use App\Services\CategoryService;
+use App\Services\ProductService;
 
 class HomeController extends Controller
 {
+    protected $slideService;
+    protected $categoryService;
+    protected $productService;
+    public function __construct(
+        SlideService $slideService,
+        CategoryService $categoryService,
+        ProductService $productService
+    ) {
+        $this->slideService = $slideService;
+        $this->categoryService = $categoryService;
+        $this->productService = $productService;
+    }
     public function index()
     {
         // 1. Lấy sản phẩm mới nhất (8 sản phẩm)
         // Đã xóa ->where('publish', 1) để tránh lỗi
         $newProducts = Sanpham::orderBy('created_at', 'desc')
-                              ->take(8)
-                              ->get();
+            ->take(8)
+            ->get();
 
         // 2. Lấy danh mục nổi bật
         // Lưu ý: Nếu bảng categories cũng chưa có cột 'publish' thì bạn xóa đoạn ->where('publish', 1) đi nhé
@@ -24,9 +40,14 @@ class HomeController extends Controller
         // 3. Lấy sản phẩm nổi bật/ngẫu nhiên
         // Đã xóa ->where('publish', 1) để tránh lỗi
         $hotProducts = Sanpham::inRandomOrder()
-                              ->take(4)
-                              ->get();
-
-        return view('client.pages.home', compact('newProducts', 'categories', 'hotProducts'));
+            ->take(4)
+            ->get();
+        $setting = Setting::where('publish', 1)->first();
+        return view('client.pages.home', compact(
+            'newProducts',
+            'categories',
+            'hotProducts',
+            'setting'
+        ));
     }
 }

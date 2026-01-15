@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Services;
 
 use App\Repositories\Order\OrderRepository;
+use App\Services\BaseService;
 use Exception;
 
-class OrderService
+class OrderService extends BaseService
 {
     protected $orderRepo;
 

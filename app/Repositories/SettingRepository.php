@@ -2,13 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\Sanpham;
+use App\Models\Setting;
 use App\Repositories\BaseRepository;
+use Illuminate\Database\Eloquent\Model;
 
-class ProductRepository extends BaseRepository
+class SettingRepository extends BaseRepository
 {
     public function __construct(
-        Sanpham $model
+        Setting $model
     ) {
         $this->model = $model;
     }
