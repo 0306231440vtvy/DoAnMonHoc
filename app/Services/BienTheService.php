@@ -2,14 +2,15 @@
 
 namespace App\Services;
 
-use App\Repositories\SlideRepository;
+use App\Models\BienThe;
+use App\Repositories\BienTheRepository;
 use App\Services\BaseService;
 
-class SlideService extends BaseService
+class BienTheService extends BaseService
 {
     protected $repository;
     public function __construct(
-        SlideRepository $repository
+        BienTheRepository $repository
     ) {
         $this->repository = $repository;
     }

@@ -54,7 +54,7 @@
                 <button type="submit" class="btn btn-primary block full-width m-b">Đăng ký</button>
 
                 <p class="text-muted text-center"><small>Bạn đã có tài khoản?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="{{ route('auth.login') }}">Đăng nhập</a>
+                <a class="btn btn-sm btn-white btn-block" href="{{ route('login') }}">Đăng nhập</a>
             </form>
             <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; {{ now()->year }}</small>
             </p>

@@ -1,9 +1,9 @@
 @extends('server.layout')
 @section('title', 'Sản phẩm')
 @section('content')
+    <h2 class="text-center">Quản Lý Sản Phẩm</h2>
     <div class="card">
-        <h1 class="text-center">Quản Lý Sản Phẩm</h1>
-        {{-- <a href="{{ route('products.create') }}" class="btn btn-primary">Thêm Sản Phẩm</a> --}}
+        <a href="{{ route('products.create') }}" class="btn btn-primary">Thêm Sản Phẩm</a>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table">
@@ -13,9 +13,9 @@
                                 <th>Mã SP</th>
                                 <th>Tên Sản Phẩm</th>
                                 <th>Giá</th>
+                                <th>Giảm giá</th>
                                 <th>Số Lượng</th>
                                 <th>Trạng thái</th>
-                                {{-- <th>Danh Mục</th> --}}
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
@@ -26,6 +26,7 @@
                         <div class="text-center text-danger lead">Không tồn tại record</div>
                     @endif
                 </table>
+                {{ $products->links() }}
             </div>
         </div>
     </div>

@@ -1,30 +1,37 @@
 <?php
+
 namespace App\Repositories\Order;
 
 use App\Models\Hoadon;
 use App\Repositories\BaseRepository; // Giả sử bạn đã có BaseRepo
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
 class OrderRepository extends BaseRepository
 {
-    public function getModel()
+    // public function getModel()
+    // {
+    //     return Hoadon::class;
+    // }
+    public function __construct(Hoadon $model)
     {
-        return Hoadon::class;
+        $this->model = $model;
     }
 
-// Lấy danh sách đơn hàng của user theo trạng thái
+    // Lấy danh sách đơn hàng của user theo trạng thái
     public function getOrdersByUserId($userId)
     {
         return $this->model->where('user_id', $userId)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
-// Tìm đơn hàng để hủy (Chỉ user đó mới được hủy đơn của mình)
+    // Tìm đơn hàng để hủy (Chỉ user đó mới được hủy đơn của mình)
     public function findUserOrder($orderId, $userId)
     {
         return $this->model->where('id', $orderId)
-        ->where('user_id', $userId)
-        ->first();
+            ->where('user_id', $userId)
+            ->first();
     }
 
     public function getAllOrders($filters = [])
@@ -49,12 +56,12 @@ class OrderRepository extends BaseRepository
             $keyword = $filters['keyword'];
             $query->where(function (Builder $q) use ($keyword) {
                 $q->where('id', $keyword) // Tìm theo ID
-                  ->orWhere('sdtnhan', 'like', "%{$keyword}%") // Tìm theo SĐT
-                  ->orWhere('name', 'like', "%{$keyword}%") // Tìm theo Tên người nhận
-                  // Nếu muốn tìm cả tên User đăng ký:
-                  ->orWhereHas('user', function($qUser) use ($keyword) {
-                      $qUser->where('name', 'like', "%{$keyword}%");
-                  });
+                    ->orWhere('sdtnhan', 'like', "%{$keyword}%") // Tìm theo SĐT
+                    ->orWhere('name', 'like', "%{$keyword}%") // Tìm theo Tên người nhận
+                    // Nếu muốn tìm cả tên User đăng ký:
+                    ->orWhereHas('user', function ($qUser) use ($keyword) {
+                        $qUser->where('name', 'like', "%{$keyword}%");
+                    });
             });
         }
 
@@ -65,6 +72,6 @@ class OrderRepository extends BaseRepository
     public function getOrderDetail($id)
     {
         return $this->model->with(['chiTiet.sanpham', 'user'])
-                        ->find($id);
+            ->find($id);
     }
 }

@@ -4,14 +4,19 @@ namespace App\Repositories\User;
 
 use App\Repositories\BaseRepository;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 class UserRepository extends BaseRepository
 {
-    public function getModel()
+    // public function getModel()
+    // {
+    //     return User::class;
+    // }
+    public function __construct(User $model)
     {
-        return User::class;
+        // return parent::__construct($model);
+        $this->model = $model;
     }
-
     public function getUsers($filters = [])
     {
         $query = $this->model->orderBy('id', 'desc');

@@ -14,47 +14,55 @@ class HoadonSeeder extends Seeder
      */
     public function run(): void
     {
-        // Lấy danh sách user có role customer
-        $customerUsers = DB::table('users')
-            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->where('roles.name', 'customer')
-            ->where('model_has_roles.model_type', 'App\\Models\\User')
-            ->select('users.id', 'users.name')
+        // Lấy danh sách users có role 'member'
+        $memberUsers = DB::table('users')
+            ->join('roles', 'users.role_id', '=', 'roles.id')
+            ->where('roles.name', 'member')
+            ->select('users.id', 'users.name', 'users.email')
             ->get();
 
-        if ($customerUsers->isEmpty()) {
-            $this->command->warn('⚠️ Không tìm thấy user có role customer. Vui lòng chạy UserSeeder trước.');
+        if ($memberUsers->isEmpty()) {
+            $this->command->warn('Không tìm thấy user có role member. Vui lòng chạy UserSeeder trước.');
             return;
         }
 
-        $trangthaiOptions = [
-            1 => 'Chờ xác nhận',
-            2 => 'Đã xác nhận',
-            3 => 'Đang giao hàng',
-            4 => 'Đã giao hàng',
-            5 => 'Đã hủy'
-        ];
+        // Lấy danh sách provinces
+        $provinces = DB::table('provinces')->pluck('id')->toArray();
+        if (empty($provinces)) {
+            $this->command->warn('Không tìm thấy provinces. Vui lòng chạy ProvinceSeeder trước.');
+            return;
+        }
 
-        $diachiMau = [
-            '123 Nguyễn Văn Linh, Quận 7, TP.HCM',
-            '456 Lê Văn Việt, Quận 9, TP.HCM',
-            '789 Võ Văn Ngân, Thủ Đức, TP.HCM',
-            '321 Trần Hưng Đạo, Quận 1, TP.HCM',
-            '654 Hoàng Văn Thụ, Phú Nhuận, TP.HCM',
-            '987 Phan Văn Trị, Gò Vấp, TP.HCM',
-            '147 Cách Mạng Tháng 8, Quận 10, TP.HCM',
-            '258 Lê Hồng Phong, Quận 5, TP.HCM',
-            '369 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
-            '741 Điện Biên Phủ, Bình Thạnh, TP.HCM'
+        // Lấy danh sách wards
+        $wards = DB::table('wards')->pluck('id')->toArray();
+        if (empty($wards)) {
+            $this->command->warn('Không tìm thấy wards. Vui lòng chạy WardSeeder trước.');
+            return;
+        }
+
+        $this->command->info("Tìm thấy {$memberUsers->count()} member users");
+        $this->command->info("Tìm thấy " . count($provinces) . " provinces");
+        $this->command->info("Tìm thấy " . count($wards) . " wards");
+
+        $noteMau = [
+            'Giao hàng giờ hành chính',
+            'Gọi trước khi giao',
+            'Giao tận tay, không gửi bảo vệ',
+            'Cho xem hàng trước khi thanh toán',
+            'Giao buổi sáng',
+            'Giao buổi chiều',
+            'Giao cuối tuần',
+            null, // Không có ghi chú
+            null,
+            null,
         ];
 
         $hoadons = [];
-        $usedPhones = []; // Mảng để theo dõi số điện thoại đã sử dụng
+        $usedPhones = [];
 
         // Tạo 50 hóa đơn
         for ($i = 1; $i <= 50; $i++) {
-            $user = $customerUsers->random();
+            $user = $memberUsers->random();
 
             // Tạo ngày đặt ngẫu nhiên trong 6 tháng gần đây
             $ngaydat = Carbon::now()->subDays(rand(0, 180))->format('Y-m-d');
@@ -77,15 +85,24 @@ class HoadonSeeder extends Seeder
             do {
                 $sdtnhan = '09' . rand(10000000, 99999999);
             } while (in_array($sdtnhan, $usedPhones));
-
             $usedPhones[] = $sdtnhan;
+
+            // Chọn province và ward ngẫu nhiên
+            $provinceId = $provinces[array_rand($provinces)];
+
+            // Lấy wards thuộc province này (nếu có quan hệ qua districts)
+            // Nếu không có districts, chọn ward ngẫu nhiên
+            $wardId = $wards[array_rand($wards)];
 
             $hoadons[] = [
                 'name' => 'HD' . str_pad($i, 6, '0', STR_PAD_LEFT),
                 'ngaydat' => $ngaydat,
                 'trangthai' => $trangthai,
                 'sdtnhan' => $sdtnhan,
-                'diachigiaohang' => $diachiMau[array_rand($diachiMau)],
+                'email' => $user->email,
+                'note' => $noteMau[array_rand($noteMau)],
+                'province_id' => $provinceId,
+                'ward_id' => $wardId,
                 'user_id' => $user->id,
                 'created_at' => $ngaydat . ' ' . rand(8, 20) . ':' . rand(10, 59) . ':' . rand(10, 59),
                 'updated_at' => now(),
@@ -94,6 +111,20 @@ class HoadonSeeder extends Seeder
 
         DB::table('hoadon')->insert($hoadons);
 
-        $this->command->info('✅ Đã tạo ' . count($hoadons) . ' hóa đơn');
+        $this->command->info('✅ Đã tạo ' . count($hoadons) . ' hóa đơn thành công!');
+
+        // Hiển thị thống kê trạng thái
+        $stats = collect($hoadons)->groupBy('trangthai')->map->count();
+        $this->command->info('Thống kê trạng thái:');
+        foreach ($stats as $status => $count) {
+            $statusName = [
+                1 => 'Chờ xác nhận',
+                2 => 'Đã xác nhận',
+                3 => 'Đang giao hàng',
+                4 => 'Đã giao hàng',
+                5 => 'Đã hủy'
+            ][$status];
+            $this->command->info("   {$statusName}: {$count} hóa đơn");
+        }
     }
 }

@@ -46,7 +46,7 @@ class AuthController extends Controller
                 SendMailActive::dispatchSync($user);
             }
             $this->commit();
-            return redirect()->route('auth.login')->with('success', 'Đăng ký tài khoản thành công');
+            return redirect()->route('login')->with('success', 'Đăng ký tài khoản thành công');
         } catch (\Throwable $th) {
             $this->rollBack();
             throw $th;
@@ -58,8 +58,8 @@ class AuthController extends Controller
     }
     public function login(AuthRequest $request): RedirectResponse
     {
-        // $user = User::where('email', $request->input('email'))->first();
-        $user = $this->userService->show('email', $request->input('email'));
+        $user = User::where('email', $request->input('email'))->first();
+        // $user = $this->userService->show('email', $request->input('email'));
         // dd($user);
         if (!$user) {
             return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống'])
@@ -83,14 +83,14 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect()->intended('/');
+        return redirect()->intended('/')->with('success', 'Đăng nhập thành công');
     }
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('auth.login')->with('success', 'Đăng xuất tài khoản thành công');
+        return redirect()->route('login')->with('success', 'Đăng xuất tài khoản thành công');
     }
     public function active($email)
     {
@@ -100,7 +100,7 @@ class AuthController extends Controller
             'publish' => 1,
         ]);
         return redirect()
-            ->route('auth.login')
+            ->route('login')
             ->with('success', 'Kích hoạt tài khoản thành công! Bạn có thể đăng nhập.');
     }
 }

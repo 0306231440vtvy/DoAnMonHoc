@@ -3,10 +3,10 @@
 namespace App\Services;
 
 use App\Repositories\ProductRepository;
-use App\Services\Interfaces\ProductServiceInterface;
 use App\Services\BaseService;
+use Illuminate\Http\Request;
 
-class ProductService extends BaseService implements ProductServiceInterface
+class ProductService extends BaseService
 {
     protected $repository;
     public function __construct(
