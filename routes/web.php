@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\DashboardClientController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
 use App\Http\Controllers\Client\ProfileController;
+// Them class checkout
+use App\Http\Controllers\Client\CheckoutController;
+
 use App\Http\Controllers\Server\CategoryController;
 use App\Http\Controllers\Server\DashboardServerController;
 use App\Http\Controllers\Server\UserController;
@@ -27,6 +30,8 @@ Route::prefix('/')->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts');
     Route::get('/products', [ClientProductController::class, 'index'])->name('products');
     Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
+    // 10-01-2026 hao them route trang thanh toan
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 });
 Route::prefix('/auth')->group(function () {
     Route::get('register', [AuthController::class, 'create'])->name('auth.register');
@@ -52,9 +57,10 @@ Route::prefix('/server')->group(function () {
     Route::prefix('/categories')->name('categories')->group(function () {
         Route::get('index', [CategoryController::class, 'index'])->name('.index');
         Route::get('create', [CategoryController::class, 'create'])->name('.create');
+        Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
         Route::post('store', [CategoryController::class, 'store'])->name('.store');
-        Route::post('edit', [CategoryController::class, 'edit'])->name('.edit');
-        Route::post('destroy', [CategoryController::class, 'destroy'])->name('.destroy');
+        Route::put('{id}', [CategoryController::class, 'update'])->name('.update');
+        Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('.destroy');
     });
     // =================ROLE================//
     Route::prefix('/roles')->name('roles')->group(function () {

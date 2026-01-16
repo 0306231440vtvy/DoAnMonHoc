@@ -15,9 +15,11 @@
                            class="font-medium uppercase hover:text-[#667eea] transition">Sản
                            phẩm</a>
                    </li>
-                   <li><a href="{{ route('carts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
-                           <i class="fa fa-shopping-cart mr-1"></i>Giỏ hàng
-                       </a></li>
+                    <li><a href="{{ route('carts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
+                            <i class="fa fa-shopping-cart mr-1"></i>Giỏ hàng
+                        </a>
+                    </li>
+
                    {{-- <li><a href="{{ route('checkout') }}"
                            class="font-medium uppercase hover:text-[#667eea] transition">Thanh
                            toán</a></li> --}}

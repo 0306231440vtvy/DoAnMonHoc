@@ -7,6 +7,7 @@ use App\Http\Requests\Server\Category\StoreCategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -16,22 +17,40 @@ class CategoryController extends Controller
     ) {
         $this->categoryService = $categoryService;
     }
-    public function index(): View
+
+    
+    public function index(Request $request): View //Lấy danh sách danh mục
     {
-        $categories = $this->categoryService->pagination();
-        return view('server.pages.categories.index', compact(
-            'categories'
-        ));
+        $keyword = trim($request->get('keyword'));
+        $categories = $this->categoryService->search($keyword);
+        return view('server.pages.categories.index', compact('categories'));
     }
-    public function create(): View
+    public function create(): View // Lấy view thêm mới
     {
-        return view('server.pages.categories.save');
+        return view('server.pages.categories.create');
     }
-    public function store(StoreCategoryRequest $request)
+
+    public function edit($id) //Lấy view sửa danh mục
+    {
+        $category = $this->categoryService->findByID($id);
+        return view('server.pages.categories.create', compact('category'));
+    }
+
+    public function store(StoreCategoryRequest $request)// Lưu danh mục mới
     {
         $category = $this->categoryService->create($request);
-        return redirect()->route('admin.layouts')->with('success', 'Thêm danh mục thành công');
+        return redirect()->route('categories.index')->with('success', 'Thêm danh mục thành công');
     }
-    public function edit() {}
-    public function destroy() {}
+
+    public function update(StoreCategoryRequest $request, $id)//Lưu danh mục được cập nhật
+    {
+        $this->categoryService->update($id,$request);
+        return redirect()->route('categories.index')->with('success', 'Cập nhật danh mục thành công');
+    }
+
+    public function destroy($id) //Xóa danh mục
+    {
+        $category = $this->categoryService->destroy($id);
+        return redirect()->back()->with('success', 'Xóa danh mục thành công');
+    }
 }
