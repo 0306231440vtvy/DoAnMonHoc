@@ -19,7 +19,7 @@ class CategoryController extends Controller
     }
     public function index(Request $request): View
     {
-        $categories = $this->categoryService->pagination($request);
+        $categories = $this->categoryService->index();
         return view('server.pages.categories.index', compact(
             'categories'
         ));
@@ -30,7 +30,7 @@ class CategoryController extends Controller
     }
     public function store(StoreCategoryRequest $request)
     {
-        $category = $this->categoryService->create($request);
+        $category = $this->categoryService->save($request);
         return redirect()->route('admin.layouts')->with('success', 'Thêm danh mục thành công');
     }
     public function edit() {}

@@ -10,26 +10,22 @@ abstract class BaseRepository
     public function __construct(
         Model $model
     ) {
-        // $this->setModel();
         $this->model = $model;
     }
-    // abstract public function getModel();
-
-    // public function setModel()
-    // {
-    //     // Dùng app()->make() để khởi tạo Model từ chuỗi tên class
-    //     $this->model = app()->make($this->getModel());
-    // }
     public function pagination(array $specs = [])
     {
         return $this->model
             ->orderBy($specs['sort'][0], $specs['sort'][1])
-            ->WithRelations($specs['with'])
+            ->withRelations($specs['with'])
+            ->keyword($specs['keyword'])
+            ->simple($specs['filter']['simple'])
+            ->complex($specs['filter']['complex'])
             ->when(
                 $specs['type'],
                 fn($q) => $q->get(),
                 fn($q) => $q->paginate($specs['perpage'])
-            );
+            )
+        ;
     }
     public function index()
     {

@@ -104,7 +104,9 @@ Route::prefix('/server')
             Route::get('index', [ProductController::class, 'index'])->name('.index');
             Route::get('create', [ProductController::class, 'create'])->name('.create');
             Route::post('store', [ProductController::class, 'store'])->name('.store');
-            Route::post('delete', [ProductController::class, 'delete'])->name('.delete');
+            Route::get('update/{id}', [ProductController::class, 'update'])->name('.update');
+            Route::put('edit', [ProductController::class, 'edit'])->name('.edit');
+            Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('.delete');
         });
 
         // =================BRAND================//

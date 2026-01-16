@@ -11,11 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bienthe_sanpham', function (Blueprint $table) {
-            $table->dropColumn('soluong');
-            $table->dropColumn('giaban');
-            $table->dropColumn('sku');
-        });
         Schema::table('settings', function (Blueprint $table) {
             $table->text('sales_info')->nullable();
             $table->text('sales_services')->nullable();

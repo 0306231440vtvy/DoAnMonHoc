@@ -26,7 +26,7 @@
                         <div class="text-center text-danger lead">Không tồn tại record</div>
                     @endif
                 </table>
-                {{ $products->links() }}
+                {{-- {{ $products->links() }} --}}
             </div>
         </div>
     </div>

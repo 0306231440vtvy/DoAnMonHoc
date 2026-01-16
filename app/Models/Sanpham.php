@@ -40,9 +40,9 @@ class Sanpham extends Model
             ->where('user_id', $userId)
             ->exists();
     }
-    public function categories(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'danhmuc_sanpham', 'sanpham_id', 'danhmuc_id')->withTimestamps();
     }
     public function bienthe(): BelongsToMany
     {
