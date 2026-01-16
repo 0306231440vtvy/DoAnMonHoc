@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-6">
                 <div class="ibox-content">
-                    <form class="m-t" method="POST" action="{{ route('auth.login') }}">
+                    <form class="m-t" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">
                             <label class="text-center">Email</label>

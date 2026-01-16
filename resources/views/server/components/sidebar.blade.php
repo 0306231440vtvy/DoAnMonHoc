@@ -23,17 +23,28 @@
                   </div>
               </li>
               @foreach (config('menu.module') as $key => $val)
-                  <li class="{{ is_array($val['name']) ? 'active' : '' }}">
-                      <a href="{{ route($val['route']) }}">
+                  <li class="{{ isset($val['class']) ? $val['class'] : '' }}"> {{-- SỬA DÒNG NÀY --}}
+                      <a href="{{ isset($val['route']) && Route::has($val['route']) ? route($val['route']) : '#' }}">
+                          {{-- KẾT THÚC SỬA --}}
+
                           <i class="{{ $val['icon'] }}"></i>
                           <span class="nav-label">{{ $val['title'] }}</span>
-                          <span class="fa arrow"></span>
+
+                          {{-- Chỉ hiện mũi tên nếu có menu con --}}
+                          @if (isset($val['children']) && count($val['children']) > 0)
+                              <span class="fa arrow"></span>
+                          @endif
                       </a>
-                      @if (isset($val['children']))
+
+                      @if (isset($val['children']) && count($val['children']) > 0)
                           <ul class="nav nav-second-level">
                               @foreach ($val['children'] as $children)
                                   <li>
-                                      <a href="{{ route($children['route']) }}">{{ $children['title'] }}</a>
+                                      {{-- KIỂM TRA: Nếu route tồn tại thì in link, nếu không thì in dấu # --}}
+                                      <a
+                                          href="{{ isset($children['route']) && Route::has($children['route']) ? route($children['route']) : '#' }}">
+                                          {{ $children['title'] }}
+                                      </a>
                                   </li>
                               @endforeach
                           </ul>

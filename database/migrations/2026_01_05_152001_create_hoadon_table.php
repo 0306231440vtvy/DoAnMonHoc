@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->date('ngaydat');
             $table->tinyInteger('trangthai')->default(1);
-            $table->string('sdtnhan')->unique();
-            $table->string('diachigiaohang');
+            $table->string('sdtnhan', 10);
+            $table->string('email');
+            $table->string('note')->nullable();
+            $table->foreignId('province_id')->constrained('provinces')->cascadeOnDelete();
+            $table->foreignId('ward_id')->constrained('wards')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });

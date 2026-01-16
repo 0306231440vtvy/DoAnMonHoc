@@ -10,7 +10,6 @@ class CategoryRepository extends BaseRepository
     public function __construct(
         Category $model
     ) {
-        // parent::__construct($model);
         $this->model = $model;
     }
 
@@ -36,7 +35,7 @@ class CategoryRepository extends BaseRepository
 
 
 
-    public function update($id, $payload){
+    public function update($id, $payload=[]){
         $model = $this->model->findOrFail($id);
         $model->update($payload);
         return $model;

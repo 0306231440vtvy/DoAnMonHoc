@@ -6,7 +6,7 @@ use App\Repositories\CategoryRepository;
 use App\Services\Interfaces\CategoryServiceInterface;
 use App\Services\BaseService;
 
-class CategoryService extends BaseService implements CategoryServiceInterface
+class CategoryService extends BaseService
 {
     protected $repository;
     public function __construct(

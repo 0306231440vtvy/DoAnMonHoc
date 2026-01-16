@@ -3,17 +3,22 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Services\ProductService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        // throw new \Exception('Not implemented');
+    protected $productService;
+    public function __construct(
+        ProductService $productService
+    ) {
+        $this->productService = $productService;
     }
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('client.pages.products.index');
+        $products = $this->productService->pagination($request);
+        return view('client.pages.products.index', compact('products'));
     }
     public function show(): View
     {

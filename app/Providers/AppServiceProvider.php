@@ -2,22 +2,17 @@
 
 namespace App\Providers;
 
-use App\Services\CategoryService;
-use App\Services\Interfaces\CategoryServiceInterface;
-use App\Services\Interfaces\UserServiceInterface;
-use App\Services\UserService;
+use App\View\Composer\FooterComposer;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        $this->app->bind(UserServiceInterface::class, UserService::class);
-        $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -25,5 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Paginator::useBootstrap(); // Sử dụng Bootstrap cho phân trang
+        View::composer('client.components.footer', FooterComposer::class);
     }
 }

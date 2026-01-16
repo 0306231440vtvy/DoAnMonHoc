@@ -4,24 +4,33 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRepository
+abstract class BaseRepository
 {
     protected $model;
     public function __construct(
         Model $model
     ) {
+        // $this->setModel();
         $this->model = $model;
     }
-    // public function pagination(array $specs = [])
+    // abstract public function getModel();
+
+    // public function setModel()
     // {
-    //     return $this->model
-    //         ->orderBy($specs['sort'][0], $specs['sort'][1])
-    //         ->when(
-    //             $specs['type'],
-    //             fn($q) => $q->get(),
-    //             fn($q) => $q->paginate($specs['perpage'])
-    //         );
+    //     // Dùng app()->make() để khởi tạo Model từ chuỗi tên class
+    //     $this->model = app()->make($this->getModel());
     // }
+    public function pagination(array $specs = [])
+    {
+        return $this->model
+            ->orderBy($specs['sort'][0], $specs['sort'][1])
+            ->WithRelations($specs['with'])
+            ->when(
+                $specs['type'],
+                fn($q) => $q->get(),
+                fn($q) => $q->paginate($specs['perpage'])
+            );
+    }
     public function index()
     {
         return $this->model->all();
@@ -29,6 +38,19 @@ class BaseRepository
     public function create(array $payload = []): Model | null
     {
         return $this->model->create($payload)->fresh();
+    }
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
+    public function update($id, $attributes = [])
+    {
+        $result = $this->find($id);
+        if ($result) {
+            $result->update($attributes);
+            return $result;
+        }
+        return false;
     }
     public function findById(int $id = 0, array $relation = [], array $column = ['*']): Model | null
     {
@@ -45,5 +67,9 @@ class BaseRepository
     public function delete(int $id = 0): bool
     {
         return $this->model->findById($id)->delete();
+    }
+    public function getTrangThai()
+    {
+        return $this->model->where('trangthai', 1)->get();
     }
 }

@@ -3,8 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Sanpham;
+use App\Models\Hoadon;
+use App\Models\CtHoadon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,11 +21,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RolePermissionSeeder::class,
             BienTheSeeder::class,
             CategorySeeder::class,
             ThuongHieuSeeder::class,
             ProductSeeder::class,
+            SlidersSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
+            HoadonSeeder::class,
+            CTHoadonSeeder::class,
+            SettingSeeder::class
         ]);
     }
 }
