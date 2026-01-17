@@ -89,12 +89,13 @@ Route::prefix('/server')
             Route::get('restore/{id}', [UserController::class, 'restore'])->name('.restore');
         });
         // =================CATEGORY================//
-        Route::prefix('/categories')->name('categories')->group(function () {
+        Route::prefix('categories')->name('categories')->group(function () {
             Route::get('index', [CategoryController::class, 'index'])->name('.index');
             Route::get('create', [CategoryController::class, 'create'])->name('.create');
+            Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
             Route::post('store', [CategoryController::class, 'store'])->name('.store');
-            Route::post('edit', [CategoryController::class, 'edit'])->name('.edit');
-            Route::post('destroy', [CategoryController::class, 'destroy'])->name('.destroy');
+            Route::put('{id}/update', [CategoryController::class, 'update'])->name('.update');
+            Route::delete('{id}/destroy', [CategoryController::class, 'destroy'])->name('.destroy');          
         });
         // =================ROLE================//
         Route::prefix('/roles')->name('roles')->group(function () {
@@ -114,15 +115,7 @@ Route::prefix('/server')
         Route::get('index', [UserController::class, 'index'])->name('users.index');
     });
     // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
-    // =================CATEGORY================//
-    Route::prefix('/categories')->name('categories')->group(function () {
-        Route::get('index', [CategoryController::class, 'index'])->name('.index');
-        Route::get('create', [CategoryController::class, 'create'])->name('.create');
-        Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
-        Route::post('store', [CategoryController::class, 'store'])->name('.store');
-        Route::put('{id}', [CategoryController::class, 'update'])->name('.update');
-        Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('.destroy');
-    });
+
     // =================ROLE================//
     Route::prefix('/roles')->name('roles')->group(function () {
         Route::get('index', [RoleController::class, 'index'])->name('.index');
