@@ -1,86 +1,46 @@
 @extends('server.layout')
-@section('title', 'Thêm Sản Phẩm')
+@section('title', 'Cập nhật Slide')
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">{{ 'Thêm Sản Phẩm' }}</h3>
+                        <h3 class="card-title">{{ 'Cập nhật Slide' }}</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('slides.store') }}" method="POST" enctype="multipart/form-data"
+                        <form action="{{ route('slides.update', $slides->id) }}" method="POST" enctype="multipart/form-data"
                             class="confirm-submit">
                             @csrf
-                            @if (isset($slide))
-                                @method('PUT')
-                            @endif
+                            @method('PUT')
                             <div class="form-group">
-                                <label for="tensp">Tên Sản Phẩm <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('tensp') is-invalid @enderror"
-                                    id="tensp" name="tensp" value="{{ old('tensp', $slides->tensp ?? '') }}"
-                                    placeholder="Nhập tên sản phẩm" required>
-                                @error('tensp')
+                                <label for="tieude">Tên Slide <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('tieude') is-invalid @enderror"
+                                    id="tieude" name="tieude" value="{{ old('tieude', $slides->tieude ?? '') }}"
+                                    placeholder="Nhập tên slide" required>
+                                @error('tieude')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="sku">SKU (Mã sản phẩm)</label>
-                                        <input type="text" class="form-control @error('sku') is-invalid @enderror"
-                                            id="sku" name="sku" value="{{ $slides->sku ?? old('sku', $sku) }}"
-                                            placeholder="VD: SP001">
-                                        @error('sku')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="soluong">Số Lượng <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('soluong') is-invalid @enderror"
-                                            id="soluong" name="soluong"
-                                            value="{{ old('soluong', $slides->soluong ?? '') }}" placeholder="Nhập số lượng"
-                                            required>
-                                        @error('soluong')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="linklienket">Link Liên Kết</label>
+                                <input type="url" class="form-control @error('linklienket') is-invalid @enderror"
+                                    id="linklienket" name="linklienket"
+                                    value="{{ old('linklienket', $slides->linklienket ?? '') }}"
+                                    placeholder="https://example.com">
+                                @error('linklienket')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                                <small class="text-muted">
+                                    <i class="fa fa-info-circle"></i> Nhập URL đầy đủ (bao gồm http:// hoặc https://)
+                                </small>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="giaban">Giá Bán (VNĐ) <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('giaban') is-invalid @enderror"
-                                            id="giaban" name="giaban" value="{{ old('giaban', $slides->giaban ?? '') }}"
-                                            placeholder="Nhập giá bán" required>
-                                        @error('giaban')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="discount">Giảm Giá (%)</label>
-                                        <input type="text" class="form-control @error('discount') is-invalid @enderror"
-                                            id="discount" name="discount"
-                                            value="{{ old('discount', $slides->discount ?? '') }}" min="0"
-                                            placeholder="Nhập giảm giá">
-                                        @error('discount')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- ảnh --}}
                             <div class="form-group mb-4">
-                                <label>Hình Nền Sản Phẩm</label>
+                                <label>Hình Nền Slide</label>
                                 <div class="image-upload-wrapper">
                                     <div class="image-target-cus" style="cursor: pointer;">
                                         @php
-                                            $hinhthunhoValue = old('hinhthunho', $slide->hinhthunho ?? '');
+                                            $hinhthunhoValue = old('hinhthunho', $slides->hinhthunho ?? '');
                                         @endphp
 
                                         @if ($hinhthunhoValue)
@@ -111,9 +71,44 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="stt">Số Thứ Tự</label>
+                                <input type="number" class="form-control @error('stt') is-invalid @enderror" id="stt"
+                                    name="stt" value="{{ old('stt', $slides->stt ?? 0) }}" placeholder="Nhập số thứ tự"
+                                    min="0">
+                                @error('stt')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                                <small class="text-muted">
+                                    <i class="fa fa-info-circle"></i> Số thứ tự hiển thị (0 = hiển thị đầu tiên)
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả slide</label>
+                                <textarea name="mota" rows="5">
+                                    {{ old('mota', $slide->mota ?? '') }}
+                                </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="trangthai">Trạng Thái <span class="text-danger">*</span></label>
+                                <select class="form-control @error('trangthai') is-invalid @enderror" id="trangthai"
+                                    name="trangthai" required>
+                                    <option value="1"
+                                        {{ old('trangthai', $slides->trangthai ?? '1') == '1' ? 'selected' : '' }}>
+                                        Hiển thị
+                                    </option>
+                                    <option value="0"
+                                        {{ old('trangthai', $slides->trangthai ?? '') == '0' ? 'selected' : '' }}>
+                                        Ẩn
+                                    </option>
+                                </select>
+                                @error('trangthai')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group mt-4">
                                 <button type="submit" class="btn btn-primary confirm-submit">
                                     <i class="fa fa-save"></i>
-                                    {{ 'Thêm Sản Phẩm' }}
+                                    {{ 'Cập nhật Slide' }}
                                 </button>
                                 <a href="{{ route('slides.index') }}" class="btn btn-secondary confirm-cancel">
                                     <i class="fa fa-times"></i> Hủy

@@ -1,26 +1,28 @@
-@foreach ($products as $item)
+@foreach ($slides as $item)
     <tr>
         <td>{{ $item->id }}</td>
-        <td>{{ $item->tensp }}</td>
-        <td>{{ $item->giaban }}</td>
-        <td>{{ $item->discount }} </td>
-        <td>{{ $item->soluong }} </td>
+        <td>{{ $item->tieude }}</td>
+        <td>{{ $item->hinhthunho }}</td>
+        <td>{{ $item->stt }} </td>
+        <td>{{ $item->linklienket }} </td>
+        <td>{{ $item->mota }} </td>
         @if ($item->trangthai === 1)
             <td class="badge bg-success">Còn hàng</td>
-        @elseif($item->trangthai === 2)
+        @elseif($item->trangthai === 0)
             <td class="badge bg-warning">Hết hàng</td>
         @endif
         <td>
             <div class="action-buttons-inline">
-                <a href="{{ route('products.edit', $item->id) }}" class="btn btn-action btn-edit">
-                    <i class="fa fa-edit"></i> Sửa
+                <a href="{{ route('slides.show', $item->id) }}" class="btn btn-action btn-info"> Xem chi tiết</a>
+                <a href="{{ route('slides.edit', $item->id) }}" class="btn btn-action btn-edit">
+                    Sửa
                 </a>
-                <form action="{{ route('products.delete', $item->id) }}" method="POST" class="d-inline"
+                <form action="{{ route('slides.delete', $item->id) }}" method="POST" class="d-inline"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-md">
-                        <i class="fa fa-trash"></i> Xóa
+                        Xóa
                     </button>
                 </form>
             </div>

@@ -12,15 +12,16 @@
         @endif
         <td>
             <div class="action-buttons-inline">
+                <a href="{{ route('products.show', $item->id) }}" class="btn btn-action btn-info"> Xem chi tiết</a>
                 <a href="{{ route('products.edit', $item->id) }}" class="btn btn-action btn-edit">
-                    <i class="fa fa-edit"></i> Sửa
+                    Sửa
                 </a>
                 <form action="{{ route('products.delete', $item->id) }}" method="POST" class="d-inline"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-md">
-                        <i class="fa fa-trash"></i> Xóa
+                        Xóa
                     </button>
                 </form>
             </div>

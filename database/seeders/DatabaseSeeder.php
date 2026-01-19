@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             HoadonSeeder::class,
             CTHoadonSeeder::class,
-            SettingSeeder::class
+            SettingSeeder::class,
+            CartSeeder::class
         ]);
     }
 }

@@ -142,6 +142,10 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
         Route::prefix('/slides')->name('slides')->group(function () {
             Route::get('index', [SlideController::class, 'index'])->name('.index');
             Route::get('create', [SlideController::class, 'create'])->name('.create');
-            Route::get('store', [SlideController::class, 'store'])->name('.store');
+            Route::post('store', [SlideController::class, 'store'])->name('.store');
+            Route::get('show/{id}', [SlideController::class, 'show'])->name('.show');
+            Route::get('edit/{id}', [SlideController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [SlideController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [SlideController::class, 'delete'])->name('.delete');
         });
     });

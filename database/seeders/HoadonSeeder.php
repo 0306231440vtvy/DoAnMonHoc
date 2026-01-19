@@ -61,7 +61,7 @@ class HoadonSeeder extends Seeder
         $usedPhones = [];
 
         // Tạo 50 hóa đơn
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 300; $i++) {
             $user = $memberUsers->random();
 
             // Tạo ngày đặt ngẫu nhiên trong 6 tháng gần đây

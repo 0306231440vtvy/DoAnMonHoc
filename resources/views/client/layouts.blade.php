@@ -12,13 +12,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{ asset('client/library/customzime.css') }}">
+    <link rel="stylesheet" href="{{ asset('client/library/chat.css') }}">
 </head>
 
 <body>
     @include('client.components.nav')
     @yield('content')
-    @include('client.components.chat')
     @include('client.components.footer')
+    @include('client.components.chat')
     @include('client.components.scripts')
 </body>
 

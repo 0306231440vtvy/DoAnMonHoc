@@ -41,7 +41,10 @@ class ProductController extends Controller
             'products',
         ));
     }
-    public function show() {}
+    public function show($id)
+    {
+        dd($id);
+    }
     public function create(): View
     {
         $categories = $this->categoryService->getPublish();

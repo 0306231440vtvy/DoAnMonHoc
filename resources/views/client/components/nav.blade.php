@@ -4,10 +4,17 @@
                   <a href="{{ route('layouts') }}" class=" text-2xl font-bold">
                       e<span class="font-extrabold">Thời trang</span>
                   </a>
-
-                  <ul class="flex gap-4 items-center">
+                  <form method="GET" action="">
+                      <div>
+                          <input type="text" value="{{ request('keyword') }}" placeholder="Nhập từ khóa tìm kiếm"
+                              name="keyword" />
+                          <button class="btn btn-primary"><i class="fa fa-search">Tìm kiếm</i></button>
+                      </div>
+                  </form>
+                  <ul class="flex gap-2 items-center">
                       <li>
-                          <a href="{{ route('layouts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
+                          <a href="{{ route('layouts') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
                               Trang chủ
                           </a>
                       </li>
@@ -17,18 +24,6 @@
                               Sản Phẩm
                           </a>
                       </li>
-                      {{-- <li>
-                          <a href="{{ route('profile') }}"
-                              class="font-medium uppercase hover:text-[#667eea] transition">
-                              Tài Khoản
-                          </a>
-                      </li>
-                      <li>
-                          <a href="{{ route('gioi-thieu') }}"
-                              class="font-medium uppercase hover:text-[#667eea] transition">
-                              Về chúng tôi
-                          </a>
-                      </li> --}}
                       <li>
                           <a href="{{ route('gioi-thieu') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
@@ -76,11 +71,23 @@
                               </button>
                           @endif
                       </li>
-                      <li>
-                          <a href="{{ route('carts') }}" class="text-xl hover:text-[#667eea] transition"
-                              title="Giỏ hàng">
+                      <li class="cart-wrapper">
+                          <a href="{{ route('carts') }}" class="cart-link" title="Giỏ hàng">
                               <i class="fa fa-shopping-cart"></i>
+                              @if (Auth::check())
+                                  <span class="cart-count">{{ $carts->count() }}</span>
+                              @endif
                           </a>
+                          @if (Auth::check())
+                              @php $total = 0 @endphp
+                              @foreach ($carts as $cart)
+                                  @php
+                                      $subTotal = $cart->giaban * $cart->soluong;
+                                      $total += $subTotal;
+                                  @endphp
+                              @endforeach
+                              <span class="cart-total">{{ number_format($total, 0, ',', '.') }} đ</span>
+                          @endif
                       </li>
                   </ul>
               </div>

@@ -1,25 +1,23 @@
-<?php 
+<?php
+
 namespace App\Models;
 
+use App\Trait\HasQuery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Giohang extends Model
 {
-    use HasFactory;
+    use HasFactory, HasQuery;
 
     protected $table = 'giohang';
-    
-    // Bảng này trong thiết kế của bạn có thể không có cột 'id' tự tăng (primary key)?
-    // Nếu không có id, cần khai báo: public $incrementing = false;
-    
     protected $fillable = [
         'user_id',
-        'sanpham_id',
     ];
-
-    public function sanpham()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Sanpham::class, 'sanpham_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }
