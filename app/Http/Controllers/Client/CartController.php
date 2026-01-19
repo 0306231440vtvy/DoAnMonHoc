@@ -60,7 +60,7 @@ class CartController extends Controller
     }
 
     //Xoas 1 sản phẩm
-     public function deleteItem(Request $request, CartService $cartService)
+    public function deleteItem(Request $request, CartService $cartService)
     {
         $data = $request->validate([
             'sanpham_id' => 'required|integer',

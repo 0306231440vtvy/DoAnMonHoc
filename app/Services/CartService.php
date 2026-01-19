@@ -69,7 +69,7 @@ class CartService extends BaseService
         ];
     }
 
-     public function deleteItem($userId, $sanphamId)
+    public function deleteItem($userId, $sanphamId)
     {
         $this->repository->deleteCartItem($userId, $sanphamId);
     }

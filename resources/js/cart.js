@@ -87,7 +87,7 @@ document.addEventListener('click', function (e) {
 
     if (!confirm('Xóa sản phẩm này khỏi giỏ?')) return;
 
-    fetch('/carts/delete', {
+    fetch('/cart/delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ document.addEventListener('click', function (e) {
 document.getElementById('btn-clear-cart')?.addEventListener('click', function () {
     if (!confirm('Xóa toàn bộ giỏ hàng?')) return;
 
-    fetch('/carts/clear', {
+    fetch('/cart/clear', {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN':
