@@ -41,4 +41,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //Thêm quan hệ với giỏ hàng
+    public function CartItems()
+    {
+        return $this->hasMany(Giohang::class);
+    }
 }

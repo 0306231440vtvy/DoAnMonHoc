@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="{{ asset('client/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     @vite('resources/css/app.css')
+    {{-- Thêm vite cho js --}}
+    @vite(['resources/js/app.js'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('client/library/customzime.css') }}">
 </head>
 
@@ -19,6 +22,7 @@
     @yield('content')
     @include('client.components.footer')
     @include('client.components.scripts')
+    
 </body>
 
 </html>

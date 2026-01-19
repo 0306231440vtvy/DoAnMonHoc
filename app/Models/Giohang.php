@@ -9,17 +9,22 @@ class Giohang extends Model
     use HasFactory;
 
     protected $table = 'giohang';
-    
-    // Bảng này trong thiết kế của bạn có thể không có cột 'id' tự tăng (primary key)?
+    public $incrementing = false;
+
     // Nếu không có id, cần khai báo: public $incrementing = false;
     
     protected $fillable = [
         'user_id',
         'sanpham_id',
+        'soluong',
     ];
 
     public function sanpham()
     {
         return $this->belongsTo(Sanpham::class, 'sanpham_id', 'id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

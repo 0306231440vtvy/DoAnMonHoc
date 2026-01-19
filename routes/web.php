@@ -49,8 +49,9 @@ Route::middleware('auth')->prefix('/')->group(function () {
     //Route cho trang giỏ hàng
     Route::prefix('/cart')->name('carts')->group(function () {
         Route::get('/', [CartController::class, 'index']);
-        Route::post('update/{slug}', [CartController::class, 'update'])->name('.update');
-        Route::post('delete/{slug}', [CartController::class, 'delete'])->name('.delete');
+        Route::post('update-quantity', [CartController::class, 'updateQuantity'])->name('.update');
+        Route::post('summary', [CartController::class, 'summary'])->name('.summary');
+        Route::post('delete', [CartController::class, 'deleteItem'])->name('.delete');
         Route::post('clear', [CartController::class, 'clear'])->name('.clear');
     });
     Route::prefix('/profile')->name('profile')->group(function () {
