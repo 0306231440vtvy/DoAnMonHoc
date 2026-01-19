@@ -15,6 +15,21 @@ class CategoryService extends BaseService
         $this->repository = $repository;
     }
 
+    public function createCategory($request){
+                try {
+            $this->beginTransaction();
+
+            $fillable = $this->repository->getFillable();
+            $payload = $request->only($fillable);
+
+            $model = $this->repository->createCategory( $payload);
+            $this->commit();
+            return $model;
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
+    }
     public function search($keyword){
         if(!$keyword)
         {
@@ -32,14 +47,14 @@ class CategoryService extends BaseService
         return $this->repository->destroy($id);
     }
 
-    public function update($id, $request){
+    public function updateCategory( $id, $request ){
         try {
             $this->beginTransaction();
 
             $fillable = $this->repository->getFillable();
             $payload = $request->only($fillable);
 
-            $model = $this->repository->update($id, $payload);
+            $model = $this->repository->updateCategory($id, $payload);
             $this->commit();
             return $model;
         } catch (\Throwable $th) {

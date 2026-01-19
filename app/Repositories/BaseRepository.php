@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class BaseRepository
 {
@@ -10,26 +11,22 @@ abstract class BaseRepository
     public function __construct(
         Model $model
     ) {
-        // $this->setModel();
         $this->model = $model;
     }
-    // abstract public function getModel();
-
-    // public function setModel()
-    // {
-    //     // Dùng app()->make() để khởi tạo Model từ chuỗi tên class
-    //     $this->model = app()->make($this->getModel());
-    // }
     public function pagination(array $specs = [])
     {
         return $this->model
             ->orderBy($specs['sort'][0], $specs['sort'][1])
-            ->WithRelations($specs['with'])
+            ->withRelations($specs['with'])
+            ->keyword($specs['keyword'])
+            ->simple($specs['filter']['simple'])
+            ->complex($specs['filter']['complex'])
             ->when(
                 $specs['type'],
                 fn($q) => $q->get(),
                 fn($q) => $q->paginate($specs['perpage'])
-            );
+            )
+        ;
     }
     public function index()
     {
@@ -43,14 +40,19 @@ abstract class BaseRepository
     {
         return $this->model->find($id);
     }
-    public function update($id, $attributes = [])
+    public function update(int $id, array $payload = []): Model
     {
-        $result = $this->find($id);
-        if ($result) {
-            $result->update($attributes);
-            return $result;
+        $result = $this->findById($id);
+        if (!$result) {
+            throw new ModelNotFoundException('Record này không tồn tại');
         }
-        return false;
+        $result->update($payload);
+        return $result;
+    }
+    public function delete(int $id = 0): bool
+    {
+        $model = $this->findById($id);
+        return $model->delete();
     }
     public function findById(int $id = 0, array $relation = [], array $column = ['*']): Model | null
     {
@@ -63,10 +65,6 @@ abstract class BaseRepository
     public function getFillable(): array
     {
         return $this->model->getFillable();
-    }
-    public function delete(int $id = 0): bool
-    {
-        return $this->model->findById($id)->delete();
     }
     public function getTrangThai()
     {

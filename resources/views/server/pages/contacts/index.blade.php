@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+    {{-- <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Quản lý Liên hệ</h6>
     </div>
     <div class="card-body">
@@ -24,6 +24,134 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
+    @if(!$contacts)
+        <div class="text-center" style="margin: 40px 0;">
+            <h1 class="text-muted">
+                <i class="glyphicon glyphicon-folder-open"></i>
+                <span >Không có liên hệ nào mới</span>
+            </h1>
+        </div>
+    @else
+        <div class="btn-group" style="display: flex; gap: 8px; width: 100%;"></div>
+            <div class="btn-group">
+                <button type="button"
+                        class="btn btn-info dropdown-toggle"
+                        data-toggle="dropdown"
+                        style="
+                            width: 100%;
+                            height: 45px;
+                            border-radius: 10px;
+                            font-size: 15px;
+                            margin: 5px 1px;
+                        ">
+                    <i class="glyphicon glyphicon-filter"></i>
+                    Lọc trạng thái
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{{ request()->fullUrlWithQuery(['status' => '1','page'=> 1]) }}">
+                            <h4><i class="glyphicon glyphicon-th-list"></i>
+                            Chưa đọc</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ request()->fullUrlWithQuery(['status' => '2','page'=> 1]) }}">
+                            <h4><i class="glyphicon glyphicon-ok text-success"></i>
+                            Đã đọc</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ request()->fullUrlWithQuery(['status' => '0','page'=> 1]) }}">
+                            <h4><i class="glyphicon glyphicon-time text-warning"></i>
+                            Đã xóa</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-group" style="flex: 1">
+                <button type="button"
+                        class="btn btn-warning dropdown-toggle"
+                        data-toggle="dropdown"
+                        style="
+                            width: 100%;
+                            height: 45px;
+                            border-radius: 10px;
+                            font-size: 15px;
+                        ">
+                    <i class="glyphicon glyphicon-sort"></i>
+                    Sắp xếp
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'desc']) }}">
+                            <h4><i class="glyphicon glyphicon-sort-by-attributes-alt"></i>
+                            Mới nhất</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'asc']) }}">
+                            <h4><i class="glyphicon glyphicon-sort-by-attributes"></i>
+                            Cũ nhất</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="max-height: 420px;overflow-y: auto;padding-right: 5px;">
+            @foreach ($contacts as $contact)
+                <div class="panel panel-default" style="position: relative; border-radius: 10px;">
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="col-sm-9">
+                                <strong style="font-size: 20px;"><b>{{ $contact->name }}</b></strong>
+                                <div style="color: #777;">Email: {{ $contact->email }} - <span><u>{{ $contact->created_at->format('d-m-Y') }}</u></span></div>
+                                
+
+                                <p style="margin-top: 8px; font-size: 16px;">
+                                    {{ $contact->noidung }}
+                                </p>
+                                
+                                @if($contact->trangthai == 1)
+                                    <span class="label label-warning">Chưa đọc</span>
+                                @elseif ($contact->trangthai == 2)
+                                    <span class="label label-success">Đã đọc</span>
+                                @else
+                                    <span class="label label-danger">Đã xóa</span>
+                                @endif
+
+                            </div>
+                            <div class="col-sm-3 text-right">
+                                <form action="{{ route('contacts.update',['id'=> $contact->id]) }}" method="POST"
+                                    onsubmit="return confirm('Đánh dấu đã đọc liên hệ của {{ $contact->name }}')">
+                                    @csrf
+                                    @method('PUT')
+                                        <button class="btn btn-success" style="width: 60%;" type="submit">
+                                            <i class="glyphicon glyphicon-ok"></i> Đánh dấu dã đọc
+                                        </button>
+                                </form>
+                                <br><br>
+                                <form action="{{ route('contacts.destroy',['id'=> $contact->id]) }}" method="POST"
+                                    onsubmit="return confirm('Đánh dấu đã đọc liên hệ của {{ $contact->name }}')">
+                                    @csrf
+                                    @method('DELETE')
+                                        <button class="btn btn-danger" style="width: 60%;" type="submit">
+                                            <i class="glyphicon glyphicon-trash"></i> Xóa
+                                        </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <strong>{{ $contacts->links() }}</strong>
+    @endif
+
 </div>
 @endsection

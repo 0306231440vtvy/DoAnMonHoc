@@ -33,9 +33,11 @@ class CategoryRepository extends BaseRepository
         ]);
     }
 
+    public function createCategory($payload){
+        return $this->model->create($payload)->fresh();
+    }
 
-
-    public function update($id, $payload=[]){
+    public function updateCategory($id, $payload=[]){
         $model = $this->model->findOrFail($id);
         $model->update($payload);
         return $model;
