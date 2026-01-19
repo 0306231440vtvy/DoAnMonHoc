@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sanpham', function (Blueprint $table) {
             $table->id();
             $table->string('tensp');
-            $table->string('hinhanh')->nullable();
+            $table->string('hinhnen')->nullable();
             $table->integer('soluong');
             $table->string('sku', 50)->unique();
             $table->decimal('giaban', 15, 2);
@@ -36,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sanpham');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('roles');
     }
 };

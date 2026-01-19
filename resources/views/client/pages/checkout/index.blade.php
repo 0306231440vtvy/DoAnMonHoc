@@ -4,7 +4,6 @@
         <h1 class="text-4xl font-bold mb-8 text-gray-800">Thanh Toán</h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Checkout Form -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Shipping Information -->
                 <div class="bg-white rounded-lg shadow p-6">
@@ -41,9 +40,10 @@
                                 <label class="block text-gray-700 mb-2 font-medium">Tỉnh/Thành phố *</label>
                                 <select
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600">
-                                    <option>Hồ Chí Minh</option>
-                                    <option>Hà Nội</option>
-                                    <option>Đà Nẵng</option>
+                                    @foreach ($provinces as $province)
+                                        <option value="{{ $province->id }}"{{ old('province_id') }}>{{ $province->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>
@@ -71,8 +71,6 @@
                         </div>
                     </form>
                 </div>
-
-                <!-- Payment Method -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-xl font-bold mb-4 text-gray-800">Phương Thức Thanh Toán</h3>
                     <div class="space-y-3">
@@ -111,8 +109,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Order Summary -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-lg shadow p-6 sticky top-4">
                     <h3 class="text-xl font-bold mb-4 text-gray-800">Đơn Hàng Của Bạn</h3>
@@ -156,12 +152,10 @@
                         Đặt Hàng
                     </button>
 
-                    <a href="cart.html"
+                    <a href="{{ route('carts') }}"
                         class="block w-full border-2 border-gray-300 text-center py-3 rounded-lg hover:bg-gray-50 font-semibold transition text-gray-800">
                         Quay Lại Giỏ Hàng
                     </a>
-
-                    <!-- Security Badges -->
                     <div class="mt-6 pt-6 border-t space-y-3">
                         <div class="flex items-center gap-3 text-sm text-gray-600">
                             <i class="fas fa-shield-alt text-indigo-600 text-xl"></i>

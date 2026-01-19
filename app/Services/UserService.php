@@ -8,27 +8,27 @@ use Illuminate\Support\Facades\DB;
 
 class UserService extends BaseService
 {
-    protected $userRepository;
+    protected $repository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $repository)
     {
-        $this->userRepository = $userRepository;
+        $this->repository = $repository;
     }
 
     public function paginate($request)
     {
         $filters = $request->all();
-        return $this->userRepository->getUsers($filters);
+        return $this->repository->getUsers($filters);
     }
 
     public function create($request)
     {
         DB::beginTransaction();
         try {
-            $payload = $request->except(['_token', 're_password', 'send']);
+            $payload = $request->except(['_token', 'send']);
             $payload['password'] = Hash::make($payload['password']); // Mã hóa pass
 
-            $user = $this->userRepository->create($payload);
+            $user = $this->repository->create($payload);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -36,42 +36,41 @@ class UserService extends BaseService
             return false;
         }
     }
+    // public function update($id, $request)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $payload = $request->except(['_token', 'send']);
 
-    public function update($id, $request)
-    {
-        DB::beginTransaction();
-        try {
-            $payload = $request->except(['_token', 're_password', 'send']);
+    //         // Nếu không nhập pass mới thì bỏ qua, giữ pass cũ
+    //         if (empty($payload['password'])) {
+    //             unset($payload['password']);
+    //         } else {
+    //             $payload['password'] = Hash::make($payload['password']);
+    //         }
 
-            // Nếu không nhập pass mới thì bỏ qua, giữ pass cũ
-            if (empty($payload['password'])) {
-                unset($payload['password']);
-            } else {
-                $payload['password'] = Hash::make($payload['password']);
-            }
-
-            $this->userRepository->update($id, $payload);
-            DB::commit();
-            return true;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return false;
-        }
-    }
+    //         $this->repository->update($id, $payload);
+    //         DB::commit();
+    //         return true;
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return false;
+    //     }
+    // }
 
     public function delete($id)
     {
         DB::beginTransaction();
         try {
             // THAY ĐỔI Ở ĐÂY:
-            // Thay vì xóa cứng: $this->userRepository->delete($id);
+            // Thay vì xóa cứng: $this->repository->delete($id);
             // Chúng ta cập nhật trạng thái publish về 0 (0 nghĩa là đã xóa/khóa)
 
             $payload = [
                 'publish' => 0,
             ];
 
-            $this->userRepository->update($id, $payload);
+            $this->repository->update($id, $payload);
 
             DB::commit();
             return true;
@@ -87,7 +86,7 @@ class UserService extends BaseService
         DB::beginTransaction();
         try {
             // Cập nhật publish = 1 (Hoạt động lại)
-            $this->userRepository->update($id, ['publish' => 1]);
+            $this->repository->update($id, ['publish' => 1]);
 
             DB::commit();
             return true;

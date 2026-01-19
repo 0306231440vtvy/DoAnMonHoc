@@ -60,12 +60,12 @@ abstract class BaseService
     {
         return $this->repository->index();
     }
-    public function save(Request $request, ?int $id = null)
+    public function save(Request $request)
     {
         try {
             $this->beginTransaction();
             // xử lý raw data
-            $processedData = $this->beforeCreate($request, $id);
+            $processedData = $this->beforeCreate($request);
             // lọc filter
             $fillable = $this->repository->getFillable();
             $payload = collect($processedData)->only($fillable)->toArray();
@@ -79,7 +79,7 @@ abstract class BaseService
         }
     }
     //  hàm để xử lý dữ liệu trước khi tạo dữ liệu
-    protected function beforeCreate(Request $request, ?int $id)
+    protected function beforeCreate(Request $request)
     {
         // mặc định trả về tất cả dữ liệu
         return $request->all();
@@ -98,10 +98,54 @@ abstract class BaseService
     // xóa vĩnh viễn
     public function delete($id)
     {
-        return $this->repository->delete($id);
+        try {
+            $this->beginTransaction();
+            $model = $this->repository->delete($id);
+            $this->commit();
+            return $model;
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
     }
     public function findById(int $id)
     {
         return $this->repository->findById($id);
+    }
+    public function convertToJsonArray($data)
+    {
+        if (is_array($data)) {
+            return array_values(array_filter($data));
+        }
+        if (is_string($data)) {
+            //chuyển json string sang array
+            $decoded = json_decode($data, true);
+            return is_array($decoded) ? array_values(array_filter($decoded)) : [];
+        }
+    }
+    protected function beforeUpdate(Request $request, ?int $id)
+    {
+        // mặc định trả về tất cả dữ liệu
+        return $request->all();
+    }
+    // hàm trả về sau khi tạo dữ liệu
+    protected function afterUpdate($model, Request $request): void {}
+    public function update(Request $request, ?int $id = null)
+    {
+        try {
+            $this->beginTransaction();
+            // xử lý raw data
+            $processedData = $this->beforeUpdate($request, $id);
+            // lọc filter
+            $fillable = $this->repository->getFillable();
+            $payload = collect($processedData)->only($fillable)->toArray();
+            $model = $this->repository->update($id, $payload);
+            $this->afterUpdate($model, $request);
+            $this->commit();
+            return $model;
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
     }
 }

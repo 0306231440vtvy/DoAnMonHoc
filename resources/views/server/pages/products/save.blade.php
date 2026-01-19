@@ -1,17 +1,16 @@
 @extends('server.layout')
-@section('title', isset($product) ? 'Cập nhật sản phẩm' : 'Thêm Sản Phẩm')
+@section('title', 'Thêm Sản Phẩm')
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">{{ isset($product) ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm' }}</h3>
+                        <h3 class="card-title">{{ 'Thêm Sản Phẩm' }}</h3>
                     </div>
                     <div class="card-body">
-                        <form
-                            action="{{ isset($product) ? route('products.edit', $products->id) : route('products.store') }}"
-                            method="POST" enctype="multipart/form-data" class="confirm-submit">
+                        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data"
+                            class="confirm-submit">
                             @csrf
                             @if (isset($product))
                                 @method('PUT')
@@ -76,6 +75,9 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            {{-- danh mục thương hiệu biến thể --}}
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -85,7 +87,7 @@
                                             <option value="">-- Chọn danh mục --</option>
                                             @foreach ($categories as $item)
                                                 <option value="{{ $item->id }}"
-                                                    {{ old('category_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ old('category_id', $products->category_id ?? '') == $item->id ? 'selected' : '' }}>
                                                     {{ $item->name }}
                                                 </option>
                                             @endforeach
@@ -103,7 +105,7 @@
                                             <option value="">-- Chọn thương hiệu --</option>
                                             @foreach ($thuonghieu as $item)
                                                 <option value="{{ $item->id }}"
-                                                    {{ old('thuonghieu_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ old('thuonghieu_id', $products->thuonghieu_id ?? '') == $item->id ? 'selected' : '' }}>
                                                     {{ $item->tenth }}
                                                 </option>
                                             @endforeach
@@ -121,7 +123,7 @@
                                             <option value="">-- Không có biến thể --</option>
                                             @foreach ($bienthe as $item)
                                                 <option value="{{ $item->id }}"
-                                                    {{ old('bienthe_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ old('bienthe_id', $products->bienthe_id ?? '') == $item->id ? 'selected' : '' }}>
                                                     {{ $item->name }}
                                                 </option>
                                             @endforeach
@@ -132,7 +134,87 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- ảnh --}}
+                            <div class="form-group mb-4">
+                                <label>Hình Nền Sản Phẩm</label>
+                                <div class="image-upload-wrapper">
+                                    <div class="image-target-cus" style="cursor: pointer;">
+                                        @php
+                                            $hinhnenValue = old('hinhnen', $product->hinhnen ?? '');
+                                        @endphp
 
+                                        @if ($hinhnenValue)
+                                            <img src="{{ $hinhnenValue }}" alt="Hình nền"
+                                                class="image-preview img-thumbnail"
+                                                style="max-width: 300px; max-height: 300px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('backend/img/not-found.png') }}" alt="Hình nền"
+                                                class="image-preview img-thumbnail"
+                                                style="max-width: 300px; max-height: 300px; object-fit: cover;">
+                                        @endif
+                                    </div>
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
+                                        name="hinhnen" id="hinhnen" />
+
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền
+                                    </small>
+
+                                    @if ($hinhnenValue)
+                                        <button type="button" class="btn btn-sm btn-danger mt-2 delete-image">
+                                            <i class="fa fa-trash"></i> Xóa hình nền
+                                        </button>
+                                    @endif
+                                </div>
+                                @error('hinhnen')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- album --}}
+                            <div class="form-group">
+                                <label>Album ảnh sản phẩm</label>
+                                <div class="album-upload-wrapper">
+                                    <button type="button" class="upload-picture mb-3 btn btn-primary" data-name="album">
+                                        <i class="fa fa-upload"></i> Thêm Album Ảnh
+                                    </button>
+                                    <ul id="sortable" class="row upload-list">
+                                        @if (isset($product) && $product->album)
+                                            @php
+                                                $albumArray = is_string($product->album)
+                                                    ? json_decode($product->album, true)
+                                                    : $product->album;
+                                            @endphp
+                                            @if (is_array($albumArray))
+                                                @foreach ($albumArray as $image)
+                                                    <li
+                                                        class="ui-state-default img_li_DAMH col-xl-2 col-md-3 col-sm-6 mb-3">
+                                                        <div class="thumb img_albums_DAMH">
+                                                            <span class="span image img-scaledown">
+                                                                <a href="{{ $image }}" data-fancybox="gallery"
+                                                                    data-caption="">
+                                                                    <img src="{{ $image }}" alt="Album preview"
+                                                                        width="100%" class="img-thumbnail">
+                                                                </a>
+                                                                <input type="hidden" name="album[]"
+                                                                    value="{{ $image }}">
+                                                            </span>
+                                                            <div class="btn_delete_albums_DAMH">
+                                                                <button type="button"
+                                                                    class="delete-image btn btn-sm btn-light-danger"
+                                                                    title="Delete Image">
+                                                                    <i class="ti ti-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+                            {{-- mô tả --}}
                             <div class="form-group">
                                 <label for="mota">Mô Tả Sản Phẩm</label>
                                 <textarea class="form-control ck-editor" id="mota" name="mota" data-height="400">
@@ -143,61 +225,9 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Hình Ảnh Phụ (Album)</label>
-
-                                {{-- Nút upload ảnh phụ --}}
-                                <div class="mb-3">
-                                    <button type="button" class="btn btn-primary upload-picture" data-name="album">
-                                        <i class="fa fa-images"></i> Chọn nhiều ảnh
-                                    </button>
-                                    <small class="text-muted ml-2">
-                                        <i class="fa fa-info-circle"></i> Nhấn Ctrl để chọn nhiều ảnh cùng lúc
-                                    </small>
-                                </div>
-
-                                {{-- Grid hiển thị ảnh phụ --}}
-                                <div class="row" id="sortable">
-                                    {{-- @if (isset($product) && $product->album)
-                                        @php
-                                            $albumImages = is_string($product->album)
-                                                ? json_decode($product->album, true)
-                                                : $product->album;
-                                        @endphp
-
-                                        @if (is_array($albumImages))
-                                            @foreach ($albumImages as $image) --}}
-                                    {{-- <li class="ui-state-default img_li_DAMH col-xl-2 col-md-3 col-sm-6 mb-3">
-                                        <div class="thumb img_albums_DAMH">
-                                            <span class="span image img-scaledown">
-                                                <a href="{{ asset($image) }}" data-fancybox="gallery" data-caption="">
-                                                    <img src="{{ asset($image) }}" alt="Image preview" width="100%"
-                                                        class="img-thumbnail">
-                                                </a>
-                                                <input type="hidden" name="album[]" value="{{ $image }}">
-                                            </span>
-                                            <div class="btn_delete_albums_DAMH">
-                                                <button type="button" class="delete-image btn btn-sm btn-danger"
-                                                    title="Xóa ảnh">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </li> --}}
-                                    {{-- @endforeach
-                                        @endif
-                                    @endif --}}
-                                </div>
-
-                                {{-- Thông báo khi chưa có ảnh --}}
-                                <div id="no-images-message" class="text-center text-muted py-4"
-                                    style="{{ isset($albumImages) && count($albumImages) > 0 ? 'display: none;' : '' }}">
-                                    <i class="fa fa-images fa-3x mb-3"></i>
-                                    <p>Chưa có ảnh phụ nào. Click nút "Chọn nhiều ảnh" để thêm.</p>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary confirm-submit">
-                                    <i class="fa fa-save"></i> Thêm Sản Phẩm
+                                    <i class="fa fa-save"></i>
+                                    {{ 'Thêm Sản Phẩm' }}
                                 </button>
                                 <a href="{{ route('products.index') }}" class="btn btn-secondary confirm-cancel">
                                     <i class="fa fa-times"></i> Hủy

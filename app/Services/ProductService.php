@@ -14,21 +14,32 @@ class ProductService extends BaseService
     ) {
         $this->repository = $repository;
     }
-    protected function beforeCreate(Request $request, ?int $id = null): array
+    protected function beforeCreate(Request $request): array
     {
         $data = $request->except(['_token', 'send']);
-        $data['giaban'] = $this->sanitizePrice($data['giaban'] ?? 0);
-        $data['discount'] = $this->sanitizePrice($data['discount'] ?? 0);
-        // if ($request->hasFile('hinhanh')) {
-        //     // $data['image'] = $this->uploadImage($request->file('image'));
-        // }
+        $data['album'] = $this->convertToJsonArray($request->input('album', []));
         return $data;
     }
-    private function sanitizePrice($price)
-    {
-        return (float) str_replace([',', '.', ' ', 'VNĐ'], '', $price);
-    }
     protected function afterCreate($model, Request $request): void
+    {
+        if (!empty($request->bienthe_id)) {
+            $model->bienthe()->attach($request->bienthe_id);
+        }
+        if (!empty($request->category_id)) {
+            $model->categories()->attach($request->category_id);
+        }
+    }
+    protected function beforeUpdate(Request $request, ?int $id): array
+    {
+        $data = $request->except(['_token', 'send']);
+        $oldProduct = $this->repository->find($id);
+        $oldAlbum = $oldProduct ? ($oldProduct->album ?? []) : [];
+        $newAlbum = $this->convertToJsonArray($request->input('album', []));
+        $data['album'] = $newAlbum;
+        $data['album'] = $this->convertToJsonArray($request->input('album', []));
+        return $data;
+    }
+    protected function afterUpdate($model, Request $request): void
     {
         if (!empty($request->bienthe_id)) {
             $model->bienthe()->attach($request->bienthe_id);

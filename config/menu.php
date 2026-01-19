@@ -15,7 +15,7 @@ return [
             'route' => 'users.index',
             'children' => [
                 ['title' => 'Danh sách người dùng', 'route' => 'users.index'],
-                // ['title' => 'Thêm mới', 'route' => 'users.create'],
+                // ['title' => 'Thêm mới người dùng', 'route' => 'users.create'],
             ]
         ],
         [
@@ -94,8 +94,8 @@ return [
             'icon' => 'fa fa-images',
             'route' => 'slides.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách slide', 'route' => 'slides.index'],
+                ['title' => 'Thêm mới slide', 'route' => 'slides.create'],
             ]
         ],
     ]

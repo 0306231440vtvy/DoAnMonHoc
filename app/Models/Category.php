@@ -33,6 +33,10 @@ class Category extends Model
     }
     public function sanpham(): BelongsToMany
     {
-        return $this->belongsToMany(Sanpham::class, 'danhmuc_sanpham', 'danhmuc_id', 'sanpham_id')->withTimestamps();
+        return $this->belongsToMany(Sanpham::class, 'categories_sanpham', 'category_id', 'sanpham_id')->withTimestamps();
+    }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }

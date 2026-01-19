@@ -16,9 +16,11 @@ class Sanpham extends Model
 
     protected $fillable = [
         'tensp',
-        'hinhanh',
+        'album',
+        'hinhnen',
         'soluong',
         'giaban',
+        'discount',
         'sku',
         'slug',
         'mota',
@@ -42,7 +44,7 @@ class Sanpham extends Model
     }
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'danhmuc_sanpham', 'sanpham_id', 'danhmuc_id')->withTimestamps();
+        return $this->belongsToMany(Category::class, 'categories_sanpham', 'sanpham_id', 'category_id')->withTimestamps();
     }
     public function bienthe(): BelongsToMany
     {
@@ -57,4 +59,11 @@ class Sanpham extends Model
     // {
     //     return number_format($this->giaban, 0, ',', '.') . ' d';
     // }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+    protected $casts = [
+        'album' => 'array'
+    ];
 }

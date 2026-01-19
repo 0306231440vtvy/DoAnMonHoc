@@ -3,9 +3,12 @@
     var DAMH = {};
     // Xác nhận khi submit form
     DAMH.comfirmSubmit = () => {
-        $(document).on('submit', 'form.comfirm-submit', function (e) {
-            e.preventDefault();
+        $(document).on('submit', 'form.confirm-submit', function (e) {
             let form = $(this);
+            if (form.data('confirmed') === true) {
+                return true;
+            }
+            e.preventDefault();
             let action = form.attr('action');
             let method = form.attr('method');
             let formData = new FormData(form[0]);
@@ -21,17 +24,10 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Hiển thị loading
-                    Swal.fire({
-                        title: 'Đang xử lý...',
-                        text: 'Vui lòng đợi',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    // Submit form
-                    form.unbind('submit').submit();
+                    if (result.isConfirmed) {
+                        form.data('confirmed', true);  // ✅ Set flag
+                        form[0].submit();  // ✅ Submit bằng native DOM
+                    }
                 };
             });
         });
@@ -40,7 +36,8 @@
     DAMH.comfirmDelete = () => {
         $(document).on('click', '.btn-delete, .confirm-delete', function (e) {
             e.preventDefault();
-            let url = $(this).attr('href') || $(this).data('url');
+            let form = $(this).closest('form');
+            let url = $(this).attr('href');
             let itemName = $(this).data('name') || 'mục này';
 
             Swal.fire({
@@ -57,17 +54,7 @@
                 allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Đã xóa!',
-                        text: result.value.message || 'Xóa thành công',
-                        confirmButtonText: '<i class="fa fa-check"></i> Xác nhận',
-                        showConfirmButton: true,
-                        timerProgressBar: true,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.reload();
-                    });
+                    form.submit();
                 }
             });
         });

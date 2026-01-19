@@ -49,7 +49,7 @@
 
                 <div class="row g-2 g-md-3 mt-3">
                     <div class="col-12 col-sm-6">
-                        <a href="shop.html" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                        <a href="{{ route('products') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
                             style="transition: all 0.3s ease;">
                             <i class="fa fa-arrow-left me-2"></i>Tiếp Tục Mua Sắm
                         </a>
@@ -84,17 +84,15 @@
                         </div>
                     </div>
 
-                    <a href="checkout.html" class="btn w-100 text-white py-3 fw-semibold mb-2"
+                    <a href="{{ route('checkouts') }}" class="btn w-100 text-white py-3 fw-semibold mb-2"
                         style="background-color: #10b981; transition: background-color 0.3s ease;">
                         Tiến Hành Thanh Toán
                     </a>
 
-                    <a href="shop.html" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                    <a href="{{ route('products') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
                         style="transition: all 0.3s ease;">
                         Tiếp Tục Mua Sắm
                     </a>
-
-                    <!-- Trust Badges -->
                     <div class="mt-4 pt-4 border-top">
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <i class="fa fa-shield-alt" style="color: #10b981; font-size: 1.25rem;"></i>

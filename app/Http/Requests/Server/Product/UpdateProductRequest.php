@@ -24,15 +24,15 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'tensp' => 'required|string|min:4|max:255',
-            'slug' => 'required|string|unique:sanpham,slug',
-            'sku' => 'nullable|string|unique:sanpham,sku|max:50',
+            // 'slug' => 'required|string|unique:sanpham,slug,' . $this->id . '',
+            'sku' => 'required|regex:/^\S*$/|unique:sanpham,sku,' . $this->id . '',
             'soluong' => 'required|integer|min:1',
             'giaban' => 'required|numeric|min:1000',
             'discount' => 'nullable|numeric|min:0|max:100',
             'category_id' => 'required|exists:categories,id',
             'thuonghieu_id' => 'required|exists:thuonghieu,id',
             'bienthe_id.*' => 'exists:bienthe,id',
-            'mota' => 'nullable|string',
+            // 'mota' => 'nullable|string',
             'trangthai' => 'nullable|integer|gte:1|lte:2',
         ];
     }

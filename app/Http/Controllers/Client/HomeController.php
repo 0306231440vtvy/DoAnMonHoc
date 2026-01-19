@@ -41,6 +41,7 @@ class HomeController extends Controller
         $hotProducts = Sanpham::inRandomOrder()
             ->take(4)
             ->get();
+        // $slide = 
         return view('client.pages.home', compact(
             'newProducts',
             'categories',
