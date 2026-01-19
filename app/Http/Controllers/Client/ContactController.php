@@ -26,7 +26,7 @@ class ContactController extends Controller
 
     public function send(StoreContactRequest $request)
     {
-        $this->ContactService->create($request);
+        $this->ContactService->save($request);
         return redirect()->route('contact')->with('success','Gửi tin nhắn thành công');
     }
 }
