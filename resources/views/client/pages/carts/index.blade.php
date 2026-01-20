@@ -83,8 +83,8 @@
                             <span class="fw-bold" style="color: #10b981; font-size: 1.5rem;">2,230,000đ</span>
                         </div>
                     </div>
-
-                    <a href="checkout.html" class="btn w-100 text-white py-3 fw-semibold mb-2"
+                    
+                    <a href={{ route('checkout') }} class="btn w-100 text-white py-3 fw-semibold mb-2"
                         style="background-color: #10b981; transition: background-color 0.3s ease;">
                         Tiến Hành Thanh Toán
                     </a>

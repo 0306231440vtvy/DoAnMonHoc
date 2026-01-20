@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Category;
 use App\Repositories\CategoryRepository;
+use App\Services\Interfaces\CategoryServiceInterface;
 use App\Services\BaseService;
 
 class CategoryService extends BaseService
@@ -14,9 +14,37 @@ class CategoryService extends BaseService
     ) {
         $this->repository = $repository;
     }
-    public function getPublish()
-    {
-        $category = Category::where('publish', 1)->get();
-        return $category;
+
+    public function search($keyword){
+        if(!$keyword)
+        {
+            return $this->repository->paginate();
+        }
+        return $this->repository->search($keyword);
+            
+    }
+
+    public function findByID($id){
+        return $this->repository->findById($id);
+    }
+
+    public function destroy($id){
+        return $this->repository->destroy($id);
+    }
+
+    public function update($id, $request){
+        try {
+            $this->beginTransaction();
+
+            $fillable = $this->repository->getFillable();
+            $payload = $request->only($fillable);
+
+            $model = $this->repository->update($id, $payload);
+            $this->commit();
+            return $model;
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
     }
 }

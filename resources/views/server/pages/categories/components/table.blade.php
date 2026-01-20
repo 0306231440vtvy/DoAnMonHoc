@@ -17,7 +17,7 @@
             </td>
             <td class="">
                 @if ($item->publish == 1 || $item->trangthai == 1)
-                    <span class="">
+                    <span class="label label-success">
                         <i class=""></i> Hiển thị
                     </span>
                 @else
@@ -27,20 +27,22 @@
                 @endif
             </td>
             <td class="">
-                <a href="{{ route('categories.edit', $item->id) }}" class="btn btn-outline-edit btn-primary btn-md">
-                    <i class="fa fa-edit"></i> Sửa
+                <a href="{{ route('categories.edit', $item->id) }}" class="btn btn-xs btn-warning">
+                    <i class="glyphicon glyphicon-edit"></i> Sửa
                 </a>
                 <form action="{{ route('categories.destroy', $item->id) }}" method="POST" class="d-inline"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-lg">
-                        <i class="fa fa-trash"></i> Xóa
+                    <button type="submit" class="btn btn-xs btn-danger">
+                        <i class="glyphicon glyphicon-trash"></i> Xóa
                     </button>
                 </form>
             </td>
         </tr>
     @endforeach
 @else
-    <div>Không tồn tại sản phẩm</div>
+    <div>Không có danh mục!</div>
 @endif
+<strong>{{ $categories->links() }}</strong>
+
