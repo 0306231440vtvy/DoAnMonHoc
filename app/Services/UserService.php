@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class UserService extends BaseService
 {
@@ -14,7 +15,10 @@ class UserService extends BaseService
     {
         $this->repository = $repository;
     }
-
+    protected function prepageModeldata(Request $request): self
+    {
+        return $this;
+    }
     public function paginate($request)
     {
         $filters = $request->all();

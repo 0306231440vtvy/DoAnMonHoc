@@ -17,6 +17,10 @@ class ProductService extends BaseService
     ) {
         $this->repository = $repository;
     }
+    protected function prepageModeldata(Request $request): self
+    {
+        return $this;
+    }
     protected function beforeCreate(Request $request): array
     {
         $data = $request->except(['_token', 'send']);

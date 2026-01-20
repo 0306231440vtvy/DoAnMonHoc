@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('sdtnhan', 10);
             $table->string('email');
             $table->string('note')->nullable();
-            $table->foreignId('province_id')->constrained('provinces')->cascadeOnDelete();
-            $table->foreignId('ward_id')->constrained('wards')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('province_id')->nullable()->constrained('provinces')->onDelete('set null');
+            $table->foreignId('ward_id')->nullable()->constrained('wards')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

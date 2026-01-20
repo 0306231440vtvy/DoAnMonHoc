@@ -14,4 +14,8 @@ class CartService extends BaseService
     {
         $this->repository = $repository;
     }
+    protected function prepageModeldata(Request $request): self
+    {
+        return $this;
+    }
 }

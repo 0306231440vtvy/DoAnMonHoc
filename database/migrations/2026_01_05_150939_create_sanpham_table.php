@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('tensp');
             $table->string('hinhnen')->nullable();
-            $table->integer('soluong');
-            $table->string('sku', 50)->unique();
             $table->decimal('giaban', 15, 2);
             $table->decimal('discount', 5, 2)->default(0);
             $table->integer('view')->default(0);
@@ -24,10 +22,10 @@ return new class extends Migration
             $table->string('slug');
             $table->string('mota')->nullable();
             $table->tinyInteger('trangthai')->default(1);
-            $table->foreignId('bienthe_id')->constrained('bienthe')->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->foreignId('thuonghieu_id')->constrained('thuonghieu')->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set Null');
+            $table->foreignId('thuonghieu_id')->nullable()->constrained('thuonghieu')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -37,6 +35,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('sanpham');
     }
 };

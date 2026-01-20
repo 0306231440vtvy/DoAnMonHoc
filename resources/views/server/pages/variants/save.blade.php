@@ -24,7 +24,7 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sku">SKU (Mã sản phẩm)</label>
@@ -48,7 +48,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -153,8 +153,8 @@
                                                 style="max-width: 300px; max-height: 300px; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}" name="hinhnen"
-                                        id="hinhnen" />
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
+                                        name="hinhnen" id="hinhnen" />
 
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền

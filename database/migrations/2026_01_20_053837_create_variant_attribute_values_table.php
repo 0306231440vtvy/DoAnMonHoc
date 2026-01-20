@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('slide', function (Blueprint $table) {
+        Schema::create('variant_attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->string('tieude');
-            $table->string('hinhthunho')->nullable();
-            $table->integer('stt')->default(1);
-            $table->string('linklienket')->nullable();
-            $table->tinyInteger('trangthai')->default(1);
+            $table->foreignId('variant_id')->constrained('sanpham_variants')->cascadeOnDelete();
+            $table->foreignId('bienthe_value_id')->constrained('bienthe_values')->cascadeOnDelete();
             $table->timestamps();
-            $table->softDeletes();
+            $table->unique(['variant_id', 'bienthe_value_id']);
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('slide');
+        Schema::dropIfExists('variant_attribute_values');
     }
 };

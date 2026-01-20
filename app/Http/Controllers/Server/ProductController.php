@@ -57,7 +57,9 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        dd($id);
+        $products = $this->productRepository->findById($id);
+        // dd($products);
+        // $products = $this->productService->pa
     }
     public function create(): View
     {
@@ -80,7 +82,7 @@ class ProductController extends Controller
     }
     public function edit($id)
     {
-        $products = $this->productRepository->findById($id, ['categories', 'bienthe', 'thuonghieu']);
+        $products = $this->productRepository->findById($id, ['categories', 'thuonghieu']);
         //dd($products);
         $categories = Category::where('publish', 1)->get();
         $bienthe = $this->bientheService->getTrangThai();
@@ -88,13 +90,13 @@ class ProductController extends Controller
         return view('server.pages.products.update', compact(
             'products',
             'categories',
-            'bienthe',
             'thuonghieu'
         ));
     }
     public function update(UpdateProductRequest $request, $id)
     {
         // dd($request);
+        // $products = $this->productService->save($request, $id);
         $products = $this->productService->update($request, $id);
         // dd($products);
         return redirect()->route('products.index')->with('success', 'Cập nhật sản phẩm thành công');

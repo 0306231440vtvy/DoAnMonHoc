@@ -30,7 +30,7 @@ class PageController extends Controller
             'client.pages.statics.sales-service',
             [
                 'title' => 'Giới thiệu',
-                'content' => $this->getSettingPublish('sales-service') ?? '',
+                'content' => $this->getSettingPublish('sales_services') ?? '',
             ]
         );
     }
@@ -41,7 +41,7 @@ class PageController extends Controller
             'client.pages.statics.sipping-policy',
             [
                 'title' => 'Giới thiệu',
-                'content' => $this->getSettingPublish('sipping-policy') ?? '',
+                'content' => $this->getSettingPublish('shipping_policy') ?? '',
             ]
         );
     }
@@ -52,7 +52,7 @@ class PageController extends Controller
             'client.pages.statics.return-policy',
             [
                 'title' => 'Giới thiệu',
-                'content' => $this->getSettingPublish('return-policy') ?? '',
+                'content' => $this->getSettingPublish('return_policy') ?? '',
             ]
         );
     }
@@ -63,7 +63,7 @@ class PageController extends Controller
             'client.pages.statics.warranty-policy',
             [
                 'title' => 'Giới thiệu',
-                'content' => $this->getSettingPublish('warranty-policy') ?? '',
+                'content' => $this->getSettingPublish('warranty_policy') ?? '',
             ]
         );
     }
@@ -85,7 +85,7 @@ class PageController extends Controller
             'client.pages.statics.privacy-policy',
             [
                 'title' => 'Giới thiệu',
-                'content' => $this->getSettingPublish('privacy-policy') ?? '',
+                'content' => $this->getSettingPublish('privacy_policy') ?? '',
             ]
         );
     }

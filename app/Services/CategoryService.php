@@ -5,16 +5,21 @@ namespace App\Services;
 use App\Repositories\CategoryRepository;
 use App\Services\Interfaces\CategoryServiceInterface;
 use App\Services\BaseService;
+use Illuminate\Http\Request;
 
 class CategoryService extends BaseService
 {
     protected $repository;
+
     public function __construct(
         CategoryRepository $repository
     ) {
         $this->repository = $repository;
     }
-
+    protected function prepageModeldata(Request $request): self
+    {
+        return $this;
+    }
     public function search($keyword)
     {
         if (!$keyword) {

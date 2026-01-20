@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sanpham extends Model
 {
@@ -25,7 +25,6 @@ class Sanpham extends Model
         'sku',
         'slug',
         'mota',
-        'bienthe_id',
         'category_id',
         'thuonghieu_id',
     ];
@@ -47,10 +46,6 @@ class Sanpham extends Model
     {
         return $this->belongsToMany(Category::class, 'categories_sanpham', 'sanpham_id', 'category_id')->withTimestamps();
     }
-    public function bienthe(): BelongsToMany
-    {
-        return $this->belongsToMany(BienThe::class, 'bienthe_sanpham', 'sanpham_id', 'bienthe_id')->withTimestamps();
-    }
     public function thuonghieu(): BelongsTo
     {
         return $this->belongsTo(ThuongHieu::class);
@@ -60,6 +55,10 @@ class Sanpham extends Model
     // {
     //     return number_format($this->giaban, 0, ',', '.') . ' d';
     // }
+    public function variants(): HasMany
+    {
+        return $this->hasMany(SanphamVariant::class);
+    }
     public function getRouteKeyName(): string
     {
         return 'slug';
@@ -67,4 +66,5 @@ class Sanpham extends Model
     protected $casts = [
         'album' => 'array'
     ];
+    protected $relationable = ['sanpham_variants'];
 }

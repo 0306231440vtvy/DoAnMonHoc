@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\SettingRepository;
 use App\Services\BaseService;
+use Illuminate\Http\Request;
 
 class SettingService extends BaseService
 {
@@ -12,5 +13,9 @@ class SettingService extends BaseService
         SettingRepository $repository
     ) {
         $this->repository = $repository;
+    }
+    protected function prepageModeldata(Request $request): self
+    {
+        return $this;
     }
 }
