@@ -11,6 +11,9 @@ class Province extends Model
     protected $fillable = [
         'province_code',
         'name',
+        'short_name',
+        'place_type',
+        'country'
     ];
     public function ward(): HasMany
     {

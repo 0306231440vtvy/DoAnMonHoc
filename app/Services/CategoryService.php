@@ -5,10 +5,24 @@ namespace App\Services;
 use App\Repositories\CategoryRepository;
 use App\Services\Interfaces\CategoryServiceInterface;
 use App\Services\BaseService;
+use Illuminate\Http\Request;
 
 class CategoryService extends BaseService
 {
     protected $repository;
+    protected $payload;
+    protected function prepageModeldata(Request $request): self
+    {
+        $this->payload = $request->only([
+            'id',
+            'name',
+            'description',
+            'publish'
+        ]);
+
+        return $this;
+    }
+
     public function __construct(
         CategoryRepository $repository
     ) {
@@ -36,14 +50,15 @@ class CategoryService extends BaseService
             return $this->repository->paginate();
         }
         return $this->repository->search($keyword);
-            
     }
 
-    public function findByID($id){
+    public function findByID($id)
+    {
         return $this->repository->findById($id);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->repository->destroy($id);
     }
 

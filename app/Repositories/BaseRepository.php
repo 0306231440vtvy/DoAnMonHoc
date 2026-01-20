@@ -18,9 +18,9 @@ abstract class BaseRepository
         return $this->model
             ->orderBy($specs['sort'][0], $specs['sort'][1])
             ->withRelations($specs['with'])
-            ->keyword($specs['keyword'])
-            ->simple($specs['filter']['simple'])
-            ->complex($specs['filter']['complex'])
+            ->Keyword($specs['keyword'])
+            ->Simple($specs['filter']['simple'])
+            ->Complex($specs['filter']['complex'])
             ->when(
                 $specs['type'],
                 fn($q) => $q->get(),
@@ -38,7 +38,7 @@ abstract class BaseRepository
     }
     public function find($id)
     {
-        return $this->model->find($id);
+        return $this->model->find($id)->exists();
     }
     public function update(int $id, array $payload = []): Model
     {
@@ -69,5 +69,21 @@ abstract class BaseRepository
     public function getTrangThai()
     {
         return $this->model->where('trangthai', 1)->get();
+    }
+    public function getRelationable()
+    {
+        return $this->model->relationable();
+    }
+    public function attach($id, string $relation, $field)
+    {
+        $record = $this->find($id);
+        if (!$record) {
+            throw new ModelNotFoundException('Không tồn tại record này');
+        }
+        return $record->$relation()->attach();
+    }
+    public function detach()
+    {
+        return $this->model->detach();
     }
 }

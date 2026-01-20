@@ -10,13 +10,15 @@ abstract class BaseService
 {
     use HasTransaction;
     protected $repository;
+    protected $resutl;
+    protected $modelData;
     protected $type;
     protected $perpage = 20;
     protected $sort = ['id', 'asc'];
     protected $with = [];
     protected $filterSearch = ['name'];
     protected $simpleFilter = ['publish'];
-    protected $complexFilter = ['dongia'];
+    protected $complexFilter = ['giaban'];
     public function __construct(
         Baserepository $repository
     ) {
@@ -60,32 +62,43 @@ abstract class BaseService
     {
         return $this->repository->index();
     }
-    public function save(Request $request)
+    // mục đích khi tạo ra hàm này là để bắt buộc các class con phải khai báo dữ liệu
+    // , chuẩn bị cho việc thêm hoặc cập nhật dữ liệu
+    abstract protected function prepageModeldata(Request $request): self;
+    public function save(Request $request, ?int $id = null)
     {
         try {
-            $this->beginTransaction();
-            // xử lý raw data
-            $processedData = $this->beforeCreate($request);
-            // lọc filter
-            $fillable = $this->repository->getFillable();
-            $payload = collect($processedData)->only($fillable)->toArray();
-            $model = $this->repository->create($payload);
-            $this->afterCreate($model, $request);
-            $this->commit();
-            return $model;
+            // $this->beginTransaction();
+            // // xử lý raw data
+            // $processedData = $this->beforeCreate($request);
+            // // lọc filter
+            // $fillable = $this->repository->getFillable();
+            // $payload = collect($processedData)->only($fillable)->toArray();
+            // $model = $this->repository->create($payload);
+            // $this->afterCreate($model, $request);
+            // $this->commit();
+            // return $model;
+            return $this
+                ->beginTransaction()
+                ->prepageModeldata($request)
+                ->beforeSave()
+                ->saveModel($id)
+                ->afterSave()
+                ->handleRelation($request)
+                ->commit();
         } catch (\Throwable $th) {
             $this->rollBack();
             throw $th;
         }
     }
-    //  hàm để xử lý dữ liệu trước khi tạo dữ liệu
-    protected function beforeCreate(Request $request)
-    {
-        // mặc định trả về tất cả dữ liệu
-        return $request->all();
-    }
-    // hàm trả về sau khi tạo dữ liệu
-    protected function afterCreate($model, Request $request): void {}
+    // public function attach()
+    // {
+    //     return $this->repository->attach();
+    // }
+    // public function detach()
+    // {
+    //     return $this->repository->detach();
+    // }
     public function show(string $field, $value)
     {
         return $this->repository->findByField($field, $value);
@@ -148,4 +161,12 @@ abstract class BaseService
             throw $th;
         }
     }
+    //  hàm để xử lý dữ liệu trước khi tạo dữ liệu
+    // protected function beforeCreate(Request $request)
+    // {
+    //     // mặc định trả về tất cả dữ liệu
+    //     return $request->all();
+    // }
+    // // hàm trả về sau khi tạo dữ liệu
+    // protected function afterCreate($model, Request $request): void {}
 }

@@ -16,10 +16,11 @@ class CartRepository extends BaseRepository
     
     public function getCartItemsByUser($userId)
     {
-        return Giohang::with('user', 'sanpham.bienthe')
+        return Giohang::with('user', 'sanpham')
             ->where('user_id', $userId)
             ->get();
     }
+
 
     public function getCheckedItems($userId, array $productIds)
     {

@@ -17,6 +17,7 @@ class ContactRepository extends BaseRepository
                            ->paginate(15);                      
     }
 
+
     public function updateContact($id){
         return LienHe::where('id', $id)->update([
             'trangthai' => 2

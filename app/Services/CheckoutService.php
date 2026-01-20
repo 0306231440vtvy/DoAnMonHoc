@@ -6,9 +6,25 @@ use App\Services\BaseService;
 use App\Models\Hoadon;
 use App\Models\CtHoadon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 class CheckoutService extends BaseService
 {
     protected $repository;
+    protected $payload;
+    protected function prepageModeldata(Request $request):self
+    {
+
+        $this->payload = $request->only([
+            'name',
+            'phone',
+            'email',
+            'province_id',
+            'ward_id',
+            'note',
+            'payment_method',
+        ]);
+        return $this;
+    }
     public function __construct() {
         // $this->repository = $repository;
     }
@@ -16,6 +32,7 @@ class CheckoutService extends BaseService
     public function createOrder($userId, $data, $checkout)
     {
         DB::transaction(function () use ($userId, $data, $checkout, &$order) {
+            // dd($data);
             $order = HoaDon::create([
                 'name' => 'HD' . now()->format('YmdHis'),
                 'ngaydat' => now(),
@@ -27,7 +44,6 @@ class CheckoutService extends BaseService
                 'ward_id' => $data['ward_id'],
                 'user_id' => $userId,
             ]);
-            // dd($checkout['items']);
             foreach ($checkout['items'] as $item) {
 
                 CtHoaDon::create([

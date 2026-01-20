@@ -35,8 +35,9 @@ class CheckoutRequest extends FormRequest
             'province_id' => 'required',
             'ward_id' => 'required',
 
-            'address' => 'required|string|min:3|max:255',
+            // 'address' => 'required|string|min:3|max:255',
             'payment_method' => 'required|in:cod,bank',
+            'note'=> 'nullable|string',
         ];
     }
 
@@ -55,8 +56,8 @@ class CheckoutRequest extends FormRequest
             'province_id.required' => 'Chọn tỉnh',
             'ward_id.required' => 'Chọn xã/phường',
 
-            'address.required' => 'Vui lòng nhập địa chỉ/số nhà cụ thể',
-            'address.min' => 'vị trí cụ thể quá ngắn',
+            // 'address.required' => 'Vui lòng nhập địa chỉ/số nhà cụ thể',
+            // 'address.min' => 'vị trí cụ thể quá ngắn',
 
             'payment_method.required' => 'Vui lòng chọn phương thức thanh toán'
         ];

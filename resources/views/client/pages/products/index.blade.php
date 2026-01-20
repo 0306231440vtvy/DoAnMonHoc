@@ -2,7 +2,7 @@
 @section('content')
     <div class="container py-4">
         <h1 class="h2 fw-bold mb-4 text-dark">Cửa Hàng</h1>
-
+        @include('client.pages.products.components.shop-filter')
         <div class="d-flex flex-column gap-4">
             <div class="w-100">
                 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
@@ -12,8 +12,9 @@
                                 <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden"
                                     style="transition: all 0.3s ease;">
                                     <div class="position-relative" style="padding-bottom: 100%; overflow: hidden;">
-                                        <a href="product.html" class="d-block position-absolute top-0 start-0 w-100 h-100">
-                                            <img src="{{ $item->hinhanh }}" class="w-100 h-100 object-fit-cover"
+                                        <a href="{{ route('client.products.show', $item->slug) }}"
+                                            class="d-block position-absolute top-0 start-0 w-100 h-100">
+                                            <img src="{{ $item->hinhnen }}" class="w-100 h-100 object-fit-cover"
                                                 style="transition: transform 0.3s ease;" alt="{{ $item->tensp }}">
                                         </a>
                                         <div class="position-absolute d-inline-flex align-items-center justify-content-center"
@@ -31,7 +32,8 @@
                                     </div>
 
                                     <div class="card-body p-2">
-                                        <a href="product.html" class="text-decoration-none">
+                                        <a href="{{ route('client.products.show', $item->slug) }}"
+                                            class="text-decoration-none">
                                             <h3 class="card-title mb-1 text-dark lh-sm"
                                                 style="font-size: 0.875rem; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.5rem;">
                                                 {{ $item->tensp }}

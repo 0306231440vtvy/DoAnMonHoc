@@ -1,6 +1,7 @@
 <!-- Mainly scripts -->
 <script src="{{ asset('server/js/jquery-3.1.1.min.js') }}"></script>
 <script src="{{ asset('server/js/bootstrap.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('server/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
 <script src="server/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
@@ -33,3 +34,7 @@
 
 <!-- Sparkline demo data  -->
 <script src="{{ asset('server/js/demo/sparkline-demo.js') }}"></script>
+<script src="{{ asset('server/plugins/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('server/plugins/ckfinder/ckfinder.js') }}"></script>
+<script src="{{ asset('server/library/ckeditor.js') }}"></script>
+<script src="{{ asset('server/library/form-confirm.js') }}"></script>

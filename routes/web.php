@@ -23,7 +23,6 @@ use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientOrderCOntroller;
 use App\Http\Controllers\Client\PageController;
-// ======================================CLIENT==============================================//
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
@@ -31,6 +30,12 @@ Route::get('/products', [ClientProductController::class, 'index'])->name('produc
 Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
 //Thêm route gửi liên hệ
 Route::post('/contact/send',[ClientContactController::class, 'send'])->name('contact.send');
+Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
+Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
+Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
+Route::get('/gio-hang', [CartController::class, 'index'])->name('carts');
+Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
+
 // Route::get('/categories/{slug}',[Catego])
 // Route::get('/gioi-thieu', function () {
 //     return view('client.pages.gioithieu');
@@ -94,7 +99,7 @@ Route::middleware('guest')->prefix('/auth')->group(function () {
 
 //========================================SERVER============================================//
 
-Route::prefix('/server')
+Route::prefix('/server')->middleware(['auth', 'role:2,3'])
     ->group(function () {
         Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
         // ==================USER====================//
@@ -108,7 +113,7 @@ Route::prefix('/server')
             Route::get('restore/{id}', [UserController::class, 'restore'])->name('.restore');
         });
         // =================CATEGORY================//
-        Route::prefix('categories')->name('categories')->group(function () {
+        Route::prefix('/categories')->middleware('role:3')->name('categories')->group(function () {
             Route::get('index', [CategoryController::class, 'index'])->name('.index');
             Route::get('create', [CategoryController::class, 'create'])->name('.create');
             Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
@@ -124,47 +129,32 @@ Route::prefix('/server')
         // =================PRODUCT================//
         Route::prefix('/products')->name('products')->group(function () {
             Route::get('index', [ProductController::class, 'index'])->name('.index');
+            Route::get('show/{id}', [ProductController::class, 'show'])->name('.show');
             Route::get('create', [ProductController::class, 'create'])->name('.create');
             Route::post('store', [ProductController::class, 'store'])->name('.store');
-            Route::post('delete', [ProductController::class, 'delete'])->name('.delete');
+            Route::get('edit/{id}', [ProductController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [ProductController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('.delete');
         });
-
-    // ==================USER====================//
-    Route::prefix('/user')->group(function () {
-        Route::get('index', [UserController::class, 'index'])->name('users.index');
-    });
-    // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
-
-    // =================ROLE================//
-    Route::prefix('/roles')->name('roles')->group(function () {
-        Route::get('index', [RoleController::class, 'index'])->name('.index');
-        Route::get('create', [RoleController::class, 'create'])->name('.create');
-    });
-    // =================PERMISSION================//
-    Route::prefix('/permissions')->name('permissions')->group(function () {
-        // Route::get('index', [PermissionController::class, 'index'])->name('.index');
-        // Route::get('create', [PermissionController::class, 'create'])->name('.create');
-    });
-    // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
-    // =================PRODUCT================//
-    Route::prefix('/products')->group(function () {
-        Route::get('index', [ProductController::class, 'index'])->name('products.index');
-    });
         // =================BRAND================//
-        Route::prefix('/brands')->group(function () {
-            Route::get('index', [BrandController::class, 'index'])->name('brands.index');
+        Route::prefix('/brands')->name('brands')->group(function () {
+            Route::get('index', [BrandController::class, 'index'])->name('.index');
+            Route::get('show/{id}', [BrandController::class, 'show'])->name('.show');
+            Route::get('create', [BrandController::class, 'create'])->name('.create');
+            Route::post('store', [BrandController::class, 'store'])->name('.store');
+            Route::get('edit/{id}', [BrandController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [BrandController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [BrandController::class, 'delete'])->name('.delete');
         });
         // =================ORDER================//
         Route::prefix('/orders')->name('orders')->group(function () {
             Route::get('index', [ServerOrderController::class, 'index'])->name('.index');
             Route::get('detail/{id}', [ServerOrderController::class, 'show'])->name('.show');
-
             // 3. Cập nhật trạng thái
             // URL: /update/1
             // Tên route: .update
             Route::post('update/{id}', [ServerOrderController::class, 'update'])->name('.update');
         });
-
         // =================VARIANT================//
         Route::prefix('/variants')->group(function () {
             Route::get('index', [VariantController::class, 'index'])->name('variants.index');
@@ -175,9 +165,14 @@ Route::prefix('/server')
             Route::put('{id}/update', [ContactController::class, 'update'])->name('.update');
             Route::delete('{id}/destroy', [ContactController::class, 'destroy'])->name('.destroy');   
         });
-
         // =================SLIDE================//
-        Route::prefix('/slides')->group(function () {
-            Route::get('index', [SlideController::class, 'index'])->name('slides.index');
+        Route::prefix('/slides')->name('slides')->group(function () {
+            Route::get('index', [SlideController::class, 'index'])->name('.index');
+            Route::get('create', [SlideController::class, 'create'])->name('.create');
+            Route::post('store', [SlideController::class, 'store'])->name('.store');
+            Route::get('show/{id}', [SlideController::class, 'show'])->name('.show');
+            Route::get('edit/{id}', [SlideController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [SlideController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [SlideController::class, 'delete'])->name('.delete');
         });
     });

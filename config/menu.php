@@ -15,7 +15,7 @@ return [
             'route' => 'users.index',
             'children' => [
                 ['title' => 'Danh sách người dùng', 'route' => 'users.index'],
-                // ['title' => 'Thêm mới', 'route' => 'users.create'],
+                ['title' => 'Thêm mới người dùng', 'route' => 'users.create'],
             ]
         ],
         [
@@ -24,8 +24,8 @@ return [
             'icon' => 'fa fa fa-lock',
             'route' => 'roles.index',
             'children' => [
-                ['title' => 'Danh sách danh mục', 'route' => 'roles.index'],
-                ['title' => 'Thêm mới danh mục', 'route' => 'roles.create'],
+                ['title' => 'Danh sách vai trò', 'route' => 'roles.index'],
+                ['title' => 'Thêm mới vai trò', 'route' => 'roles.create'],
             ]
         ],
         [
@@ -54,8 +54,8 @@ return [
             'icon' => 'fa fa-building',
             'route' => 'brands.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách thương hiệu', 'route' => 'brands.index'],
+                ['title' => 'Thêm mới thương hiệu', 'route' => 'brands.create'],
             ]
         ],
         [
@@ -64,7 +64,6 @@ return [
             'icon' => 'fa fa-credit-card',
             'route' => 'orders.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách hóa đơn', 'route' => 'orders.index'],
             ]
         ],
@@ -74,8 +73,8 @@ return [
             'icon' => 'fa fa-layer-group',
             'route' => 'variants.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách biến thể', 'route' => 'variants.index'],
+                ['title' => 'Thêm mới biến thể', 'route' => 'variants.create'],
             ]
         ],
         [
@@ -84,8 +83,8 @@ return [
             'icon' => 'fa fa-address-book',
             'route' => 'contacts.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách liên hệ', 'route' => 'contacts.index'],
+                // ['title' => 'Danh sách', 'route' => 'users.index'],
             ]
         ],
         [
@@ -94,8 +93,8 @@ return [
             'icon' => 'fa fa-images',
             'route' => 'slides.index',
             'children' => [
-                // ['title' => 'Danh sách', 'route' => 'users.index'],
                 ['title' => 'Danh sách slide', 'route' => 'slides.index'],
+                ['title' => 'Thêm mới slide', 'route' => 'slides.create'],
             ]
         ],
     ]

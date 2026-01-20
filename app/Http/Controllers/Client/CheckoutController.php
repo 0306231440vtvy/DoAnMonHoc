@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use Illuminate\View\View;
+use App\Repositories\ProvinceRepository;
+use App\Repositories\WardRepository;
 
 use App\Models\Province;
 use App\Models\Ward;
@@ -14,9 +15,14 @@ use App\Http\Requests\CLient\Checkout\CheckoutRequest;
 use App\Services\CheckoutService;
 class CheckoutController extends Controller
 {
-    public function __construct()
-    {
-        // throw new \Exception('Not implemented');
+    protected $wardRepository;
+    protected $provinceRepository;
+    public function __construct(
+        WardRepository $wardRepository,
+        ProvinceRepository $provinceRepository
+    ) {
+        $this->wardRepository = $wardRepository;
+        $this->provinceRepository = $provinceRepository;
     }
         public function index()
     {

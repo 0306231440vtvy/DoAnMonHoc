@@ -11,11 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bienthe_sanpham', function (Blueprint $table) {
-            $table->dropColumn('soluong');
-            $table->dropColumn('giaban');
-            $table->dropColumn('sku');
-        });
         Schema::table('settings', function (Blueprint $table) {
             $table->text('sales_info')->nullable();
             $table->text('sales_services')->nullable();
@@ -33,7 +28,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('table', function (Blueprint $table) {
-            //
+            // $table->dropColumn('sales_info');
+            // $table->dropColumn('sales_services');
+            // $table->dropColumn('shipping_policy');
+            // $table->dropColumn('return_policy');
+            // $table->dropColumn('about_us');
+            // $table->dropColumn('warranty_policy');
+            // $table->dropColumn('privacy_policy');
         });
     }
 };

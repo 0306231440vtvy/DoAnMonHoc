@@ -5,6 +5,8 @@
             <div class="col-md-3 col-sm-6">
                 <div class="footer-about-us">
                     <h4>{{ $setting->name }}</h4>
+                    <p>{{ $setting->phone }}</p>
+                    <p>{{ $setting->email }}</p>
                     <p>{{ $setting->description }}</p>
                     <div class="footer-social">
                         <a href="{{ $setting->facebook_url }}" target="_blank">

@@ -6,10 +6,22 @@ use App\Models\Giohang;
 use App\Repositories\CartRepository;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class CartService extends BaseService
 {
     protected $repository;
+    protected $payload;
+    protected function prepageModeldata(Request $request):self
+    {
+        $this->payload = $request->only([
+            'user_id',
+            'sanpham_id',
+            'soluong'
+        ]);
+
+        return $this;
+    }
     public function __construct(
         CartRepository $repository
     ) {

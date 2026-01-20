@@ -22,8 +22,11 @@ class CTHoadonSeeder extends Seeder
 
         // Lấy tất cả sản phẩm có sẵn
         $sanphams = DB::table('sanpham')
-            ->where('trangthai', 1)
-            ->where('soluong', '>', 0)
+            ->join('sanpham_variants', 'sanpham_id', '=', 'sanpham_variants.sanpham_id')
+            ->where('sanpham.trangthai', 1)
+            ->where('sanpham_variants.soluong', '>', 0)
+            ->select('sanpham.*')
+            ->distinct()
             ->get();
 
         if ($sanphams->isEmpty()) {

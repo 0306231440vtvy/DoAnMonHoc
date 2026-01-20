@@ -15,7 +15,7 @@ class Hoadon extends Model
         'ngaydat',
         'trangthai', // 0: Hủy, 1: Chờ xác nhận, 2: Đã xác nhận...
         'sdtnhan',
-        'diachigiaohang',
+        'note',
         'user_id',
         //Thêm trường email, province_id, ward_id vào hóa đơn
         'email',

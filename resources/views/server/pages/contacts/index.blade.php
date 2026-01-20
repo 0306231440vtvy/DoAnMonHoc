@@ -102,7 +102,7 @@
                 </ul>
             </div>
         </div>
-        <div style="max-height: 420px;overflow-y: auto;padding-right: 5px;">
+        <div style="max-height: 450px;overflow-y: auto;padding-right: 5px;">
             @foreach ($contacts as $contact)
                 <div class="panel panel-default" style="position: relative; border-radius: 10px;">
                     <div class="panel-body">

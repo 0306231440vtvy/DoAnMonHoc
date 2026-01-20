@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Order\OrderRepository;
 use App\Services\BaseService;
 use Exception;
+use Illuminate\Http\Request;
 
 class OrderService extends BaseService
 {
@@ -14,7 +15,10 @@ class OrderService extends BaseService
     {
         $this->orderRepo = $orderRepo;
     }
-
+    protected function prepageModeldata(Request $request): self
+    {
+        return $this;
+    }
     public function getUserOrders($userId)
     {
         return $this->orderRepo->getOrdersByUserId($userId);
