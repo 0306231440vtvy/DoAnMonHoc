@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Sanpham extends Model
 {
@@ -16,9 +17,11 @@ class Sanpham extends Model
 
     protected $fillable = [
         'tensp',
-        'hinhanh',
+        'album',
+        'hinhnen',
         'soluong',
         'giaban',
+        'discount',
         'sku',
         'slug',
         'mota',
@@ -40,9 +43,9 @@ class Sanpham extends Model
             ->where('user_id', $userId)
             ->exists();
     }
-    public function categories(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'categories_sanpham', 'sanpham_id', 'category_id')->withTimestamps();
     }
     public function bienthe(): BelongsToMany
     {
@@ -57,4 +60,11 @@ class Sanpham extends Model
     // {
     //     return number_format($this->giaban, 0, ',', '.') . ' d';
     // }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+    protected $casts = [
+        'album' => 'array'
+    ];
 }

@@ -10,10 +10,17 @@
         @elseif($item->trangthai === 2)
             <td class="badge bg-warning">Hết hàng</td>
         @endif
-        {{-- <td><span class="label label-primary">Điện thoại</span></td> --}}
         <td>
-            {{-- <a href="{{ route('products.update') }}" class="btn btn-warning btn-md">Sửa</a> --}}
-            <a href="{{ route('products.delete', $item->id) }}" class="btn btn-danger btn-md">Xóa</a>
+            <div class="action-buttons-inline" style="display: flex; gap: 8px; align-items: center;">
+                <a href="{{ route('products.show', $item->id) }}" class="btn btn-action btn-info">Xem chi tiết</a>
+                <a href="{{ route('products.edit', $item->id) }}" class="btn btn-action btn-edit">Sửa</a>
+                <form action="{{ route('products.delete', $item->id) }}" method="POST" style="margin: 0;"
+                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-md">Xóa</button>
+                </form>
+            </div>
         </td>
     </tr>
 @endforeach

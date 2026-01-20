@@ -8,22 +8,28 @@ use App\Models\Category;
 use App\Services\SlideService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
+use App\Models\Slide;
+use App\Services\CartService;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     protected $slideService;
     protected $categoryService;
     protected $productService;
+    protected $cartService;
     public function __construct(
         SlideService $slideService,
         CategoryService $categoryService,
-        ProductService $productService
+        ProductService $productService,
+        CartService $cartService,
     ) {
+        $this->cartService = $cartService;
         $this->slideService = $slideService;
         $this->categoryService = $categoryService;
         $this->productService = $productService;
     }
-    public function index()
+    public function index(Request $request)
     {
         // 1. Lấy sản phẩm mới nhất (8 sản phẩm)
         // Đã xóa ->where('publish', 1) để tránh lỗi
@@ -41,10 +47,17 @@ class HomeController extends Controller
         $hotProducts = Sanpham::inRandomOrder()
             ->take(4)
             ->get();
+        $sliderequest = clone request();
+
+        $slide = $this->slideService->pagination($sliderequest->merge([
+            'sort' => 'stt,asc',
+            'perpage' => 4
+        ]));
         return view('client.pages.home', compact(
             'newProducts',
             'categories',
             'hotProducts',
+            'slide',
         ));
     }
 }

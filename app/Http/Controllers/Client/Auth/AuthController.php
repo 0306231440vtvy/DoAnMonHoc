@@ -42,7 +42,7 @@ class AuthController extends Controller
                     ->withErrors(['email' => 'Email này đã tồn tại trong hệ thống.Vui lòng nhập email mới.'])
                     ->withInput($request->except('password'));
             };
-            if ($user = $this->userService->create($request)) {
+            if ($user = $this->userService->save($request)) {
                 SendMailActive::dispatchSync($user);
             }
             $this->commit();

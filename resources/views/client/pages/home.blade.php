@@ -3,39 +3,24 @@
     <div class="container my-5">
         <div id="carouselExampleCaptions" class="carousel slide mx-auto" style="max-width: 900px;">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
+                @foreach ($slide as $index => $item)
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ $index }}"
+                        class="{{ $index == 0 ? 'active' : '' }}" aria-current="{{ $index == 0 ? 'true' : 'false' }}"
+                        aria-label="Slide {{ $index + 1 }}"></button>
+                @endforeach
             </div>
             <div class="carousel-inner rounded-3 shadow-lg">
-                <div class="carousel-item active">
-                    <img src="{{ asset('client/img/slide-1.jpg') }}" class="d-block w-100"
-                        style="height: 400px; object-fit: cover;" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Amazon có thể sa thải 30.000 nhân viên</h5>
-                        <p>Amazon sắp có đợt cắt giảm nhân sự lớn nhất lịch sử, với số lao động tương đương 10%
-                            nhân viên văn phòng hiện tại.</p>
+                @foreach ($slide as $index => $item)
+                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                        <a href="{{ $item->linklienket }}">
+                            <img src="{{ $item->hinhthunho }}" class="d-block w-100"
+                                style="height: 400px; object-fit: cover;" alt="{{ $item->tieude }}"></a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>{{ $item->tieude }}</h5>
+                            <p>{{ $item->mota }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('client/img/slide-2.jpg') }}" class="d-block w-100"
-                        style="height: 400px; object-fit: cover;" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>Some representative placeholder content for the second slide.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('client/img/slide-3.jpg') }}" class="d-block w-100"
-                        style="height: 400px; object-fit: cover;" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>Some representative placeholder content for the third slide.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                 data-bs-slide="prev">
@@ -53,7 +38,6 @@
         <h1 class="h2 fw-bold mb-4 text-dark">Cửa Hàng</h1>
         <div class="d-flex flex-column gap-4">
             <div class="w-100">
-                <!-- Filter and Sort Bar -->
                 <div class="bg-white p-2 rounded shadow-sm mb-3 d-flex justify-content-between align-items-center">
                     <p class="text-secondary mb-0" style="font-size: 0.75rem;">Hiển thị <span class="fw-semibold">5</span>
                         sản
@@ -68,7 +52,6 @@
                 </div>
 
                 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
-                    <!-- Product 1 -->
                     <div class="col">
                         <div class="card h-100 shadow-sm hover:shadow-lg transition-shadow">
                             <div class="position-relative overflow-hidden">

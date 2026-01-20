@@ -20,7 +20,7 @@ class SettingSeeder extends Seeder
          'phone' => '0838212360',
          'description' => 'Chuyên cung cấp các sản phẩm chất lượng cao, dịch vụ tận tâm, giao hàng nhanh chóng trên toàn quốc.',
          'logo' => 'images/logo.png',
-
+         'email' => 'cdth23webc@gmail.com',
          // Social Media
          'facebook_url' => 'https://www.facebook.com/TH23WebC',
          'youtube_url' => 'https://www.youtube.com/@TH23WebC',

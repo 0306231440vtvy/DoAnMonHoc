@@ -1,46 +1,46 @@
-    <nav class="bg-white/80 top-0 z-50 shadow-md relative">
-        
-                <ul class="flex gap-4 items-center">
-                    <li>
-                        <a href="{{ route('layouts') }}" class="font-medium uppercase hover:text-[#667eea] transition">
-                            Trang chủ
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('products') }}"
-                            class="font-medium uppercase hover:text-[#667eea] transition">
-                            Sản Phẩm
-                        </a>
-                    </li>
-                    {{-- <li>
-                        <a href="{{ route('profile') }}"
-                            class="font-medium uppercase hover:text-[#667eea] transition">
-                            Tài Khoản
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('gioi-thieu') }}"
-                            class="font-medium uppercase hover:text-[#667eea] transition">
-                            Về chúng tôi
-                        </a>
-                    </li> --}}
-                    <li>
-                        <a href="{{ route('gioi-thieu') }}"
-                            class="font-medium uppercase hover:text-[#667eea] transition">
-                            Blog
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('contact') }}"
-                            class="font-medium uppercase hover:text-[#667eea] transition">
-                            Liên hệ
-                        </a>
-                    </li>
-                    <li>
-                        @if (Auth::check())
-                            <div class="relative">
-                                <button id="accountBtn"
-                                    class="font-medium uppercase hover:text-[#667eea] 
+      <nav class="bg-white/80 top-0 z-50 shadow-md relative">
+          <div class="container mx-auto px-4">
+              <div class="flex justify-between items-center py-3">
+                  <a href="{{ route('layouts') }}" class=" text-2xl font-bold">
+                      e<span class="font-extrabold">Thời trang</span>
+                  </a>
+                  <form method="GET" action="">
+                      <div>
+                          <input type="text" value="{{ request('keyword') }}" placeholder="Nhập từ khóa tìm kiếm"
+                              name="keyword" />
+                          <button class="btn btn-primary"><i class="fa fa-search">Tìm kiếm</i></button>
+                      </div>
+                  </form>
+                  <ul class="flex gap-2 items-center">
+                      <li>
+                          <a href="{{ route('layouts') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Trang chủ
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('products') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Sản Phẩm
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('gioi-thieu') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Blog
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('contact') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Liên hệ
+                          </a>
+                      </li>
+                      <li>
+                          @if (Auth::check())
+                              <div class="relative">
+                                  <button id="accountBtn"
+                                      class="font-medium uppercase hover:text-[#667eea] 
                                         transition flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100">
                                     <i class="fa fa-user"></i>
                                     <span>Tài khoản</span>
@@ -48,54 +48,65 @@
                                 <div id="accountDropdown" style="display: none;"
                                     class="absolute right-0 mt-2 w-56 
                                         bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden">
-                                    <div class="px-4 py-3 ">
-                                        <p class="text-xs opacity-90 mb-1">Chào mừng</p>
-                                        <p class="font-semibold truncate">{{ Auth::user()->name }}</p>
-                                    </div>
-                                    <a href="{{ route('profile') }}"
-                                        class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
-                                        <i class="fa fa-user mr-2"></i>Thông tin
-                                    </a>
-                                    <a href="{{ route('auth.logout') }}"
-                                        class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
-                                        <i class="fa-solid fa-right-from-bracket mr-2"></i>Đăng xuất
-                                    </a>
-                                </div>
-                            </div>
-                        @else
-                            <button type="button"
-                                class="font-medium uppercase hover:text-[#667eea] transition flex items-center gap-1"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="fa fa-user"></i>
-                                <span>Tài khoản</span>
-                            </button>
-                        @endif
-                    </li>
-                    <li>
-                        <a href="{{ route('carts') }}" class="text-xl hover:text-[#667eea] transition"
-                            title="Giỏ hàng">
-                            <i class="fa fa-shopping-cart"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content account-modal">
-                <div class="modal-body text-center">
-                    <button type="button" class="btn btn-login w-100 mb-3" id="btn-login">
-                        Đăng nhập
-                    </button>
-                    <button type="button" class="btn btn-register w-100" id="btn-register">
-                        Đăng ký
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+                                      <div class="px-4 py-3 ">
+                                          <p class="text-xs opacity-90 mb-1">Chào mừng</p>
+                                          <p class="font-semibold truncate">{{ Auth::user()->name }}</p>
+                                      </div>
+                                      <a href="{{ route('profile') }}"
+                                          class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                                          <i class="fa fa-user mr-2"></i>Thông tin
+                                      </a>
+                                      <a href="{{ route('auth.logout') }}"
+                                          class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
+                                          <i class="fa-solid fa-right-from-bracket mr-2"></i>Đăng xuất
+                                      </a>
+                                  </div>
+                              </div>
+                          @else
+                              <button type="button"
+                                  class="font-medium uppercase hover:text-[#667eea] transition flex items-center gap-1"
+                                  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                  <i class="fa fa-user"></i>
+                                  <span>Tài khoản</span>
+                              </button>
+                          @endif
+                      </li>
+                      <li class="cart-wrapper">
+                          <a href="{{ route('carts') }}" class="cart-link" title="Giỏ hàng">
+                              <i class="fa fa-shopping-cart"></i>
+                              @if (Auth::check())
+                                  <span class="cart-count">{{ $carts->count() }}</span>
+                              @endif
+                          </a>
+                          @if (Auth::check())
+                              @php $total = 0 @endphp
+                              @foreach ($carts as $cart)
+                                  @php
+                                      $subTotal = $cart->giaban * $cart->soluong;
+                                      $total += $subTotal;
+                                  @endphp
+                              @endforeach
+                              <span class="cart-total">{{ number_format($total, 0, ',', '.') }} đ</span>
+                          @endif
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+              <div class="modal-content account-modal">
+                  <div class="modal-body text-center">
+                      <button type="button" class="btn btn-login w-100 mb-3" id="btn-login">
+                          Đăng nhập
+                      </button>
+                      <button type="button" class="btn btn-register w-100" id="btn-register">
+                          Đăng ký
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

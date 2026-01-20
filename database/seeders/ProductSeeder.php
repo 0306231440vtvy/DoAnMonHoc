@@ -854,10 +854,11 @@ class ProductSeeder extends Seeder
                 continue;
             }
             $soluong = rand(20, 200);
-            $trangthai = $soluong > 0 ? 1 : 0;
+            $trangthai = $soluong > 0 ? 1 : 2;
             DB::table('sanpham')->insert([
                 'tensp' => $product['tensp'],
-                'hinhanh' => 'products/' . Str::slug($product['tensp']) . '.jpg',
+                'hinhnen' => 'products/' . Str::slug($product['tensp']) . '.jpg',
+                // 'album' => 'products/' . Str::slug($product['tensp']) . '.jpg',
                 'soluong' => rand(20, 200),
                 'sku' => 20000 + $index,
                 'giaban' => $product['giaban'],

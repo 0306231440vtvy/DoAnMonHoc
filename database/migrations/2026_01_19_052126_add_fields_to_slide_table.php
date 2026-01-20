@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sanpham', function (Blueprint $table) {
-            //
-            $table->tinyInteger('publish')->default(1)->after('id');
+        Schema::table('slide', function (Blueprint $table) {
+            $table->text('mota')->nullable();
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sanpham', function (Blueprint $table) {
+        Schema::table('slide', function (Blueprint $table) {
             //
-            $table->dropColumn('publish');
         });
     }
 };

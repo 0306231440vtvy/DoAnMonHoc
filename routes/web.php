@@ -23,12 +23,17 @@ use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientOrderCOntroller;
 use App\Http\Controllers\Client\PageController;
+use App\Http\Controllers\Client\CheckoutController;
 // ======================================CLIENT==============================================//
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
-Route::get('/products', [ClientProductController::class, 'index'])->name('products');
-Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
+Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
+Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
+Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
+Route::get('/gio-hang', [CartController::class, 'index'])->name('carts');
+Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
+
 // Route::get('/categories/{slug}',[Catego])
 // Route::get('/gioi-thieu', function () {
 //     return view('client.pages.gioithieu');
@@ -44,7 +49,6 @@ Route::controller(PageController::class)->group(function () {
 });
 
 Route::middleware('auth')->prefix('/')->group(function () {
-    Route::get('/carts', [CartController::class, 'index'])->name('carts');
     Route::prefix('/profile')->name('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index']);
         Route::post('/update', [ProfileController::class, 'update'])
@@ -75,7 +79,7 @@ Route::middleware('guest')->prefix('/auth')->group(function () {
 
 //========================================SERVER============================================//
 
-Route::prefix('/server')
+Route::prefix('/server')->middleware(['auth', 'role:2,3'])
     ->group(function () {
         Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
         // ==================USER====================//
@@ -89,7 +93,7 @@ Route::prefix('/server')
             Route::get('restore/{id}', [UserController::class, 'restore'])->name('.restore');
         });
         // =================CATEGORY================//
-        Route::prefix('/categories')->name('categories')->group(function () {
+        Route::prefix('/categories')->middleware('role:3')->name('categories')->group(function () {
             Route::get('index', [CategoryController::class, 'index'])->name('.index');
             Route::get('create', [CategoryController::class, 'create'])->name('.create');
             Route::post('store', [CategoryController::class, 'store'])->name('.store');
@@ -104,9 +108,12 @@ Route::prefix('/server')
         // =================PRODUCT================//
         Route::prefix('/products')->name('products')->group(function () {
             Route::get('index', [ProductController::class, 'index'])->name('.index');
+            Route::get('show/{id}', [ProductController::class, 'show'])->name('.show');
             Route::get('create', [ProductController::class, 'create'])->name('.create');
             Route::post('store', [ProductController::class, 'store'])->name('.store');
-            Route::post('delete', [ProductController::class, 'delete'])->name('.delete');
+            Route::get('edit/{id}', [ProductController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [ProductController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('.delete');
         });
 
     // ==================USER====================//
@@ -163,7 +170,13 @@ Route::prefix('/server')
         });
 
         // =================SLIDE================//
-        Route::prefix('/slides')->group(function () {
-            Route::get('index', [SlideController::class, 'index'])->name('slides.index');
+        Route::prefix('/slides')->name('slides')->group(function () {
+            Route::get('index', [SlideController::class, 'index'])->name('.index');
+            Route::get('create', [SlideController::class, 'create'])->name('.create');
+            Route::post('store', [SlideController::class, 'store'])->name('.store');
+            Route::get('show/{id}', [SlideController::class, 'show'])->name('.show');
+            Route::get('edit/{id}', [SlideController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [SlideController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [SlideController::class, 'delete'])->name('.delete');
         });
     });

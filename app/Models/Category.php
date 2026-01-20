@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Trait\HasQuery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -29,5 +30,13 @@ class Category extends Model
     public function scopeHome($query)
     {
         return $query->where('is_home', 1);
+    }
+    public function sanpham(): BelongsToMany
+    {
+        return $this->belongsToMany(Sanpham::class, 'categories_sanpham', 'category_id', 'sanpham_id')->withTimestamps();
+    }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }
