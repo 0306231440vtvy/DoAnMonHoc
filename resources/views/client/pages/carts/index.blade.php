@@ -124,12 +124,8 @@
                         <!-- Trust Badges -->
                         <div class="mt-4 pt-4 border-top">
                             <div class="d-flex align-items-center gap-3 mb-3">
-                                <i class="fa fa-shield-alt" style="color: #10b981; font-size: 1.25rem;"></i>
+                                <i class="fa fa-shield" style="color: #10b981; font-size: 1.25rem;"></i>
                                 <span style="font-size: 0.875rem;" class="text-muted">Thanh toán an toàn & bảo mật</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <i class="fa fa-truck" style="color: #10b981; font-size: 1.25rem;"></i>
-                                <span style="font-size: 0.875rem;" class="text-muted">Miễn phí vận chuyển đơn > 500K</span>
                             </div>
                             <div class="d-flex align-items-center gap-3">
                                 <i class="fa fa-undo" style="color: #10b981; font-size: 1.25rem;"></i>

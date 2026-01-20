@@ -116,24 +116,30 @@
 
                         @foreach ($checkout['items'] as $item)
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">{{ $item['ten'] }}</span>
-                                <span class="font-semibold text-gray-800">{{ number_format($item['gia']) }}</span>
+                                <span class="text-gray-600">{{ $item['ten'] }}(x{{ $item['so_luong'] }})</span>
+                                @if($item['discount'] > 0)
+                                    <small class="text-muted text-decoration-line-through">
+                                        {{ number_format($item['gia_goc']) }}
+                                    </small>
+                                    <small class="text-danger">
+                                        -{{ $item['discount'] }}%
+                                    </small>
+                                @endif
+                                <span class="font-semibold text-gray-800">{{ number_format($item['thanh_tien']) }}</span>
                             </div>
                         @endforeach
 
                         <div class="space-y-3 mb-6">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600"><b>Tạm tính:</b></span>
-                                <span class="font-semibold text-gray-800">{{ number_format($checkout['totalPrice']) }}</span>
+                                <span class="text-gray-600"><b>Giá Gốc:</b></span>
+                                <span class="font-semibold text-gray-800">{{ number_format($checkout['totalBasePrice']) }}</span>
                             </div>
-                            {{-- <div class="flex justify-between">
-                                <span class="text-gray-600">Phí vận chuyển:</span>
-                                <span class="font-semibold text-gray-800">30,000đ</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Giảm giá:</span>
-                                <span class="font-semibold text-red-600">-100,000đ</span>
-                            </div> --}}
+                            @if($checkout['totalDiscount']>0)
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Giảm: </span>
+                                    <span class="font-semibold text-red-600">{{ number_format($checkout['totalDiscount']) }}</span>
+                                </div>
+                            @endif
                             <div class="border-t pt-3 flex justify-between text-lg">
                                 <span class="font-bold text-gray-800">Tổng cộng:</span>
                                 <span class="font-bold text-indigo-600 text-2xl">{{ number_format($checkout['totalPrice']) }}VNĐ</span>

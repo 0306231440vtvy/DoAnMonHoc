@@ -34,6 +34,7 @@ class CartController extends Controller
         $data = $request->validate([
             'checked_items' => 'array',
             'checked_items.*' => 'integer',
+            'discount_percent' => 'nullable|integer|min:0|max:100',
         ]);
 
         $summary = $cartService->calSummary(

@@ -32,8 +32,11 @@ function updateSummary() {
         data.checkedItems.forEach(item => {
             listDiv.innerHTML += `
                 <div class="d-flex justify-content-between border-bottom py-1">
-                    <span>${item.name} (x${item.quantity})</span>
-                    <span>${Intl.NumberFormat().format(item.price * item.quantity)}đ</span>
+                    <span>
+                        ${item.name} (x${item.quantity})
+                        ${item.discount > 0 ? `<small class="text-danger">-${item.discount}%</small>` : ''}
+                    </span>
+                    <span>${Intl.NumberFormat().format(item.total)}đ</span>
                 </div>`;
         });
         

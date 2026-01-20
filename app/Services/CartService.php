@@ -36,18 +36,27 @@ class CartService extends BaseService
         }
 
         $items = $this->repository->getCheckedItems($user_Id, $checked_items); 
-        return [
-            'checkedItems' => $items->map(function ($item) {
-                return [
+        $checkedItems = $items->map(function ($item) {
+            $price = $item->sanpham->giaban;
+            $discount = $item->sanpham->discount;
+
+            $finalPrice = $price * (100 - $discount) / 100;
+
+            return [
                     'id' => $item->sanpham_id,
                     'name' => $item->sanpham->tensp,
                     'quantity' => $item->soluong,
-                    'price' => $item->sanpham->giaban,
-                    'total' => $item->soluong * $item->sanpham->giaban,
+                    'price' => $finalPrice,
+                    'origin_price' => $price,
+                    'discount' => $discount,
+                    'total' => $finalPrice * $item->soluong,
                 ];
-            }),
-            'totalQuantity' => $items->sum('soluong'),
-            'totalPrice' => $items->sum(fn($i) => $i->soluong * $i->sanpham->giaban)
+        });
+
+        return [
+            'checkedItems' => $checkedItems,
+            'totalQuantity' => $checkedItems->sum('quantity'),
+            'totalPrice' => $checkedItems->sum('total'),
         ];
     }
 
@@ -101,18 +110,29 @@ class CartService extends BaseService
                 ];
             }
         }
-        return [
-            'items' => $items->map(fn ($item) => [
+            $checkedItems = $items->map(function ($item) {
+            $price = $item->sanpham->giaban;
+            $discount = $item->sanpham->discount; // %
+
+            $finalPrice = $price * (100 - $discount) / 100;
+
+            return [
                 'sanpham_id' => $item->sanpham_id,
                 'ten' => $item->sanpham->tensp,
-                'gia' => $item->sanpham->giaban,
-                'soluong' => $item->soluong,
-                'thanhtien' => $item->soluong * $item->sanpham->giaban,
-            ]),
-            'totalQuantity' => $items->sum('soluong'),
-            'totalPrice' => $items->sum(
-                fn ($i) => $i->soluong * $i->sanpham->giaban
-            ),
+                'gia_goc' => $price,
+                'discount' => $discount,
+                'gia_sau_giam' => $finalPrice,
+                'so_luong' => $item->soluong,
+                'thanh_tien' => $finalPrice * $item->soluong,
+            ];
+        });
+
+        return [
+            'items' => $checkedItems,
+            'totalQuantity' => $checkedItems->sum('so_luong'),
+            'totalPrice' => $checkedItems->sum('thanh_tien'),
+            'totalDiscount' => ($checkedItems->sum('gia_goc') - $checkedItems->sum('gia_sau_giam')),
+            'totalBasePrice'=> $checkedItems->sum('gia_goc'),
         ];
     }
 }
