@@ -16,7 +16,7 @@ class CartRepository extends BaseRepository
     
     public function getCartItemsByUser($userId)
     {
-        return Giohang::with('user', 'sanpham')
+        return Giohang::with('user', 'sanpham.bienthe')
             ->where('user_id', $userId)
             ->get();
     }

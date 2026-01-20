@@ -93,8 +93,10 @@
 
                         <div class="mb-4">
                             <div class="d-flex justify-content-between mb-3">
-                                <span class="text-muted">Tạm tính (<span id="totalQuantity">0</span> sản phẩm):</span>
-                                <span class="fw-semibold">  </span>
+                                <span class="text-muted">Tạm tính (<span id="totalQuantity">0</span> sản phẩm)</span>
+                            </div>
+                            <div id="checked-items-list">
+                                    
                             </div>
                             {{-- <div class="d-flex justify-content-between mb-3">
                                 <span class="text-muted">Phí vận chuyển:</span>

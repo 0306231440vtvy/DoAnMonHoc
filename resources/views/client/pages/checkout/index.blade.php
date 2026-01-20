@@ -125,6 +125,7 @@
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Tạm tính:</span>
                                 <span class="font-semibold text-gray-800">{{{ $checkout['totalPrice'] }}}</span>
+                                <div></div>
                             </div>
                             {{-- <div class="flex justify-between">
                                 <span class="text-gray-600">Phí vận chuyển:</span>

@@ -35,8 +35,17 @@ class CartService extends BaseService
             ];
         }
 
-        $items = $this->repository->getCheckedItems($user_Id, $checked_items);
+        $items = $this->repository->getCheckedItems($user_Id, $checked_items); 
         return [
+            'checkedItems' => $items->map(function ($item) {
+                return [
+                    'id' => $item->sanpham_id,
+                    'name' => $item->sanpham->tensp,
+                    'quantity' => $item->soluong,
+                    'price' => $item->sanpham->giaban,
+                    'total' => $item->soluong * $item->sanpham->giaban,
+                ];
+            }),
             'totalQuantity' => $items->sum('soluong'),
             'totalPrice' => $items->sum(fn($i) => $i->soluong * $i->sanpham->giaban)
         ];

@@ -5,7 +5,6 @@ const wardSelect = document.getElementById('ward');
 fetch('/checkout/provinces')
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         data.forEach(p => {
             provinceSelect.innerHTML +=
                 `<option value="${p.id}">${p.name}</option>`;

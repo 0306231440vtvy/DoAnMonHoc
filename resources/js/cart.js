@@ -18,8 +18,9 @@ function updateSummary() {
     .then(res => res.json())
     .then(data => {
         document.getElementById('totalQuantity').innerText = data.totalQuantity;
-        document.getElementById('totalPrice').innerText =
-            Intl.NumberFormat().format(data.totalPrice);
+        document.getElementById('totalPrice').innerText = Intl.NumberFormat().format(data.totalPrice);
+
+        
     });
 }
 document.querySelectorAll('.check-item').forEach(cb => {
@@ -40,9 +41,23 @@ document.querySelectorAll('.check-item').forEach(cb => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             document.getElementById('totalQuantity').innerText = data.totalQuantity;
             document.getElementById('totalPrice').innerText = new Intl.NumberFormat('vi-VN').format(data.totalPrice);
+            const listDiv = document.getElementById('checked-items-list');
+            listDiv.innerHTML = '';
+            if (data.checkedItems.length === 0) {
+                listDiv.innerHTML =
+                    '<p class="text-muted">Chưa chọn sản phẩm nào</p>';
+                return;
+            }
+
+            data.checkedItems.forEach(item => {
+                listDiv.innerHTML += `
+                    <div class="d-flex justify-content-between border-bottom py-1">
+                        <span>${item.name} (x${item.quantity})</span>
+                        <span>${Intl.NumberFormat().format(item.price * item.quantity)}đ</span>
+                    </div>`;
+            });
         });
     });
 });
