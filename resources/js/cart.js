@@ -122,3 +122,35 @@ document.getElementById('btn-clear-cart')?.addEventListener('click', function ()
         document.getElementById('totalPrice').innerText = 0;
     });
 });
+
+
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('#btnCheckout');
+    if (!btn) return;
+
+    const checkedItems = [...document.querySelectorAll('.check-item:checked')]
+        .map(cb => cb.value);
+
+    if (!checkedItems.length) {
+        alert('Vui lòng chọn sản phẩm để thanh toán');
+        return;
+    }
+
+    fetch('/cart/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN':
+                document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            checked_items: checkedItems
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/checkout';
+        }
+    });
+});

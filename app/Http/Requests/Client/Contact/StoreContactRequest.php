@@ -22,7 +22,6 @@ class StoreContactRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id');
         return [
             'name' => 'required|string|min:4|max:100',
             'email' => 'required|email',

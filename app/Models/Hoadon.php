@@ -17,6 +17,10 @@ class Hoadon extends Model
         'sdtnhan',
         'diachigiaohang',
         'user_id',
+        //Thêm trường email, province_id, ward_id vào hóa đơn
+        'email',
+        'province_id',
+        'ward_id'
     ];
 
     // Định nghĩa hằng số trạng thái để code dễ đọc hơn (Optional)

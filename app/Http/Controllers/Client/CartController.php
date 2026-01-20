@@ -82,4 +82,20 @@ class CartController extends Controller
         return response()->json(['success' => true]);
     }
     
+    public function checkoutPrepare(Request $request, CartService $cartService)
+    {
+        $data = $request->validate([
+            'checked_items' => 'required|array|min:1',
+            'checked_items.*' => 'integer',
+        ]);
+
+        $checkout = $cartService->getCheckoutData(
+            auth()->id(),
+            $data['checked_items']
+        );
+
+        session()->put('checkout', $checkout);
+
+        return response()->json(['success' => true]);
+    }
 }

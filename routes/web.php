@@ -53,6 +53,7 @@ Route::middleware('auth')->prefix('/')->group(function () {
         Route::post('summary', [CartController::class, 'summary'])->name('.summary');
         Route::post('delete', [CartController::class, 'deleteItem'])->name('.delete');
         Route::post('clear', [CartController::class, 'clear'])->name('.clear');
+        Route::post('checkout', [CartController::class, 'checkoutPrepare']);
     });
     Route::prefix('/profile')->name('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index']);
@@ -73,8 +74,12 @@ Route::middleware('auth')->prefix('/')->group(function () {
     });
     //Thêm route cho trang thanh toán
     Route::prefix('/checkout')->name('checkout')->group(function () {
-        Route::get('/', [CheckoutController::class, 'index']);
-        Route::post('/pay', [CheckoutController::class, 'pay'])->name('.pay');
+        Route::get('/', [CheckoutController::class, 'index'])->name('.index');
+        Route::post('/', [CheckoutController::class, 'store'])->name('.store');
+        Route::get('provinces', [CheckoutController::class, 'provinces']);
+        Route::get('wards/{province}', [CheckoutController::class, 'wards']);
+        Route::get('bank/{order}', [CheckoutController::class, 'bank'])->name('.bank');
+        Route::get('/success', [CheckoutController::class, 'success'])->name('.thanhcong');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });

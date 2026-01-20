@@ -64,8 +64,6 @@ class CartService extends BaseService
 
         return [
             'itemQuantity'  => $item->soluong,
-            // 'totalQuantity' => $items->sum('soluong'),
-            // 'totalPrice'    => $items->sum(fn ($i) => $i->soluong * $i->sanpham->giaban),
         ];
     }
 
@@ -77,5 +75,35 @@ class CartService extends BaseService
     public function clearCart($userId)
     {
         $this->repository->clearCart($userId);
+    }
+    public function getCheckoutData($userId, array $checkedItems)
+    {
+        $items = $this->repository->getCheckedItems($userId, $checkedItems);
+
+        if ($items->isEmpty()) {
+            throw new \Exception('Không có sản phẩm hợp lệ');
+        }
+
+        foreach ($items as $item) {
+        if ($item->sanpham->soluong < $item->soluong) {
+            return [
+                'success' => false,
+                'message' => "Sản phẩm {$item->sanpham->tensp} đã hết hàng"
+                ];
+            }
+        }
+        return [
+            'items' => $items->map(fn ($item) => [
+                'sanpham_id' => $item->sanpham_id,
+                'ten' => $item->sanpham->tensp,
+                'gia' => $item->sanpham->giaban,
+                'soluong' => $item->soluong,
+                'thanhtien' => $item->soluong * $item->sanpham->giaban,
+            ]),
+            'totalQuantity' => $items->sum('soluong'),
+            'totalPrice' => $items->sum(
+                fn ($i) => $i->soluong * $i->sanpham->giaban
+            ),
+        ];
     }
 }

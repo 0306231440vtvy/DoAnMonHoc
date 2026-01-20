@@ -94,7 +94,7 @@
                         <div class="mb-4">
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="text-muted">Tạm tính (<span id="totalQuantity">0</span> sản phẩm):</span>
-                                <span class="fw-semibold"> <span id="totalPrice">0</span> </span>
+                                <span class="fw-semibold">  </span>
                             </div>
                             {{-- <div class="d-flex justify-content-between mb-3">
                                 <span class="text-muted">Phí vận chuyển:</span>
@@ -106,15 +106,15 @@
                             </div> --}}
                             <div class="border-top pt-3 d-flex justify-content-between align-items-center">
                                 <span class="fw-bold" style="font-size: 1.125rem;">Tổng cộng:</span>
-                                <span class="fw-bold" style="color: #10b981; font-size: 1.5rem;">2,230,000đ</span>
+                                <span class="fw-bold" style="color: #10b981; font-size: 1.5rem;"><span id="totalPrice">0</span></span>
                             </div>
                         </div>                      
-                        <a href={{ route('checkout') }} class="btn w-100 text-white py-3 fw-semibold mb-2"
+                        <button id="btnCheckout" class="btn w-100 text-white py-3 fw-semibold mb-2"
                             style="background-color: #10b981; transition: background-color 0.3s ease;">
-                            Tiến Hành Thanh Toán
-                        </a>
+                            Đặt hàng
+                        </button>
 
-                        <a href="shop.html" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                        <a href="{{ route('products') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
                             style="transition: all 0.3s ease;">
                             Tiếp Tục Mua Sắm
                         </a>
