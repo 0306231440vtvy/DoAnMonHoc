@@ -23,8 +23,6 @@ use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientOrderCOntroller;
 use App\Http\Controllers\Client\PageController;
-use App\Http\Controllers\Client\CheckoutController;
-// ======================================CLIENT==============================================//
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
