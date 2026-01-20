@@ -21,7 +21,7 @@ class CheckoutController extends Controller
     {
         $wards = $this->wardRepository->index();
         $provinces = $this->provinceRepository->index();
-        // dd($wards, $provinces);
+        // dd($wards);
         return view(
             'client.pages.checkout.index',
             compact(

@@ -16,7 +16,7 @@ abstract class BaseService
     protected $with = [];
     protected $filterSearch = ['name'];
     protected $simpleFilter = ['publish'];
-    protected $complexFilter = ['dongia'];
+    protected $complexFilter = ['giaban'];
     public function __construct(
         Baserepository $repository
     ) {

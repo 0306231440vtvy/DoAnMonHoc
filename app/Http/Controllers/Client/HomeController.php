@@ -47,24 +47,17 @@ class HomeController extends Controller
         $hotProducts = Sanpham::inRandomOrder()
             ->take(4)
             ->get();
-        // $slide = Slide::where('trangthai', 1)->orderBy('stt', 'asc')->take(4)->get();
         $sliderequest = clone request();
 
         $slide = $this->slideService->pagination($sliderequest->merge([
             'sort' => 'stt,asc',
             'perpage' => 4
         ]));
-        $cartRequest = clone request();
-        $carts = $this->cartService->pagination($cartRequest->merge([
-            'user_id' => auth()->id(),
-        ]));
-        // dd($carts);
         return view('client.pages.home', compact(
             'newProducts',
             'categories',
             'hotProducts',
             'slide',
-            'carts'
         ));
     }
 }

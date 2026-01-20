@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Server;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Server\Product\StoreProductRequest;
 use App\Http\Requests\Server\Product\UpdateProductRequest;
+use App\Models\Sanpham;
 use App\Repositories\ProductRepository;
 use App\Services\BienTheService;
 use App\Services\CategoryService;
@@ -36,7 +37,19 @@ class ProductController extends Controller
     }
     public function index(Request $request): View
     {
+        // dd($request->keyword);
+        // $request->merge([
+        //     'keyword' =>
+        //     [
+        //         'q' => $request->keyword,
+        //         'fields' => 'tensp'
+        //     ]
+        // ]);
         $products = $this->productService->pagination($request);
+        // $products = Sanpham::where('tensp', 'like', '%' . $request->keyword . '%')
+        //     ->paginate(20);
+        // ->get();
+        dd($products);
         return view('server.pages.products.index', compact(
             'products',
         ));

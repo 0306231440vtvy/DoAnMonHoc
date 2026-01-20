@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 class ProductService extends BaseService
 {
     protected $repository;
+    protected $filterSearch = ['tensp'];
+    protected $simpleFilter = ['trangthai'];
+    protected $complexFilter = ['soluong'];
     public function __construct(
         ProductRepository $repository
     ) {

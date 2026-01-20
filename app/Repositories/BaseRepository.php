@@ -18,9 +18,9 @@ abstract class BaseRepository
         return $this->model
             ->orderBy($specs['sort'][0], $specs['sort'][1])
             ->withRelations($specs['with'])
-            ->keyword($specs['keyword'])
-            ->simple($specs['filter']['simple'])
-            ->complex($specs['filter']['complex'])
+            ->Keyword($specs['keyword'])
+            ->Simple($specs['filter']['simple'])
+            ->Complex($specs['filter']['complex'])
             ->when(
                 $specs['type'],
                 fn($q) => $q->get(),
