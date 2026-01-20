@@ -15,36 +15,37 @@ class CategoryService extends BaseService
         $this->repository = $repository;
     }
 
-    public function search($keyword){
-        if(!$keyword)
-        {
+    public function search($keyword)
+    {
+        if (!$keyword) {
             return $this->repository->paginate();
         }
         return $this->repository->search($keyword);
-            
     }
 
-    public function findByID($id){
+    public function findByID($id)
+    {
         return $this->repository->findById($id);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->repository->destroy($id);
     }
 
-    public function update($id, $request){
-        try {
-            $this->beginTransaction();
+    // public function update($id, $request){
+    //     try {
+    //         $this->beginTransaction();
 
-            $fillable = $this->repository->getFillable();
-            $payload = $request->only($fillable);
+    //         $fillable = $this->repository->getFillable();
+    //         $payload = $request->only($fillable);
 
-            $model = $this->repository->update($id, $payload);
-            $this->commit();
-            return $model;
-        } catch (\Throwable $th) {
-            $this->rollBack();
-            throw $th;
-        }
-    }
+    //         $model = $this->repository->update($id, $payload);
+    //         $this->commit();
+    //         return $model;
+    //     } catch (\Throwable $th) {
+    //         $this->rollBack();
+    //         throw $th;
+    //     }
+    // }
 }
