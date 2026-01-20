@@ -130,14 +130,10 @@
                         @endforeach
 
                         <div class="space-y-3 mb-6">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600"><b>Giá Gốc:</b></span>
-                                <span class="font-semibold text-gray-800">{{ number_format($checkout['totalBasePrice']) }}</span>
-                            </div>
                             @if($checkout['totalDiscount']>0)
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Giảm: </span>
-                                    <span class="font-semibold text-red-600">{{ number_format($checkout['totalDiscount']) }}</span>
+                                <div class="flex justify-between" style="margin-top:5px">
+                                    <span class="text-gray-600" ><i >Giảm:</i></span>
+                                    <span class="font-semibold text-red-600"><i>{{ number_format($checkout['totalDiscount']) }}</i></span>
                                 </div>
                             @endif
                             <div class="border-t pt-3 flex justify-between text-lg">

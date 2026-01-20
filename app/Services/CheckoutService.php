@@ -33,9 +33,9 @@ class CheckoutService extends BaseService
                 CtHoaDon::create([
                     'hoadon_id' => $order->id,
                     'sanpham_id' => $item['sanpham_id'],
-                    'soluong' => $item['soluong'],
-                    'dongia' => $item['gia'],
-                    'thanhtien' => $item['soluong'] * $item['gia'],
+                    'soluong' => $item['so_luong'],
+                    'dongia' => $item['gia_sau_giam'],
+                    'thanhtien' => $item['thanh_tien'],
                     'trangthai' => 1,
                 ]);
 

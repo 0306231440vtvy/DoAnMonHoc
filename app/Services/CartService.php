@@ -132,7 +132,6 @@ class CartService extends BaseService
             'totalQuantity' => $checkedItems->sum('so_luong'),
             'totalPrice' => $checkedItems->sum('thanh_tien'),
             'totalDiscount' => ($checkedItems->sum('gia_goc') - $checkedItems->sum('gia_sau_giam')),
-            'totalBasePrice'=> $checkedItems->sum('gia_goc'),
         ];
     }
 }
