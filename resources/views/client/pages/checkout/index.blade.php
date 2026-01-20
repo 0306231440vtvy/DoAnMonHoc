@@ -90,7 +90,7 @@
                         @enderror
                         <div class="space-y-3">
                             <label
-                                class="flex items-center p-4 border-2 border-indigo-600 rounded-lg cursor-pointer bg-indigo-50">
+                                class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-indigo-600">
                                 <input type="radio" name="payment_method" value="cod" class="mr-3 w-5 h-5 text-indigo-600">
                                 <div class="flex-1">
                                     <div class="font-semibold text-gray-800">Thanh toán khi nhận hàng (COD)</div>
@@ -117,15 +117,14 @@
                         @foreach ($checkout['items'] as $item)
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600">{{ $item['ten'] }}</span>
-                                <span class="font-semibold text-gray-800">{{ $item['gia'] }}</span>
+                                <span class="font-semibold text-gray-800">{{ number_format($item['gia']) }}</span>
                             </div>
                         @endforeach
 
                         <div class="space-y-3 mb-6">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Tạm tính:</span>
-                                <span class="font-semibold text-gray-800">{{{ $checkout['totalPrice'] }}}</span>
-                                <div></div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600"><b>Tạm tính:</b></span>
+                                <span class="font-semibold text-gray-800">{{ number_format($checkout['totalPrice']) }}</span>
                             </div>
                             {{-- <div class="flex justify-between">
                                 <span class="text-gray-600">Phí vận chuyển:</span>
@@ -154,15 +153,15 @@
                         <!-- Security Badges -->
                         <div class="mt-6 pt-6 border-t space-y-3">
                             <div class="flex items-center gap-3 text-sm text-gray-600">
-                                <i class="fas fa-shield-alt text-indigo-600 text-xl"></i>
+                                <i class="fa fa-shield text-indigo-600 text-xl"></i>
                                 <span>Thanh toán an toàn 100%</span>
                             </div>
                             <div class="flex items-center gap-3 text-sm text-gray-600">
-                                <i class="fas fa-lock text-indigo-600 text-xl"></i>
+                                <i class="fa fa-lock text-indigo-600 text-xl"></i>
                                 <span>Bảo mật thông tin khách hàng</span>
                             </div>
                             <div class="flex items-center gap-3 text-sm text-gray-600">
-                                <i class="fas fa-headset text-indigo-600 text-xl"></i>
+                                <i class="fa fa-phone text-indigo-600 text-xl"></i>
                                 <span>Hỗ trợ 24/7</span>
                             </div>
                         </div>

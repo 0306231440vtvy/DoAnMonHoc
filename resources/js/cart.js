@@ -20,47 +20,29 @@ function updateSummary() {
         document.getElementById('totalQuantity').innerText = data.totalQuantity;
         document.getElementById('totalPrice').innerText = Intl.NumberFormat().format(data.totalPrice);
 
+        const listDiv = document.getElementById('checked-items-list');
+        listDiv.innerHTML = '';
+
+        if (!data.checkedItems || data.checkedItems.length === 0) {
+            listDiv.innerHTML =
+                '<p class="text-muted">Chưa chọn sản phẩm nào</p>';
+            return;
+        }
+
+        data.checkedItems.forEach(item => {
+            listDiv.innerHTML += `
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <span>${item.name} (x${item.quantity})</span>
+                    <span>${Intl.NumberFormat().format(item.price * item.quantity)}đ</span>
+                </div>`;
+        });
         
     });
 }
 document.querySelectorAll('.check-item').forEach(cb => {
-    cb.addEventListener('change', function () {
-        const checkedItems = [...document.querySelectorAll('.check-item:checked')]
-            .map(cb => cb.value);
-
-        fetch('/cart/summary', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document
-                    .querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                checked_items: checkedItems
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('totalQuantity').innerText = data.totalQuantity;
-            document.getElementById('totalPrice').innerText = new Intl.NumberFormat('vi-VN').format(data.totalPrice);
-            const listDiv = document.getElementById('checked-items-list');
-            listDiv.innerHTML = '';
-            if (data.checkedItems.length === 0) {
-                listDiv.innerHTML =
-                    '<p class="text-muted">Chưa chọn sản phẩm nào</p>';
-                return;
-            }
-
-            data.checkedItems.forEach(item => {
-                listDiv.innerHTML += `
-                    <div class="d-flex justify-content-between border-bottom py-1">
-                        <span>${item.name} (x${item.quantity})</span>
-                        <span>${Intl.NumberFormat().format(item.price * item.quantity)}đ</span>
-                    </div>`;
-            });
-        });
-    });
+    cb.addEventListener('change', updateSummary);
 });
+
 
 document.addEventListener('click', function (e) {
     if (!e.target.closest('.btn-plus') && !e.target.closest('.btn-minus')) return;

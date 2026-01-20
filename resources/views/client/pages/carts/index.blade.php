@@ -81,7 +81,7 @@
                             </a>
                         </div>
                         <div class="col-12 col-sm-6"  id="btn-clear-cart" >
-                            <button class="btn btn-outline-danger w-100 py-3 fw-semibold" style="transition: all 0.3s ease;">
+                            <button href="{{ route('carts.clear') }}"class="btn btn-outline-danger w-100 py-3 fw-semibold" style="transition: all 0.3s ease;">
                                 <i class="fa fa-trash me-2"></i>Xóa Tất Cả
                             </button>
                         </div>
