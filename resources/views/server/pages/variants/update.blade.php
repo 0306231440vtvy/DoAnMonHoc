@@ -1,20 +1,18 @@
 @extends('server.layout')
-@section('title', 'Thêm Sản Phẩm')
+@section('title', 'Cập nhật sản phẩm')
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">{{ 'Thêm Sản Phẩm' }}</h3>
+                        <h3 class="card-title">{{ 'Cập nhật sản phẩm' }}</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data"
-                            class="confirm-submit">
+                        <form method="POST" action="{{ route('products.update', $products->id) }}"
+                            enctype="multipart/form-data" class="confirm-submit">
                             @csrf
-                            @if (isset($product))
-                                @method('PUT')
-                            @endif
+                            @method('PUT')
                             <div class="form-group">
                                 <label for="tensp">Tên Sản Phẩm <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('tensp') is-invalid @enderror"
@@ -24,12 +22,12 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sku">SKU (Mã sản phẩm)</label>
                                         <input type="text" class="form-control @error('sku') is-invalid @enderror"
-                                            id="sku" name="sku" value="{{ $products->sku ?? old('sku', $sku) }}"
+                                            id="sku" name="sku" value="{{ old('sku', $products->sku ?? '') }}"
                                             placeholder="VD: SP001">
                                         @error('sku')
                                             <span class="invalid-feedback">{{ $message }}</span>
@@ -48,7 +46,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -140,7 +138,7 @@
                                 <div class="image-upload-wrapper">
                                     <div class="image-target-cus" style="cursor: pointer;">
                                         @php
-                                            $hinhnenValue = old('hinhnen', $product->hinhnen ?? '');
+                                            $hinhnenValue = old('hinhnen', $products->hinhnen ?? '');
                                         @endphp
 
                                         @if ($hinhnenValue)
@@ -153,8 +151,8 @@
                                                 style="max-width: 300px; max-height: 300px; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}" name="hinhnen"
-                                        id="hinhnen" />
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
+                                        name="hinhnen" id="hinhnen" />
 
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền
@@ -179,11 +177,11 @@
                                         <i class="fa fa-upload"></i> Thêm Album Ảnh
                                     </button>
                                     <ul id="sortable" class="row upload-list">
-                                        @if (isset($product) && $product->album)
+                                        @if (isset($products) && $products->album)
                                             @php
-                                                $albumArray = is_string($product->album)
-                                                    ? json_decode($product->album, true)
-                                                    : $product->album;
+                                                $albumArray = is_string($products->album)
+                                                    ? json_decode($products->album, true)
+                                                    : $products->album;
                                             @endphp
                                             @if (is_array($albumArray))
                                                 @foreach ($albumArray as $image)
@@ -203,7 +201,7 @@
                                                                 <button type="button"
                                                                     class="delete-image btn btn-sm btn-light-danger"
                                                                     title="Delete Image">
-                                                                    <i class="ti ti-trash"></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -218,16 +216,16 @@
                             <div class="form-group">
                                 <label for="mota">Mô Tả Sản Phẩm</label>
                                 <textarea class="form-control ck-editor" id="mota" name="mota" data-height="400">
-                                    {{ old('mota') }}
+                                    {{ old('mota', $products->mota ?? '') }}
                                 </textarea>
                                 @error('mota')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary confirm-submit">
+                                <button type="submit" class="btn btn-primary ">
                                     <i class="fa fa-save"></i>
-                                    {{ 'Thêm Sản Phẩm' }}
+                                    {{ 'Cập nhật sản phẩm' }}
                                 </button>
                                 <a href="{{ route('products.index') }}" class="btn btn-secondary confirm-cancel">
                                     <i class="fa fa-times"></i> Hủy

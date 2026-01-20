@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('linkedin_url')->nullable();
             $table->string('copyright')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

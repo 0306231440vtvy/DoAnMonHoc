@@ -13,4 +13,12 @@ class VariantController extends Controller
     {
         return view('server.pages.variants.index');
     }
+    public function create(): View
+    {
+        return view('server.pages.brands.index');
+    }
+    public function store(): View
+    {
+        return view('server.pages.brands.index');
+    }
 }

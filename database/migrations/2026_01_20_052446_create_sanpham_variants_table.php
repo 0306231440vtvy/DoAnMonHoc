@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bienthe_sanpham', function (Blueprint $table) {
+        Schema::create('sanpham_variants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sanpham_id')->constrained('sanpham')->cascadeOnDelete();
-            $table->foreignId('bienthe_id')->constrained('bienthe')->cascadeOnDelete();
+            $table->foreignId('sanpham_id')->nullable()->constrained('sanpham')->onDelete('set null');
             $table->integer('soluong')->default(0);
             $table->decimal('giaban', 15, 2)->nullable();
+            $table->text('hinhanh')->nullable();
             $table->string('sku', 50)->unique()->nullable();
+            $table->tinyInteger('trangthai')->nullable(1);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bienthe_sanpham');
+        Schema::dropIfExists('sanpham_variants');
     }
 };

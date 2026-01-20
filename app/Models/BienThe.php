@@ -14,8 +14,4 @@ class BienThe extends Model
         'value',
         'trangthai'
     ];
-    public function sanpham(): BelongsToMany
-    {
-        return $this->belongsToMany(Sanpham::class, 'bienthe_sanpham', 'bienthe_id', 'sanpham_id');
-    }
 }

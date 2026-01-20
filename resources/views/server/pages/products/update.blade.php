@@ -22,7 +22,7 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sku">SKU (Mã sản phẩm)</label>
@@ -46,7 +46,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -113,7 +113,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="bienthe_id">Biến Thể</label>
                                         <select class="form-control @error('bienthe_id') is-invalid @enderror"
@@ -130,7 +130,7 @@
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             {{-- ảnh --}}
                             <div class="form-group mb-4">
@@ -151,8 +151,8 @@
                                                 style="max-width: 300px; max-height: 300px; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
-                                        name="hinhnen" id="hinhnen" />
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}" name="hinhnen"
+                                        id="hinhnen" />
 
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền

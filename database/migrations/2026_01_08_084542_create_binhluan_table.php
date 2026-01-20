@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('noidung');
             $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

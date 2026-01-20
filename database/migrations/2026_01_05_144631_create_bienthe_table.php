@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
-            $table->string('value');
             $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
