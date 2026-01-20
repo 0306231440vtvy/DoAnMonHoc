@@ -8,6 +8,9 @@ use App\Http\Controllers\Client\ContactController as ClientContactController;
 
 use App\Http\Controllers\Client\ProductController as ClientProductController;
 use App\Http\Controllers\Client\ProfileController;
+// Them class checkout
+use App\Http\Controllers\Client\CheckoutController;
+
 use App\Http\Controllers\Server\CategoryController;
 use App\Http\Controllers\Server\DashboardServerController;
 use App\Http\Controllers\Server\UserController;
@@ -22,7 +25,6 @@ use App\Http\Controllers\Client\ClientOrderCOntroller;
 use App\Http\Controllers\Client\PageController;
 use App\Http\Controllers\Client\CheckoutController;
 // ======================================CLIENT==============================================//
-
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
@@ -114,6 +116,35 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('.delete');
         });
 
+    // ==================USER====================//
+    Route::prefix('/user')->group(function () {
+        Route::get('index', [UserController::class, 'index'])->name('users.index');
+    });
+    // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
+    // =================CATEGORY================//
+    Route::prefix('/categories')->name('categories')->group(function () {
+        Route::get('index', [CategoryController::class, 'index'])->name('.index');
+        Route::get('create', [CategoryController::class, 'create'])->name('.create');
+        Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
+        Route::post('store', [CategoryController::class, 'store'])->name('.store');
+        Route::put('{id}', [CategoryController::class, 'update'])->name('.update');
+        Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('.destroy');
+    });
+    // =================ROLE================//
+    Route::prefix('/roles')->name('roles')->group(function () {
+        Route::get('index', [RoleController::class, 'index'])->name('.index');
+        Route::get('create', [RoleController::class, 'create'])->name('.create');
+    });
+    // =================PERMISSION================//
+    Route::prefix('/permissions')->name('permissions')->group(function () {
+        // Route::get('index', [PermissionController::class, 'index'])->name('.index');
+        // Route::get('create', [PermissionController::class, 'create'])->name('.create');
+    });
+    // 08/01/2026 Thêm name vào prefix categories và thêm route với role và permission
+    // =================PRODUCT================//
+    Route::prefix('/products')->group(function () {
+        Route::get('index', [ProductController::class, 'index'])->name('products.index');
+    });
         // =================BRAND================//
         Route::prefix('/brands')->group(function () {
             Route::get('index', [BrandController::class, 'index'])->name('brands.index');

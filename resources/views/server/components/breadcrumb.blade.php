@@ -1,11 +1,9 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('server.layouts') }}">Trang chủ</a></li>
-        @foreach ($breadcrumb as $item)
-            <li class="breadcrumb-item">
-                <a href="{{ route($item['route'], $item['params'] ?? []) }}">{{ $item['title'] }}</a>
-            </li>
-        @endforeach
+        {{-- @foreach ($breadcrumb as $item)
+            <li class="breadcrumb-item"><a href="{{ route($item['route']) }}">{{ $item['title'] }}</a></li>
+        @endforeach --}}
     </ol>
 </nav>
 
