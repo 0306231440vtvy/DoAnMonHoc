@@ -24,7 +24,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'tensp' => 'required|string|min:4|max:255',
-            'slug' => 'required|string|unique:sanpham,slug',
+            // 'slug' => 'required|string|unique:sanpham,slug',
             'sku' => 'nullable|string|unique:sanpham,sku|max:50',
             'soluong' => 'required|integer|min:1',
             'giaban' => 'required|numeric|min:1000',

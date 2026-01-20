@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Server;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Server\Product\StoreProductRequest;
 use App\Http\Requests\Server\Product\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Sanpham;
 use App\Repositories\ProductRepository;
 use App\Services\BienTheService;
@@ -49,7 +50,7 @@ class ProductController extends Controller
         // $products = Sanpham::where('tensp', 'like', '%' . $request->keyword . '%')
         //     ->paginate(20);
         // ->get();
-        dd($products);
+        // dd($products);
         return view('server.pages.products.index', compact(
             'products',
         ));
@@ -60,7 +61,7 @@ class ProductController extends Controller
     }
     public function create(): View
     {
-        $categories = $this->categoryService->getPublish();
+        $categories = Category::where('publish', 1)->get();
         $bienthe = $this->bientheService->getTrangThai();
         $thuonghieu = $this->thuonghieuService->getTrangThai();
         $sku = 'SP' . time() . rand(1, 1000);
@@ -81,7 +82,7 @@ class ProductController extends Controller
     {
         $products = $this->productRepository->findById($id, ['categories', 'bienthe', 'thuonghieu']);
         //dd($products);
-        $categories = $this->categoryService->getPublish();
+        $categories = Category::where('publish', 1)->get();
         $bienthe = $this->bientheService->getTrangThai();
         $thuonghieu = $this->thuonghieuService->getTrangThai();
         return view('server.pages.products.update', compact(
