@@ -6,7 +6,7 @@
             <div class="text-center" style="margin: 40px 0;">
                 <h1 class="text-muted">
                     <i class="glyphicon glyphicon-folder-open"></i>
-                    <span >Giỏ hàng trống như túi tiền của bạn</span>
+                    <span >Giỏ hàng trống <small>như túi tiền của bạn</small></span>
                 </h1>
             </div> 
         @else

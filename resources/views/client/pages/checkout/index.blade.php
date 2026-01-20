@@ -5,9 +5,9 @@
         <form action="{{ route('checkout.store') }}" method="POST">
             @csrf
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Checkout Form -->
+
                 <div class="lg:col-span-2 space-y-6">
-                    <!-- Shipping Information -->
+                    <!-- THông tin  -->
                     <div class="bg-white rounded-lg shadow p-6">
                         <h3 class="text-xl font-bold mb-4 text-gray-800">Thông Tin Giao Hàng</h3>
                         <form class="space-y-4">
@@ -82,13 +82,16 @@
                         </form>
                     </div>
 
-                    <!-- Payment Method -->
+                    <!-- Phuongw thức thanh toans -->
                     <div class="bg-white rounded-lg shadow p-6">
                         <h3 class="text-xl font-bold mb-4 text-gray-800">Phương Thức Thanh Toán</h3>
+                        @error('payment_method')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                         <div class="space-y-3">
                             <label
                                 class="flex items-center p-4 border-2 border-indigo-600 rounded-lg cursor-pointer bg-indigo-50">
-                                <input type="radio" name="payment_method" value="cod" class="mr-3 w-5 h-5 text-indigo-600" checked>
+                                <input type="radio" name="payment_method" value="cod" class="mr-3 w-5 h-5 text-indigo-600">
                                 <div class="flex-1">
                                     <div class="font-semibold text-gray-800">Thanh toán khi nhận hàng (COD)</div>
                                     <div class="text-sm text-gray-600">Thanh toán bằng tiền mặt khi nhận hàng</div>
@@ -102,22 +105,6 @@
                                     <div class="text-sm text-gray-600">Chuyển khoản trực tiếp vào tài khoản ngân hàng</div>
                                 </div>
                             </label>
-                            {{-- <label
-                                class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-indigo-600">
-                                <input type="radio" name="payment" class="mr-3 w-5 h-5 text-indigo-600">
-                                <div class="flex-1">
-                                    <div class="font-semibold text-gray-800">Ví điện tử MoMo</div>
-                                    <div class="text-sm text-gray-600">Thanh toán qua ví MoMo</div>
-                                </div>
-                            </label>
-                            <label
-                                class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-indigo-600">
-                                <input type="radio" name="payment" class="mr-3 w-5 h-5 text-indigo-600">
-                                <div class="flex-1">
-                                    <div class="font-semibold text-gray-800">Thẻ tín dụng/Ghi nợ</div>
-                                    <div class="text-sm text-gray-600">Visa, Mastercard, JCB</div>
-                                </div>
-                            </label> --}}
                         </div>
                     </div>
                 </div>

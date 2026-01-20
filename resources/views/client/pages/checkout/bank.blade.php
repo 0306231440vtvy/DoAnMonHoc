@@ -25,7 +25,7 @@
                         <li class="list-group-item">
                             <strong>Số tiền:</strong>
                             <span class="text-danger fw-bold">
-                                {{ number_format($order->chiTiet->sum('thanhtien')) }} đ
+                                {{ number_format($order->chiTiet->sum('thanhtien')) }} VNĐ
                             </span>
                         </li>
                         <li class="list-group-item">

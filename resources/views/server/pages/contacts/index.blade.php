@@ -126,25 +126,30 @@
                                 @endif
 
                             </div>
-                            <div class="col-sm-3 text-right">
-                                <form action="{{ route('contacts.update',['id'=> $contact->id]) }}" method="POST"
-                                    onsubmit="return confirm('Đánh dấu đã đọc liên hệ của {{ $contact->name }}')">
-                                    @csrf
-                                    @method('PUT')
-                                        <button class="btn btn-success" style="width: 60%;" type="submit">
-                                            <i class="glyphicon glyphicon-ok"></i> Đánh dấu dã đọc
-                                        </button>
-                                </form>
-                                <br><br>
-                                <form action="{{ route('contacts.destroy',['id'=> $contact->id]) }}" method="POST"
-                                    onsubmit="return confirm('Đánh dấu đã đọc liên hệ của {{ $contact->name }}')">
-                                    @csrf
-                                    @method('DELETE')
-                                        <button class="btn btn-danger" style="width: 60%;" type="submit">
-                                            <i class="glyphicon glyphicon-trash"></i> Xóa
-                                        </button>
-                                </form>
-                            </div>
+                            @if($contact->trangthai !==0)
+                                
+                                <div class="col-sm-3 text-right">
+                                    @if($contact->trangthai ==1)
+                                        <form action="{{ route('contacts.update',['id'=> $contact->id]) }}" method="POST"
+                                            onsubmit="return confirm('Đánh dấu đã đọc liên hệ của {{ $contact->name }}')">
+                                            @csrf
+                                            @method('PUT')
+                                                <button class="btn btn-success" style="width: 60%;" type="submit">
+                                                    <i class="glyphicon glyphicon-ok"></i> Đánh dấu dã đọc
+                                                </button>
+                                        </form>
+                                    @endif
+                                    <br><br>
+                                    <form action="{{ route('contacts.destroy',['id'=> $contact->id]) }}" method="POST"
+                                        onsubmit="return confirm('Đánh dấu đã đọc liên hệ của {{ $contact->name }}')">
+                                        @csrf
+                                        @method('DELETE')
+                                            <button class="btn btn-danger" style="width: 60%;" type="submit">
+                                                <i class="glyphicon glyphicon-trash"></i> Xóa
+                                            </button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
