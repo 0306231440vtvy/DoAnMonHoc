@@ -10,19 +10,43 @@ use Illuminate\Http\Request;
 class CategoryService extends BaseService
 {
     protected $repository;
+    protected $payload;
+    protected function prepageModeldata(Request $request): self
+    {
+        $this->payload = $request->only([
+            'id',
+            'name',
+            'description',
+            'publish'
+        ]);
+
+        return $this;
+    }
 
     public function __construct(
         CategoryRepository $repository
     ) {
         $this->repository = $repository;
     }
-    protected function prepageModeldata(Request $request): self
-    {
-        return $this;
+
+    public function createCategory($request){
+                try {
+            $this->beginTransaction();
+
+            $fillable = $this->repository->getFillable();
+            $payload = $request->only($fillable);
+
+            $model = $this->repository->createCategory( $payload);
+            $this->commit();
+            return $model;
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
     }
-    public function search($keyword)
-    {
-        if (!$keyword) {
+    public function search($keyword){
+        if(!$keyword)
+        {
             return $this->repository->paginate();
         }
         return $this->repository->search($keyword);
@@ -38,19 +62,19 @@ class CategoryService extends BaseService
         return $this->repository->destroy($id);
     }
 
-    // public function update($id, $request){
-    //     try {
-    //         $this->beginTransaction();
+    public function updateCategory( $id, $request ){
+        try {
+            $this->beginTransaction();
 
-    //         $fillable = $this->repository->getFillable();
-    //         $payload = $request->only($fillable);
+            $fillable = $this->repository->getFillable();
+            $payload = $request->only($fillable);
 
-    //         $model = $this->repository->update($id, $payload);
-    //         $this->commit();
-    //         return $model;
-    //     } catch (\Throwable $th) {
-    //         $this->rollBack();
-    //         throw $th;
-    //     }
-    // }
+            $model = $this->repository->updateCategory($id, $payload);
+            $this->commit();
+            return $model;
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
+    }
 }

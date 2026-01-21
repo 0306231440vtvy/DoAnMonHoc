@@ -27,10 +27,10 @@
                 @endif
             </td>
             <td class="">
-                <a href="{{ route('categories.edit', $item->id) }}" class="btn btn-xs btn-warning">
+                <a href="{{ route('categories.edit',['id'=> $item->id]) }}" class="btn btn-xs btn-warning">
                     <i class="glyphicon glyphicon-edit"></i> Sửa
                 </a>
-                <form action="{{ route('categories.destroy', $item->id) }}" method="POST" class="d-inline"
+                <form action="{{ route('categories.destroy', ['id'=> $item->id]) }}" method="POST" class="d-inline"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
                     @csrf
                     @method('DELETE')
