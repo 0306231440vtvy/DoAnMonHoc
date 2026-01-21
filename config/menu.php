@@ -6,7 +6,7 @@ return [
             'name' => 'dashboard',
             'title' => 'Dashboard',
             'icon' => 'fa fa-th-large',
-            'route' => 'server.layouts',
+            'route' => 'server.dashboard',
         ],
         [
             'name' => 'users',

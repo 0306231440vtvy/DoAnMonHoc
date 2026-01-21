@@ -28,11 +28,8 @@ class Sanpham extends Model
         return $this->hasMany(CtHoadon::class, 'sanpham_id', 'id');
     }
     
-    // Check xem user hiện tại đã thích sản phẩm này chưa (Helper function)
-    public function isFavoritedBy($userId)
+    public function usersYeuthich()
     {
-        return $this->belongsToMany(User::class, 'yeuthich', 'sanpham_id', 'user_id')
-                    ->where('user_id', $userId)
-                    ->exists();
+        return $this->belongsToMany(User::class, 'yeuthich', 'sanpham_id', 'user_id');
     }
 }

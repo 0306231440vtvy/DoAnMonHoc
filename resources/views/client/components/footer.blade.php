@@ -22,11 +22,11 @@
                 <div class="footer-menu">
                     <h2 class="footer-wid-title">Tài Khoản </h2>
                     <ul>
-                        <li><a href="{{ route('profile') }}">Tài khoản của tôi</a></li>
-                        <li><a href="#">Lịch sử đơn hàng</a></li>
-                        <li><a href="#">Sản phẩm yêu thích</a></li>
-                        <li><a href="#">Liên hệ nhà cung cấp</a></li>
-                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="{{ Auth::check() ? route('client.profile.index') : route('auth.login') }}">Tài khoản của tôi</a></li>
+                        <li><a href="{{ Auth::check() ? route('client.profile.orders') : route('auth.login') }}">Lịch sử đơn hàng</a></li>
+                        <li><a href="{{ Auth::check() ? route('client.profile.favorite') : route('auth.login') }}">Sản phẩm yêu thích</a></li>
+                        <li><a href="{{ route('contact') }}">Liên hệ nhà cung cấp</a></li>
+                        <li><a href="{{ route('layouts') }}">Trang chủ</a></li>
                     </ul>
                 </div>
             </div>

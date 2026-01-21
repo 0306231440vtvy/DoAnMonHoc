@@ -41,4 +41,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function yeuthich()
+    {
+        // Quan hệ Nhiều - Nhiều với bảng Sanpham thông qua bảng trung gian 'yeuthich'
+        return $this->belongsToMany(Sanpham::class, 'yeuthich', 'user_id', 'sanpham_id')
+                    ->withTimestamps();
+    }
 }

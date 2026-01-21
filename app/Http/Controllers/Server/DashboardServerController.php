@@ -3,16 +3,24 @@
 namespace App\Http\Controllers\Server;
 
 use App\Http\Controllers\Controller;
-use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Services\StatisticService;
 
 class DashboardServerController extends Controller
 {
-    public function __construct()
+    protected $statisticService;
+
+    public function __construct(StatisticService $statisticService)
     {
-        // throw new \Exception('Not implemented');
+        $this->statisticService = $statisticService;
     }
-    public function index(): View
+
+    public function index()
     {
-        return view('server.layout');
+        // Gọi Service lấy toàn bộ data
+        $dashboardData = $this->statisticService->getDashboardData();
+
+        // Trả về view kèm dữ liệu
+        return view('server.pages.dashboard.index', compact('dashboardData'));
     }
 }

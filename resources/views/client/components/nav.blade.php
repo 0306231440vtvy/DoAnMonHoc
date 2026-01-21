@@ -21,7 +21,7 @@
                    {{-- <li><a href="{{ route('checkout') }}"
                            class="font-medium uppercase hover:text-[#667eea] transition">Thanh
                            toán</a></li> --}}
-                   <li><a href="{{ route('profile') }}"
+                   <li><a href="{{ route('client.profile.index') }}"
                            class="font-medium uppercase hover:text-[#667eea] transition">Tài
                            khoản</a></li>
                    {{-- <li><a href="{{ route('gioithieu') }}"
@@ -29,6 +29,9 @@
                    </li> --}}
                    <li><a href="{{ route('contact') }}"
                            class="font-medium uppercase hover:text-[#667eea] transition">Liên hệ</a>
+                   </li>
+                   <li><a href="{{ route('blog') }}"
+                           class="font-medium uppercase hover:text-[#667eea] transition">Tin tức</a>
                    </li>
                </ul>
            </div>

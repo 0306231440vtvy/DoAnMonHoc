@@ -20,6 +20,11 @@ class UserService
         $filters = $request->all();
         return $this->userRepository->getUsers($filters);
     }
+    public function show($column, $value)
+    {
+        // SỬA: Gọi 'findByField' thay vì 'findBy'
+        return $this->userRepository->findByField($column, $value);
+    }
 
     public function create($request)
     {

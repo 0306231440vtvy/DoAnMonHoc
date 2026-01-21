@@ -67,4 +67,19 @@ class OrderRepository extends BaseRepository
         return $this->model->with(['chiTiet.sanpham', 'user'])
                         ->find($id);
     }
+
+
+    // Lấy danh sách đơn hàng của user, có lọc theo trạng thái
+    public function getOrdersByUser($userId, $status = null)
+    {
+        $query = $this->model->where('user_id', $userId);
+
+        if ($status !== null) {
+            $query->where('trangthai', $status);
+        }
+
+        return $query->with('chiTietHoadon.sanpham') // Eager load để lấy sản phẩm trong đơn
+                     ->orderBy('created_at', 'desc')
+                     ->paginate(5);
+    }
 }

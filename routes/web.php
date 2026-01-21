@@ -19,7 +19,9 @@ use App\Http\Controllers\Server\VariantController;
 use App\Http\Controllers\Server\ContactController;
 use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Client\HomeController;
-use App\Http\Controllers\Client\ClientOrderCOntroller;
+use App\Http\Controllers\Client\ClientOrderController;
+use App\Http\Controllers\Client\FavoriteController;
+use App\Http\Controllers\Client\PageController;
 // ======================================CLIENT==============================================//
 
 use App\Http\Controllers\Server\RoleController;
@@ -29,43 +31,63 @@ use App\Http\Controllers\Server\PermissionController;
 Route::prefix('/')->group(function () {
     //Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
     Route::get('/', [HomeController::class, 'index'])->name('layouts');
-    //Route::get('/', [DashboardClientController::class, 'index'])->name('layouts');
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/carts', [CartController::class, 'index'])->name('carts');
     Route::get('/products', [ClientProductController::class, 'index'])->name('products');
     Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
-    // Route::get('/categories/{slug}',[Catego])
-    Route::post('/profile/update', [ProfileController::class, 'update'])
-        ->name('client.profile.update');
 
-    // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
-    // Tên route: client.orders.index
-    Route::get('/profile/orders', [ClientOrderController::class, 'index'])
-        ->name('client.orders.index');
+     // Req 21: Trang giới thiệu
+    Route::get('/gioi-thieu', [PageController::class, 'about'])->name('about');
 
-    // Xem chi tiết đơn hàng (nếu cần sau này)
-    Route::get('/profile/orders/{id}', [ClientOrderController::class, 'show'])
-        ->name('client.orders.show');
+    // Req 22 & 23: Trang tin tức (Danh sách & Tìm kiếm)
+    Route::get('/tin-tuc', [PageController::class, 'blog'])->name('blog');
+        
+    // Chi tiết tin tức
+    Route::get('/tin-tuc/{id}', [PageController::class, 'blogDetail'])->name('blog.detail');
+    
+    Route::prefix('/auth')->group(function () {
+        Route::get('register', [AuthController::class, 'create'])->name('auth.register');
+        Route::post('register', [AuthController::class, 'register']);
+        Route::get('login', [AuthController::class, 'index'])->name('auth.login');
+        Route::post('login', [AuthController::class, 'login']);
+        Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::get('active-email/{email}', [AuthController::class, 'active'])->name('auth.active.email');
+    });
 
-    // Hủy đơn hàng
-    Route::post('/profile/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
-        ->name('client.orders.cancel');
+    Route::middleware(['auth'])->group(function () {
+        
+        // --- KHU VỰC PROFILE (Tài khoản & Đơn hàng) ---
+        // Gom nhóm prefix 'profile' để đường dẫn đẹp: domain.com/profile/...
+        Route::prefix('profile')->name('client.profile.')->group(function() {
+            
+            // Thông tin cá nhân (Req 30)
+            Route::get('/', [ProfileController::class, 'index'])->name('index'); // Tên route: client.profile.index
+            Route::post('/update', [ProfileController::class, 'update'])->name('update'); // Tên route: client.profile.update
+           
+            // Lịch sử đánh giá (Req 33)
+            Route::get('/reviews', [ProfileController::class, 'reviews'])->name('reviews'); // Tên route: client.profile.reviews
+
+            // Quản lý đơn hàng (Req 31, 32)
+            // Lưu ý: Mình đặt tên route là 'orders' thay vì 'client.orders.index' để khớp với prefix nhóm
+            Route::get('/orders', [ClientOrderController::class, 'index'])->name('orders'); // Tên route: client.profile.orders
+            Route::get('/orders/{id}', [ClientOrderController::class, 'show'])->name('orders.show');
+            Route::post('/orders/cancel/{id}', [ClientOrderController::class, 'cancel'])->name('orders.cancel');
+
+            // --- KHU VỰC YÊU THÍCH (Favorites) ---
+            Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
+            Route::get('/favorite/toggle/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+        });
+    });
 });
-Route::prefix('/auth')->group(function () {
-    Route::get('register', [AuthController::class, 'create'])->name('auth.register');
-    Route::post('register', [AuthController::class, 'register']);
-    Route::get('login', [AuthController::class, 'index'])->name('auth.login');
-    Route::post('login', [AuthController::class, 'login']);
-    Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-    Route::get('active-email/{email}', [AuthController::class, 'active'])->name('auth.active.email');
-});
+
+// Route lấy danh sách xã theo ID tỉnh
+Route::get('/get-wards/{province_id}', [App\Http\Controllers\Client\ProfileController::class, 'getWards']);
 
 
 //========================================SERVER============================================//
 
 Route::prefix('/server')
     ->group(function () {
-        Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
+        Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.dashboard');
         // ==================USER====================//
         Route::prefix('users')->name('users')->group(function () {
             Route::get('index', [UserController::class, 'index'])->name('.index');
