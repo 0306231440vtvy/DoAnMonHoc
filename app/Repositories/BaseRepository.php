@@ -62,6 +62,14 @@ abstract class BaseRepository
     {
         return $this->model->select($column)->with($relation)->where($field, $value)->first();
     }
+    public function findByFields(array $conditions,  array $relation = [], array $column = ['*']): Model |null
+    {
+        $query = $this->model->select($column)->with($relation);
+        foreach ($conditions  as $field => $val) {
+            $query->where($field, $val);
+        }
+        return $query;
+    }
     public function getFillable(): array
     {
         return $this->model->getFillable();

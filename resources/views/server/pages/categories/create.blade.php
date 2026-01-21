@@ -7,16 +7,6 @@
                 <li>
                     <a href="{{ route('server.layouts') }}">Trang chủ</a>
                 </li>
-                {{-- @if ($category)
-
-                    <li class="active">
-                        <strong>Chỉnh sửa thông tin danh mục <span><b>{{ $category->name }}</b></span></strong>
-                    </li>
-                @else
-                    <li class="active">
-                        <strong>Thêm mới</strong>
-                    </li>
-                @endif --}}
             </ol>
         </div>
     </div>

@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Server;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Server\Product\StoreProductRequest;
 use App\Http\Requests\Server\Product\UpdateProductRequest;
-use App\Models\BienThe;
 use App\Models\Category;
 use App\Models\Sanpham;
 use App\Repositories\ProductRepository;
 use App\Services\BienTheService;
 use App\Services\CategoryService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Services\ProductService;
 use App\Services\ThuongHieuService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\BienThe;
 
 class ProductController extends Controller
 {
@@ -65,46 +65,82 @@ class ProductController extends Controller
     public function create(): View
     {
         $categories = Category::where('publish', 1)->get();
-        // $bienthe = $this->bientheService->getTrangThai();
-        // foreach ($bienthe as $key => $val) {
-        //     dd($bienthe, $key, $val);
-        // }
-        $bienthe = BienThe::join('bienthe_value', 'bienthe.id', '=', 'bienthe_values.bienthe_id')
-            ->where('id', '=', '');
-        dd($bienthe);
+        // dd($categories);
         $thuonghieu = $this->thuonghieuService->getTrangThai();
         $sku = 'SP' . time() . rand(1, 1000);
+        $bienthe = BienThe::with(['bienthe_values' => function ($query) {
+            $query
+                ->where('trangthai', 1)
+                ->orderBy('value', 'asc');
+        }])
+            ->where('trangthai', 1)
+            ->orderBy('name')
+            ->get();
+        // $bienthe = DB::table('bienthe')
+        //     ->join('bienthe_values', 'bienthe.id', '=', 'bienthe_values.bienthe_id')
+        //     ->where('bienthe.trangthai', 1)
+        //     ->orderBy('bienthe.id', 'asc')
+        //     ->get();
+        // dd($bienthe);
         return view('server.pages.products.save', compact(
             'sku',
             'categories',
-            'bienthe',
-            'thuonghieu'
+            'thuonghieu',
+            'bienthe'
         ));
     }
     public function store(StoreProductRequest $request)
     {
         // dd($request);
         $products = $this->productService->save($request);
+        // dd($products);
         return redirect()->route('products.create')->with('success', 'Tạo mới sản phẩm thành công');
     }
     public function edit($id)
     {
-        $products = $this->productRepository->findById($id, ['categories', 'thuonghieu']);
+        $products = $this->productRepository->findById($id, [
+            'categories',
+            'thuonghieu',
+            'sanpham_variants' => function ($query) {
+                $query->with(['attributesValues' => function ($q) {
+                    $q->select(
+                        'bienthe_values.id',
+                        'bienthe_values.value',
+                        'variant_attribute_values.variant_id'
+                    );
+                }]);
+            }
+        ]);
         //dd($products);
+        $bienthe = BienThe::with(['bienthe_values' => function ($query) {
+            $query
+                ->where('trangthai', 1)
+                ->orderBy('value', 'asc');
+        }])
+            ->where('trangthai', 1)
+            ->orderBy('name')
+            ->get();
         $categories = Category::where('publish', 1)->get();
         $bienthe = $this->bientheService->getTrangThai();
         $thuonghieu = $this->thuonghieuService->getTrangThai();
+        $sku = $products->sku ?? '';
+        $giaban = $products->giaban ?? 0;
         return view('server.pages.products.update', compact(
             'products',
             'categories',
-            'thuonghieu'
+            'thuonghieu',
+            'bienthe',
+            'sku',
+            'giaban'
         ));
     }
     public function update(UpdateProductRequest $request, $id)
     {
-        $products = $this->productService->save($request, $id);
-        // dd($products);
-        return redirect()->route('products.index')->with('success', 'Cập nhật sản phẩm thành công');
+        $product = $this->productService->save($request, $id);
+
+        return redirect()
+            ->route('products.index', $product)
+            ->with('success', 'Cập nhật sản phẩm thành công');
     }
     public function delete($id)
     {

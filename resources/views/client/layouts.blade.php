@@ -24,7 +24,7 @@
     @include('client.components.footer')
     @include('client.components.chat')
     @include('client.components.scripts')
-    
+    @stack('scripts')
 </body>
 
 </html>

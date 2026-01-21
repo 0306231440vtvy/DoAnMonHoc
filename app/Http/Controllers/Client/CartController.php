@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\Cart\CheckQuantityRequest;
+use App\Repositories\CartRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\View\View;
 use App\Services\CartService;
-use App\Services\ProductService;
-use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -15,87 +16,77 @@ class CartController extends Controller
     protected $cartService;
     protected $userservice;
     protected $productservice;
-    public function __construct( 
-        CartService $cartService
-    )
-    {
+    protected $cartRepository;
+    protected $productRepository;
+    public function __construct(
+        CartService $cartService,
+        CartRepository $cartRepository,
+        ProductRepository $productRepository
+    ) {
         $this->cartService = $cartService;
+        $this->cartRepository = $cartRepository;
+        $this->productRepository = $productRepository;
     }
-    public function index(CartService $cartService)
+    public function index()
     {
-        $user = auth()->user();
-        $cart = $cartService->getCart($user->id);
-        return view('client.pages.carts.index', ['cartItems' => $cart['cartItems'],
-                                                             'totalItems'=> $cart['totalItems']]);
+        $user_id = Auth::id();
+        $carts = $this->cartRepository->cartIndex($user_id);
+        $totals = $this->cartRepository->calculateTotals($carts);
+        // dd($totals);
+        return view('client.pages.carts.index', compact(
+            'carts',
+            'totals'
+        ));
     }
-
-    public function summary(Request $request, CartService $cartService)
+    public function summary()
     {
-        $data = $request->validate([
-            'checked_items' => 'array',
-            'checked_items.*' => 'integer',
-            'discount_percent' => 'nullable|integer|min:0|max:100',
-        ]);
-
-        $summary = $cartService->calSummary(
-            auth()->id(),
-            $data['checked_items'] ?? []
-        );
-
+        $summary = $this->cartRepository->getSummary();
         return response()->json($summary);
     }
-    public function updateQuantity(Request $request, CartService $cartService)
+    public function addToCart(Request $request)
     {
-        $data = $request->validate([
-            'cart_item_id' => 'required|integer',
-            'type' => 'required|in:plus,minus',
+        $this->cartService->save($request);
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã thêm vào giỏ hàng'
         ]);
-
-        $result = $cartService->updateQuantity(
-            auth()->id(),
-            $data['cart_item_id'],
-            $data['type']
-        );
-
-        return response()->json($result);
     }
-
-    //Xoas 1 sản phẩm
-    public function deleteItem(Request $request, CartService $cartService)
+    public function calculateSelected(Request $request)
     {
-        $data = $request->validate([
-            'sanpham_id' => 'required|integer',
-        ]);
+        $selectedIds = $request->input('cart_ids', []);
+        $user = Auth::id();
+        $carts = $this->cartRepository->findById($user);
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
-        $cartService->deleteItem(
-            auth()->id(),
-            $data['sanpham_id']
-        );
 
-        return response()->json(['success' => true]);
+        $totals = $this->cartRepository->calculateTotals($carts, $selectedIds);
+
+        return response()->json($totals);
     }
-
+    public function updateQuantity(Request $request)
+    {
+        $this->cartService->updateQuantity(
+            $request->cart_id,
+            $request->type
+        );
+        return back();
+    }
+    //xóa 1 sản phẩm
+    public function delete(Request $request)
+    {
+        $cart_id = $request->cart_id;
+        if (Auth::id()) {
+            $this->cartService->trash($cart_id);
+            return redirect()->back()->with('success', 'Xóa sản phẩm thành công');
+        }
+        return redirect()->back()->with('error', 'Lỗi trong quá trình xóa sản phẩm thành công');
+    }
     // Xóa toàn bộ giỏ
-    public function clear(CartService $cartService)
+    public function clear()
     {
-        $cartService->clearCart(auth()->id());
-
-        return response()->json(['success' => true]);
-    }
-    
-    public function checkoutPrepare(Request $request, CartService $cartService)
-    {
-        $data = $request->validate([
-            'checked_items' => 'required|array|min:1',
-            'checked_items.*' => 'integer',
-        ]);
-
-        $checkout = $cartService->getCheckoutData(
-            auth()->id(),
-            $data['checked_items']
-        );
-
-        session()->put('checkout', $checkout);
+        $this->cartRepository->clearCart(Auth::id());
 
         return response()->json(['success' => true]);
     }

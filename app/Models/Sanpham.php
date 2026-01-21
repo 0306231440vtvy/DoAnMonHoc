@@ -19,10 +19,8 @@ class Sanpham extends Model
         'tensp',
         'album',
         'hinhnen',
-        'soluong',
         'giaban',
         'discount',
-        'sku',
         'slug',
         'mota',
         'category_id',
@@ -58,12 +56,12 @@ class Sanpham extends Model
     //Thêm khóa ngoại cho giỏ hàng
     public function cart()
     {
-        return $this->hasMany(Giohang::class, 'sanpham_id','id');
+        return $this->hasMany(Giohang::class, 'sanpham_id', 'id');
     }
-   // 1-n 1 sản phẩm chứa nhiều variants
-    public function variants(): HasMany
+    // 1-n 1 sản phẩm chứa nhiều variants
+    public function sanpham_variants(): HasMany
     {
-        return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
+        return $this->hasMany(SanphamVariant::class, 'sanpham_id');
     }
     public function getRouteKeyName(): string
     {
@@ -72,5 +70,5 @@ class Sanpham extends Model
     protected $casts = [
         'album' => 'json'
     ];
-    protected $relationable = ['sanpham_variants', 'categories'];
+    public $relationable = ['sanpham_variants', 'categories'];
 }

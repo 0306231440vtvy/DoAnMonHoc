@@ -48,7 +48,6 @@ class HomeController extends Controller
             ->take(4)
             ->get();
         $sliderequest = clone request();
-
         $slide = $this->slideService->pagination($sliderequest->merge([
             'sort' => 'stt,asc',
             'perpage' => 4

@@ -26,14 +26,12 @@ use App\Http\Controllers\Client\PageController;
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
-Route::get('/products', [ClientProductController::class, 'index'])->name('products');
-Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
 //Thêm route gửi liên hệ
-Route::post('/contact/send',[ClientContactController::class, 'send'])->name('contact.send');
+Route::post('/lien-he/send', [ClientContactController::class, 'send'])->name('contact.send');
 Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
 Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
 Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
-Route::get('/gio-hang', [CartController::class, 'index'])->name('carts');
+// Route::get('/gio-hang', [CartController::class, 'index'])->name('carts');
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
 
 // Route::get('/categories/{slug}',[Catego])
@@ -52,13 +50,16 @@ Route::controller(PageController::class)->group(function () {
 
 Route::middleware('auth')->prefix('/')->group(function () {
     //Route cho trang giỏ hàng
-    Route::prefix('/cart')->name('carts')->group(function () {
-        Route::get('/', [CartController::class, 'index']);
-        Route::post('update-quantity', [CartController::class, 'updateQuantity'])->name('.update');
-        Route::post('summary', [CartController::class, 'summary'])->name('.summary');
-        Route::post('delete', [CartController::class, 'deleteItem'])->name('.delete');
+    Route::prefix('gio-hang')->name('carts')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('.index');
+        Route::get('summary', [CartController::class, 'summary'])->name('.summary');
+        Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('.add-to-cart');
+        Route::post('update-quantity', [CartController::class, 'updateQuantity'])->name('.update-quantity');
+        Route::post('delete', [CartController::class, 'delete'])->name('.delete');
         Route::post('clear', [CartController::class, 'clear'])->name('.clear');
         Route::post('checkout', [CartController::class, 'checkoutPrepare']);
+        Route::post('/calculate-selected', [CartController::class, 'calculateSelected'])
+            ->name('.calculate-selected');
     });
     Route::prefix('/profile')->name('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index']);
@@ -68,7 +69,7 @@ Route::middleware('auth')->prefix('/')->group(function () {
     Route::prefix('/order')->name('order')->group(function () {
         // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
         // Tên route: orders.index
-        Route::get('/orders', [ClientOrderController::class, 'index'])
+        Route::get('orders', [ClientOrderController::class, 'index'])
             ->name('.index');
         // Xem chi tiết đơn hàng (nếu cần sau này)
         Route::get('/orders/{id}', [ClientOrderController::class, 'show'])
@@ -81,8 +82,6 @@ Route::middleware('auth')->prefix('/')->group(function () {
     Route::prefix('/checkout')->name('checkout')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('.index');
         Route::post('/', [CheckoutController::class, 'store'])->name('.store');
-        Route::get('provinces', [CheckoutController::class, 'provinces']);
-        Route::get('wards/{province}', [CheckoutController::class, 'wards']);
         Route::get('bank/{order}', [CheckoutController::class, 'bank'])->name('.bank');
         Route::get('/success', [CheckoutController::class, 'success'])->name('.thanhcong');
     });
@@ -119,7 +118,7 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
             Route::post('store', [CategoryController::class, 'store'])->name('.store');
             Route::put('{id}/update', [CategoryController::class, 'update'])->name('.update');
-            Route::delete('{id}/destroy', [CategoryController::class, 'destroy'])->name('.destroy');          
+            Route::delete('{id}/destroy', [CategoryController::class, 'destroy'])->name('.destroy');
         });
         // =================ROLE================//
         Route::prefix('/roles')->name('roles')->group(function () {
@@ -170,7 +169,7 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
         Route::prefix('/contacts')->name('contacts')->group(function () {
             Route::get('index', [ContactController::class, 'index'])->name('.index');
             Route::put('{id}/update', [ContactController::class, 'update'])->name('.update');
-            Route::delete('{id}/destroy', [ContactController::class, 'destroy'])->name('.destroy');   
+            Route::delete('{id}/destroy', [ContactController::class, 'destroy'])->name('.destroy');
         });
         // =================SLIDE================//
         Route::prefix('/slides')->name('slides')->group(function () {

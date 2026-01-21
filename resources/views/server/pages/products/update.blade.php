@@ -22,7 +22,7 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sku">SKU (Mã sản phẩm)</label>
@@ -46,7 +46,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -77,7 +77,7 @@
 
                             {{-- danh mục thương hiệu biến thể --}}
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="category_id">Danh Mục <span class="text-danger">*</span></label>
                                         <select class="form-control @error('category_id') is-invalid @enderror"
@@ -95,7 +95,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="thuonghieu_id">Thương Hiệu <span class="text-danger">*</span></label>
                                         <select class="form-control @error('thuonghieu_id') is-invalid @enderror"
@@ -113,24 +113,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="bienthe_id">Biến Thể</label>
-                                        <select class="form-control @error('bienthe_id') is-invalid @enderror"
-                                            id="bienthe_id" name="bienthe_id">
-                                            <option value="">-- Không có biến thể --</option>
-                                            @foreach ($bienthe as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('bienthe_id', $products->bienthe_id ?? '') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('bienthe_id')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
                             </div>
                             {{-- ảnh --}}
                             <div class="form-group mb-4">
@@ -151,8 +133,8 @@
                                                 style="max-width: 300px; max-height: 300px; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}" name="hinhnen"
-                                        id="hinhnen" />
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
+                                        name="hinhnen" id="hinhnen" />
 
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền
@@ -222,6 +204,8 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+                            {{-- form để thêm biến thể của sản phẩm --}}
+                            @include('server.pages.products.components.update_variants')
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary ">
                                     <i class="fa fa-save"></i>
@@ -238,7 +222,7 @@
         </div>
     </div>
 
-    <style>
+    {{-- <style>
         .card {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -295,5 +279,5 @@
             margin-top: 5px;
             font-size: 14px;
         }
-    </style>
+    </style> --}}
 @endsection

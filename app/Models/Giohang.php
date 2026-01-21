@@ -17,17 +17,19 @@ class Giohang extends Model
 
     protected $fillable = [
         'user_id',
-        'sanpham_id',
+        'sku',
         'soluong',
+        'giaban',
+        'sku'
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
-    public function sanpham(): Belongsto{
-        return $this->belongsto(SanPham::class,'sanpham_id','id');
+    public function variants(): BelongsTo
+    {
+        return $this->belongsTo(SanphamVariant::class, 'sku', 'sku');
     }
-    public $relationable = [];
+    public $relationable = ['user'];
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Server\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class StoreCategoryRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-
+        $id = $this->route('id');
         return [
-            'name' => 'required|string|min:4|max:100',
+            'name' => 'required|string|min:4|max:100|unique:categories,name,' . $id,
             'slug' => 'required|string',
             'publish' => 'integer|gte:1|lte:2',
         ];

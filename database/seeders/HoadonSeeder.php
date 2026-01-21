@@ -43,7 +43,6 @@ class HoadonSeeder extends Seeder
         $this->command->info("Tìm thấy {$memberUsers->count()} member users");
         $this->command->info("Tìm thấy " . count($provinces) . " provinces");
         $this->command->info("Tìm thấy " . count($wards) . " wards");
-
         $noteMau = [
             'Giao hàng giờ hành chính',
             'Gọi trước khi giao',
