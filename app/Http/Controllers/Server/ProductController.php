@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Server;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Server\Product\StoreProductRequest;
 use App\Http\Requests\Server\Product\UpdateProductRequest;
+use App\Models\BienThe;
 use App\Models\Category;
 use App\Models\Sanpham;
 use App\Repositories\ProductRepository;
@@ -38,18 +39,10 @@ class ProductController extends Controller
     }
     public function index(Request $request): View
     {
-        // dd($request->keyword);
-        // $request->merge([
-        //     'keyword' =>
-        //     [
-        //         'q' => $request->keyword,
-        //         'fields' => 'tensp'
-        //     ]
+        // request()->merge([
+        //     'with' => ['variants']
         // ]);
         $products = $this->productService->pagination($request);
-        // $products = Sanpham::where('tensp', 'like', '%' . $request->keyword . '%')
-        //     ->paginate(20);
-        // ->get();
         // dd($products);
         return view('server.pages.products.index', compact(
             'products',
@@ -57,14 +50,28 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        $products = $this->productRepository->findById($id);
-        // dd($products);
-        // $products = $this->productService->pa
+        // ->leftJoin('order_details', function ($join) {
+        //         $join->on('products.sku', '=', 'order_details.sku')
+        //             ->orOn('product_variants.sku', '=', 'order_details.sku');
+        //     })
+        // $products = $this->productRepository->findById($id, ['thuonghieu', 'categories', 'variants']);
+        $products = Sanpham::join('sanpham_variants', 'sanpham.id', '=', 'sanpham_variants.sanpham_id')
+            ->select('sanpham_variants.soluong', 'sanpham_variants.id')
+            ->join('sanpham_variants', 'sanpham_variants.id', '=', '')
+            ->where('sanpham.id', '=', $id)
+            ->get();
+        dd($products);
     }
     public function create(): View
     {
         $categories = Category::where('publish', 1)->get();
-        $bienthe = $this->bientheService->getTrangThai();
+        // $bienthe = $this->bientheService->getTrangThai();
+        // foreach ($bienthe as $key => $val) {
+        //     dd($bienthe, $key, $val);
+        // }
+        $bienthe = BienThe::join('bienthe_value', 'bienthe.id', '=', 'bienthe_values.bienthe_id')
+            ->where('id', '=', '');
+        dd($bienthe);
         $thuonghieu = $this->thuonghieuService->getTrangThai();
         $sku = 'SP' . time() . rand(1, 1000);
         return view('server.pages.products.save', compact(
@@ -95,16 +102,13 @@ class ProductController extends Controller
     }
     public function update(UpdateProductRequest $request, $id)
     {
-        // dd($request);
-        // $products = $this->productService->save($request, $id);
-        $products = $this->productService->update($request, $id);
+        $products = $this->productService->save($request, $id);
         // dd($products);
         return redirect()->route('products.index')->with('success', 'Cập nhật sản phẩm thành công');
     }
     public function delete($id)
     {
-        $products = $this->productService->delete($id);
-        // dd($products);
+        $products = $this->productService->trash($id);
         return redirect()->route('products.index')->with('success', 'Xóa sản phẩm thành công');
     }
 }

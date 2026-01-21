@@ -14,4 +14,5 @@ class BienThe extends Model
         'value',
         'trangthai'
     ];
+    public $relationable = [];
 }

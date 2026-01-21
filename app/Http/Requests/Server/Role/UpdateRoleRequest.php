@@ -22,7 +22,15 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'        => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'publish'     => 'required|in:0,1',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên brand không được để trống.',
         ];
     }
 }

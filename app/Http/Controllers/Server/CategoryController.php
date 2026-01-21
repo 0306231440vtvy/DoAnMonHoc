@@ -26,7 +26,7 @@ class CategoryController extends Controller
     }
     public function create(): View // Lấy view thêm mới
     {
-        return view('server.pages.categories.create');
+        return view('server.pages.categories.save');
     }
 
     public function edit($id) //Lấy view sửa danh mục

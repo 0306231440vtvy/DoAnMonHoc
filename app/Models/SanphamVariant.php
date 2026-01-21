@@ -17,10 +17,6 @@ class SanphamVariant extends Model
         'soluong',
         'trangthai'
     ];
-    public function  sanpham(): BelongsTo
-    {
-        return $this->belongsTo(Sanpham::class);
-    }
     public function attributesValues(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -29,5 +25,9 @@ class SanphamVariant extends Model
             'variant_id',
             'bienthe_value_id'
         )->withTimestamps();
+    }
+    public function  sanpham(): BelongsTo
+    {
+        return $this->belongsTo(Sanpham::class);
     }
 }

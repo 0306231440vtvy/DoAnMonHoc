@@ -12,6 +12,7 @@ abstract class BaseService
     protected $repository;
     protected $resutl;
     protected $modelData;
+    protected $model;
     protected $type;
     protected $perpage = 20;
     protected $sort = ['id', 'asc'];
@@ -109,11 +110,11 @@ abstract class BaseService
         return $this->repository->getTrangThai();
     }
     // xóa vĩnh viễn
-    public function delete($id)
+    public function trash($id)
     {
         try {
             $this->beginTransaction();
-            $model = $this->repository->delete($id);
+            $model = $this->repository->trash($id);
             $this->commit();
             return $model;
         } catch (\Throwable $th) {
@@ -136,31 +137,61 @@ abstract class BaseService
             return is_array($decoded) ? array_values(array_filter($decoded)) : [];
         }
     }
-    protected function beforeUpdate(Request $request, ?int $id)
-    {
-        // mặc định trả về tất cả dữ liệu
-        return $request->all();
-    }
-    // hàm trả về sau khi tạo dữ liệu
-    protected function afterUpdate($model, Request $request): void {}
-    public function update(Request $request, ?int $id = null)
+    //xóa mêm
+    public function delete($id)
     {
         try {
-            $this->beginTransaction();
-            // xử lý raw data
-            $processedData = $this->beforeUpdate($request, $id);
-            // lọc filter
-            $fillable = $this->repository->getFillable();
-            $payload = collect($processedData)->only($fillable)->toArray();
-            $model = $this->repository->update($id, $payload);
-            $this->afterUpdate($model, $request);
-            $this->commit();
-            return $model;
+            return $this
+                ->beginTransaction()
+                ->beforeDelete($id)
+                ->performDelete($id)
+                ->afterDelete($id)
+                ->commit();
         } catch (\Throwable $th) {
             $this->rollBack();
             throw $th;
         }
     }
+    // khôi phục
+    public function restore($id)
+    {
+        try {
+            return $this
+                ->beginTransaction()
+                ->beforeRestore($id)
+                ->restore($id)
+                ->afterRestore($id)
+                ->commit();
+        } catch (\Throwable $th) {
+            $this->rollBack();
+            throw $th;
+        }
+    }
+    // protected function beforeUpdate(Request $request, ?int $id)
+    // {
+    //     // mặc định trả về tất cả dữ liệu
+    //     return $request->all();
+    // }
+    // // hàm trả về sau khi tạo dữ liệu
+    // protected function afterUpdate($model, Request $request): void {}
+    // public function update(Request $request, ?int $id = null)
+    // {
+    //     try {
+    //         $this->beginTransaction();
+    //         // xử lý raw data
+    //         $processedData = $this->beforeUpdate($request, $id);
+    //         // lọc filter
+    //         $fillable = $this->repository->getFillable();
+    //         $payload = collect($processedData)->only($fillable)->toArray();
+    //         $model = $this->repository->update($id, $payload);
+    //         $this->afterUpdate($model, $request);
+    //         $this->commit();
+    //         return $model;
+    //     } catch (\Throwable $th) {
+    //         $this->rollBack();
+    //         throw $th;
+    //     }
+    // }
     //  hàm để xử lý dữ liệu trước khi tạo dữ liệu
     // protected function beforeCreate(Request $request)
     // {
