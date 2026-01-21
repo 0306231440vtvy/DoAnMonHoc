@@ -22,4 +22,5 @@ class BientheValue extends Model
     {
         return $this->belongsToMany(SanphamVariant::class, 'variant_attribute_values', 'bienthe_value_id', 'variant_id');
     }
+    public $relationable = [];
 }

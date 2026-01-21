@@ -43,41 +43,39 @@
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                                     placeholder="email@example.com">
                             </div>
-                            {{-- <div>
-                                
-                                <label class="block text-gray-700 mb-2 font-medium">Địa chỉ *</label>
-                                @error('address')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                                <input type="text" name="address"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
-                                    placeholder="Số nhà, tên đường">
-                            </div> --}}
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-gray-700 mb-2 font-medium">Tỉnh/Thành phố *</label>
-                                    @error('province_id')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                    <select id="province" name="province_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600">
-                                        <option value="">-- Chọn tỉnh --</option>
-                                    </select>
-                                </div>
-            
-                                <div>
-                                    <label class="block text-gray-700 mb-2 font-medium">Phường/Xã *</label>
-                                    @error('province_id')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                    <select id="ward" name="ward_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600" disabled>
-                                        <option value="">-- Chọn xã --</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">Email *</label>
+                            <input type="email"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
+                                placeholder="email@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-medium">Địa chỉ *</label>
+                            <input type="text"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
+                                placeholder="Số nhà, tên đường">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2 font-medium">Tỉnh/Thành phố *</label>
+                                <select
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600">
+                                    @foreach ($wards as $province)
+                                        <option value="{{ $province->id }}"{{ old('province_id') }}>{{ $province->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div>
-                                <label class="block text-gray-700 mb-2 font-medium">Ghi chú đơn hàng (tùy chọn)</label>
-                                <textarea name="note" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
-                                    rows="3" placeholder="Ghi chú về đơn hàng..."></textarea>
+                                <label class="block text-gray-700 mb-2 font-medium">Tỉnh/Thành phố *</label>
+                                <select
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600">
+                                    @foreach ($wards as $ward)
+                                        <option value="{{ $ward->id }}"{{ old('ward_id') }}>{{ $ward->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </form>
                     </div>

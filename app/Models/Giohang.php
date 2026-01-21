@@ -29,4 +29,5 @@ class Giohang extends Model
     public function sanpham(): Belongsto{
         return $this->belongsto(SanPham::class,'sanpham_id','id');
     }
+    public $relationable = [];
 }

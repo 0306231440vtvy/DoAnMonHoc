@@ -31,7 +31,6 @@ class UserService extends BaseService
         try {
             $payload = $request->except(['_token', 'send']);
             $payload['password'] = Hash::make($payload['password']); // Mã hóa pass
-
             $user = $this->repository->create($payload);
             DB::commit();
             return true;
@@ -69,13 +68,11 @@ class UserService extends BaseService
             // THAY ĐỔI Ở ĐÂY:
             // Thay vì xóa cứng: $this->repository->delete($id);
             // Chúng ta cập nhật trạng thái publish về 0 (0 nghĩa là đã xóa/khóa)
-
             $payload = [
                 'publish' => 0,
             ];
 
             $this->repository->update($id, $payload);
-
             DB::commit();
             return true;
         } catch (\Exception $e) {

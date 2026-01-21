@@ -124,7 +124,14 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
         // =================ROLE================//
         Route::prefix('/roles')->name('roles')->group(function () {
             Route::get('index', [RoleController::class, 'index'])->name('.index');
+            Route::get('show/{id}', [RoleController::class, 'show'])->name('.show');
             Route::get('create', [RoleController::class, 'create'])->name('.create');
+            Route::post('store', [RoleController::class, 'store'])->name('.store');
+            Route::get('edit/{id}', [RoleController::class, 'edit'])->name('.edit');
+            Route::put('update/{id}', [RoleController::class, 'update'])->name('.update');
+            Route::delete('delete/{id}', [RoleController::class, 'delete'])->name('.delete');
+            Route::post('restore/{id}', [RoleController::class, 'restore'])->name('.restore');
+            Route::delete('trash/{id}', [RoleController::class, 'trash'])->name('.trash');
         });
         // =================PRODUCT================//
         Route::prefix('/products')->name('products')->group(function () {

@@ -100,4 +100,6 @@ class CheckoutController extends Controller
 
         return view('client.pages.checkout.success', compact('order'));
     }
+    public function store() {}
+
 }

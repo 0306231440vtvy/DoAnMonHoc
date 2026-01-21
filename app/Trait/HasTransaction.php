@@ -51,7 +51,6 @@ trait HasTransaction
     public function handleRelation(Request $request): self
     {
         $relations = $this->repository->getRelationable();
-        dd($relations);
         if (count($relations)) {
             foreach ($relations as $relation) {
                 if ($request->has($relation)) {
@@ -61,15 +60,36 @@ trait HasTransaction
         }
         return $this;
     }
-    public function beforeDelete(Request $request, ?int $id = null): self
+    public function beforeDelete(int $id = 0): self
     {
-        if ($id) {
-            $this->checkExistsId($id);
+        if (!$this->model = $this->repository->findById($id)) {
+            throw new ModelNotFoundException('Không tồn tại record này');
         }
         return $this;
     }
-    public function afterDelete(): self
+    public function afterDelete(int $id = 0): self
     {
+        return $this;
+    }
+    public function performDelete(int $id = 0)
+    {
+        $this->repository->delete($id);
+        return $this;
+    }
+    public function beforeRestore(int $id = 0): self
+    {
+        if (!$this->model = $this->repository->findById($id)) {
+            throw new ModelNotFoundException('Không tồn tại record này');
+        }
+        return $this;
+    }
+    public function afterRestore(int $id = 0): self
+    {
+        return $this;
+    }
+    public function restore(int $id = 0)
+    {
+        $this->repository->delete($id);
         return $this;
     }
 }

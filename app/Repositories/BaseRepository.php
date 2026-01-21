@@ -49,7 +49,7 @@ abstract class BaseRepository
         $result->update($payload);
         return $result;
     }
-    public function delete(int $id = 0): bool
+    public function trash(int $id = 0)
     {
         $model = $this->findById($id);
         return $model->delete();
@@ -72,18 +72,36 @@ abstract class BaseRepository
     }
     public function getRelationable()
     {
-        return $this->model->relationable();
+        return $this->model->relationable;
     }
-    public function attach($id, string $relation, $field)
+    // public function attach($id, string $relation, $field)
+    // {
+    //     $record = $this->find($id);
+    //     if (!$record) {
+    //         throw new ModelNotFoundException('Không tồn tại record này');
+    //     }
+    //     return $record->$relation()->attach();
+    // }
+    // public function detach()
+    // {
+    //     return $this->model->detach();
+    // }
+    public function delete($id)
     {
-        $record = $this->find($id);
-        if (!$record) {
-            throw new ModelNotFoundException('Không tồn tại record này');
-        }
-        return $record->$relation()->attach();
+        $model = $this->findById($id);
+        $model->update([
+            'publish' => 2,
+            'deleted_at' => now()
+        ]);
+        return $model;
     }
-    public function detach()
+    public function restore($id)
     {
-        return $this->model->detach();
+        $model = $this->findById($id);
+        $model->update([
+            'publish' => 1,
+            'deleted_at' => null
+        ]);
+        return $model;
     }
 }
