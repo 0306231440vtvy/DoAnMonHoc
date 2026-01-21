@@ -54,7 +54,13 @@ class Sanpham extends Model
     // {
     //     return number_format($this->giaban, 0, ',', '.') . ' d';
     // }
-    // 1-n 1 sản phẩm chứa nhiều variants
+
+    //Thêm khóa ngoại cho giỏ hàng
+    public function cart()
+    {
+        return $this->hasMany(Giohang::class, 'sanpham_id','id');
+    }
+   // 1-n 1 sản phẩm chứa nhiều variants
     public function variants(): HasMany
     {
         return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');

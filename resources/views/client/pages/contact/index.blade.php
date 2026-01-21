@@ -1,6 +1,10 @@
 @extends('client.layouts')
+@section('title','Trang liên hệ')
 @section('content')
     <!-- Page Content -->
+    @foreach ($settings as $setting)
+        
+    @endforeach
     <div class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Liên Hệ Với Chúng Tôi</h1>
 
@@ -9,35 +13,33 @@
             <div>
                 <div class="bg-white rounded-lg shadow p-8">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Gửi Tin Nhắn</h3>
-                    <form class="space-y-4">
+                    <form class="space-y-4" action="{{ route('contact.send') }}" method="POST" >
+                        @csrf
                         <div>
+                            @error('name')
+                                <div class="alert alert-danger">*{{ $message }}</div>
+                            @enderror
                             <label class="block text-gray-700 mb-2 font-medium">Họ và tên *</label>
-                            <input type="text"
+                            <input type="text" name="name"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#667eea]"
-                                placeholder="Nhập họ tên của bạn">
+                                placeholder="Nhập họ tên của bạn" value="{{ old('name') }}">
                         </div>
                         <div>
+                            @error('email')
+                                <div class="alert alert-danger">*{{ $message }}</div>
+                            @enderror
                             <label class="block text-gray-700 mb-2 font-medium">Email *</label>
-                            <input type="email"
+                            <input type="email" name="email"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#667eea]"
-                                placeholder="Nhập email của bạn">
+                                placeholder="Nhập email của bạn" value="{{ old('email') }}">
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-2 font-medium">Số điện thoại</label>
-                            <input type="tel"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#667eea]"
-                                placeholder="Nhập số điện thoại">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2 font-medium">Tiêu đề *</label>
-                            <input type="text"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#667eea]"
-                                placeholder="Tiêu đề tin nhắn">
-                        </div>
-                        <div>
+                            @error('noidung')
+                                <div class="alert alert-danger">*{{ $message }}</div>
+                            @enderror
                             <label class="block text-gray-700 mb-2 font-medium">Nội dung *</label>
                             <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#667eea]"
-                                rows="5" placeholder="Nhập nội dung tin nhắn của bạn..."></textarea>
+                                rows="5" name="noidung" placeholder="Nhập nội dung tin nhắn của bạn...">{{ old('noidung') }}</textarea>
                         </div>
                         <button type="submit"
                             class="w-full bg-[#667eea] text-white py-3 rounded-lg hover:bg-[#5568d3] font-semibold transition">
@@ -54,25 +56,25 @@
                     <div class="space-y-6">
                         <div class="flex items-start">
                             <div class="bg-[#667eea] bg-opacity-20 p-3 rounded-full mr-4">
-                                <i class="fas fa-map-marker-alt text-[#667eea] text-xl"></i>
+                                <i class="fa fa-map-marker"></i>
                             </div>
                             <div>
                                 <h4 class="font-semibold mb-1 text-gray-800">Địa chỉ</h4>
-                                <p class="text-gray-600">123 Đường Nguyễn Huệ, Quận 1<br>TP. Hồ Chí Minh, Việt Nam</p>
+                                <p class="text-gray-600">{{ $setting->address }}</p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <div class="bg-[#667eea] bg-opacity-20 p-3 rounded-full mr-4">
-                                <i class="fas fa-phone text-[#667eea] text-xl"></i>
+                                <i class="fa fa-phone"></i>
                             </div>
                             <div>
                                 <h4 class="font-semibold mb-1 text-gray-800">Điện thoại</h4>
-                                <p class="text-gray-600">Hotline: 1900 xxxx<br>Mobile: 090 123 4567</p>
+                                <p class="text-gray-600">{{ $setting->phone }}</p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <div class="bg-[#667eea] bg-opacity-20 p-3 rounded-full mr-4">
-                                <i class="fas fa-envelope text-[#667eea] text-xl"></i>
+                                <i class="fa fa-envelope"></i>
                             </div>
                             <div>
                                 <h4 class="font-semibold mb-1 text-gray-800">Email</h4>
@@ -81,7 +83,7 @@
                         </div>
                         <div class="flex items-start">
                             <div class="bg-[#667eea] bg-opacity-20 p-3 rounded-full mr-4">
-                                <i class="fas fa-clock text-[#667eea] text-xl"></i>
+                                <i class="fa fa-clock-o"></i>
                             </div>
                             <div>
                                 <h4 class="font-semibold mb-1 text-gray-800">Giờ làm việc</h4>
@@ -94,28 +96,28 @@
                 <div class="bg-white rounded-lg shadow p-8">
                     <h3 class="text-2xl font-bold mb-4 text-gray-800">Kết Nối Với Chúng Tôi</h3>
                     <div class="flex gap-4">
-                        <a href="#"
+                        <a href="{{ $setting->facebook_url }}"
                             class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition">
-                            <i class="fab fa-facebook-f"></i>
+                            <i class="fa fa-facebook"></i>
                         </a>
-                        <a href="#"
+                        <a href="{{ $setting->linkedin_url }}"
                             class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition">
-                            <i class="fab fa-twitter"></i>
+                            <i class="fa fa-linkedin"></i>
                         </a>
-                        <a href="#"
+                        <a href="{{ $setting->instagram_url }}"
                             class="w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white hover:bg-pink-700 transition">
-                            <i class="fab fa-instagram"></i>
+                            <i class="fa fa-instagram"></i>
                         </a>
-                        <a href="#"
+                        <a href="{{ $setting->youtube_url }}"
                             class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white hover:bg-red-700 transition">
-                            <i class="fab fa-youtube"></i>
+                            <i class="fa fa-youtube"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Map -->
+        {{-- <!-- Map -->
         <div class="mt-12">
             <div class="bg-white rounded-lg shadow overflow-hidden h-96">
                 <iframe
@@ -123,5 +125,5 @@
                     width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

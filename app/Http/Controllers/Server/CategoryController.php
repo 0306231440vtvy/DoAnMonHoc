@@ -37,13 +37,13 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request) // Lưu danh mục mới
     {
-        $category = $this->categoryService->save($request);
+        $category = $this->categoryService->createCategory($request);
         return redirect()->route('categories.index')->with('success', 'Thêm danh mục thành công');
     }
 
     public function update(Request $request, $id) //Lưu danh mục được cập nhật
     {
-        $this->categoryService->update($request, $id);
+        $this->categoryService->updateCategory($id,$request);
         return redirect()->route('categories.index')->with('success', 'Cập nhật danh mục thành công');
     }
 

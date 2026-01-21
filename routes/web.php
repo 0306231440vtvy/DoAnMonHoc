@@ -26,6 +26,10 @@ use App\Http\Controllers\Client\PageController;
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
+Route::get('/products', [ClientProductController::class, 'index'])->name('products');
+Route::get('/contact', [ClientContactController::class, 'index'])->name('contact');
+//Thêm route gửi liên hệ
+Route::post('/contact/send',[ClientContactController::class, 'send'])->name('contact.send');
 Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
 Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
 Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
@@ -47,6 +51,15 @@ Route::controller(PageController::class)->group(function () {
 });
 
 Route::middleware('auth')->prefix('/')->group(function () {
+    //Route cho trang giỏ hàng
+    Route::prefix('/cart')->name('carts')->group(function () {
+        Route::get('/', [CartController::class, 'index']);
+        Route::post('update-quantity', [CartController::class, 'updateQuantity'])->name('.update');
+        Route::post('summary', [CartController::class, 'summary'])->name('.summary');
+        Route::post('delete', [CartController::class, 'deleteItem'])->name('.delete');
+        Route::post('clear', [CartController::class, 'clear'])->name('.clear');
+        Route::post('checkout', [CartController::class, 'checkoutPrepare']);
+    });
     Route::prefix('/profile')->name('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index']);
         Route::post('/update', [ProfileController::class, 'update'])
@@ -63,6 +76,15 @@ Route::middleware('auth')->prefix('/')->group(function () {
         // Hủy đơn hàng
         Route::post('/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
             ->name('.cancel');
+    });
+    //Thêm route cho trang thanh toán
+    Route::prefix('/checkout')->name('checkout')->group(function () {
+        Route::get('/', [CheckoutController::class, 'index'])->name('.index');
+        Route::post('/', [CheckoutController::class, 'store'])->name('.store');
+        Route::get('provinces', [CheckoutController::class, 'provinces']);
+        Route::get('wards/{province}', [CheckoutController::class, 'wards']);
+        Route::get('bank/{order}', [CheckoutController::class, 'bank'])->name('.bank');
+        Route::get('/success', [CheckoutController::class, 'success'])->name('.thanhcong');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
@@ -96,8 +118,8 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::get('create', [CategoryController::class, 'create'])->name('.create');
             Route::get('{id}/edit', [CategoryController::class, 'edit'])->name('.edit');
             Route::post('store', [CategoryController::class, 'store'])->name('.store');
-            Route::put('{id}', [CategoryController::class, 'update'])->name('.update');
-            Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('.destroy');
+            Route::put('{id}/update', [CategoryController::class, 'update'])->name('.update');
+            Route::delete('{id}/destroy', [CategoryController::class, 'destroy'])->name('.destroy');          
         });
         // =================ROLE================//
         Route::prefix('/roles')->name('roles')->group(function () {
@@ -145,8 +167,10 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::get('index', [VariantController::class, 'index'])->name('variants.index');
         });
         // =================CONTACT================//
-        Route::prefix('/contacts')->group(function () {
-            Route::get('index', [ContactController::class, 'index'])->name('contacts.index');
+        Route::prefix('/contacts')->name('contacts')->group(function () {
+            Route::get('index', [ContactController::class, 'index'])->name('.index');
+            Route::put('{id}/update', [ContactController::class, 'update'])->name('.update');
+            Route::delete('{id}/destroy', [ContactController::class, 'destroy'])->name('.destroy');   
         });
         // =================SLIDE================//
         Route::prefix('/slides')->name('slides')->group(function () {
