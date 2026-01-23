@@ -159,7 +159,7 @@ abstract class BaseService
             return $this
                 ->beginTransaction()
                 ->beforeRestore($id)
-                ->restore($id)
+                ->performRestore($id)
                 ->afterRestore($id)
                 ->commit();
         } catch (\Throwable $th) {
@@ -167,37 +167,4 @@ abstract class BaseService
             throw $th;
         }
     }
-    // protected function beforeUpdate(Request $request, ?int $id)
-    // {
-    //     // mặc định trả về tất cả dữ liệu
-    //     return $request->all();
-    // }
-    // // hàm trả về sau khi tạo dữ liệu
-    // protected function afterUpdate($model, Request $request): void {}
-    // public function update(Request $request, ?int $id = null)
-    // {
-    //     try {
-    //         $this->beginTransaction();
-    //         // xử lý raw data
-    //         $processedData = $this->beforeUpdate($request, $id);
-    //         // lọc filter
-    //         $fillable = $this->repository->getFillable();
-    //         $payload = collect($processedData)->only($fillable)->toArray();
-    //         $model = $this->repository->update($id, $payload);
-    //         $this->afterUpdate($model, $request);
-    //         $this->commit();
-    //         return $model;
-    //     } catch (\Throwable $th) {
-    //         $this->rollBack();
-    //         throw $th;
-    //     }
-    // }
-    //  hàm để xử lý dữ liệu trước khi tạo dữ liệu
-    // protected function beforeCreate(Request $request)
-    // {
-    //     // mặc định trả về tất cả dữ liệu
-    //     return $request->all();
-    // }
-    // // hàm trả về sau khi tạo dữ liệu
-    // protected function afterCreate($model, Request $request): void {}
 }

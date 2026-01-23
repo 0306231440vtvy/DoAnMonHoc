@@ -25,7 +25,7 @@ class StoreSlideRequest extends FormRequest
             'tieude' => 'required|string|max:255',
             'hinhthunho' => 'nullable|string|max:500',
             'stt' => 'nullable|integer|min:0',
-            'linklienket' => 'nullable|url|max:500',
+            'linklienket' => 'nullable|max:500',
             'trangthai' => 'required|in:0,1',
             'mota' => 'nullable|string|max:2000',
         ];
@@ -34,7 +34,6 @@ class StoreSlideRequest extends FormRequest
     {
         return [
             'tieude.required' => 'Vui lòng nhập tên slide',
-            'linklienket.url' => 'Link liên kết không đúng định dạng',
             'trangthai.required' => 'Vui lòng chọn trạng thái',
         ];
     }

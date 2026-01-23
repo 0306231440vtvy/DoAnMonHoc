@@ -23,34 +23,33 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tensp' => 'required|string|min:4|max:255',
-            // 'slug' => 'required|string|unique:sanpham,slug',
-            'giaban' => 'required|numeric|min:1000',
+            'tensp' => 'required|string|max:255',
+            'giaban' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0|max:100',
-            'category_id' => 'required|exists:categories,id',
+            'soluong' => 'nullable|numeric|min:0',
             'thuonghieu_id' => 'required|exists:thuonghieu,id',
-            'bienthe_id.*' => 'exists:bienthe,id',
+            'hinhnen' => 'nullable|string',
+            'album' => 'nullable|array',
             'mota' => 'nullable|string',
-            'trangthai' => 'nullable|integer|gte:1|lte:2',
+            // // Variants
+            // 'variants' => 'nullable|array',
+            // 'variants.*.sku' => 'required_with:variants|string|max:50',
+            // 'variants.*.giaban' => 'required_with:variants|numeric|min:0',
+            // 'variants.*.soluong' => 'required_with:variants|integer|min:0',
+            // 'variants.*.attributes_json' => 'required_with:variants|string',
         ];
     }
     public function messages(): array
     {
         return [
             'tensp.required' => 'Tên sản phẩm là bắt buộc',
-            'tensp.min' => 'Tên sản phẩm phải có ít nhất 4 ký tự',
-            'tensp.max' => 'Tên sản phẩm không được vượt quá 255 ký tự',
             'giaban.required' => 'Giá bán là bắt buộc',
-            'giaban.numeric' => 'Giá bán phải là số',
-            'giaban.min' => 'Giá bán không được nhỏ hơn 0',
-            'discount.numeric' => 'Giảm giá phải là số',
-            'discount.min' => 'Giảm giá không được nhỏ hơn 0',
-            'discount.max' => 'Giảm giá không được lớn hơn 100',
-            'category_id.required' => 'Danh mục là bắt buộc',
-            'category_id.exists' => 'Danh mục không tồn tại',
             'thuonghieu_id.required' => 'Thương hiệu là bắt buộc',
-            'thuonghieu_id.exists' => 'Thương hiệu không tồn tại',
-            'bienthe_id.*.exists' => 'Biến thể không tồn tại',
+
+            // 'variants.*.sku.required_with' => 'SKU biến thể là bắt buộc',
+            // 'variants.*.giaban.required_with' => 'Giá biến thể là bắt buộc',
+            // 'variants.*.soluong.required_with' => 'Số lượng biến thể là bắt buộc',
+            // 'variants.*.attributes_json.required_with' => 'Thuộc tính biến thể là bắt buộc',
         ];
     }
     public function prepareForValidation()

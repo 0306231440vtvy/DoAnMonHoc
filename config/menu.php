@@ -6,7 +6,7 @@ return [
             'name' => 'dashboard',
             'title' => 'Dashboard',
             'icon' => 'fa fa-th-large',
-            'route' => 'server.layouts',
+            'route' => 'server.dashboard',
         ],
         [
             'name' => 'users',
@@ -48,16 +48,16 @@ return [
                 ['title' => 'Thêm sản phẩm', 'route' => 'products.create'],
             ]
         ],
-        [
-            'name' => 'brands',
-            'title' => 'Quản lý Thương hiệu',
-            'icon' => 'fa fa-building',
-            'route' => 'brands.index',
-            'children' => [
-                ['title' => 'Danh sách thương hiệu', 'route' => 'brands.index'],
-                ['title' => 'Thêm mới thương hiệu', 'route' => 'brands.create'],
-            ]
-        ],
+        // [
+        //     'name' => 'brands',
+        //     'title' => 'Quản lý Thương hiệu',
+        //     'icon' => 'fa fa-building',
+        //     'route' => 'brands.index',
+        //     'children' => [
+        //         ['title' => 'Danh sách thương hiệu', 'route' => 'brands.index'],
+        //         ['title' => 'Thêm mới thương hiệu', 'route' => 'brands.create'],
+        //     ]
+        // ],
         [
             'name' => 'orders',
             'title' => 'Quản lý Hóa đơn',
@@ -67,16 +67,16 @@ return [
                 ['title' => 'Danh sách hóa đơn', 'route' => 'orders.index'],
             ]
         ],
-        [
-            'name' => 'variants',
-            'title' => 'Quản lý Biến thể',
-            'icon' => 'fa fa-layer-group',
-            'route' => 'variants.index',
-            'children' => [
-                ['title' => 'Danh sách biến thể', 'route' => 'variants.index'],
-                ['title' => 'Thêm mới biến thể', 'route' => 'variants.create'],
-            ]
-        ],
+        // [
+        //     'name' => 'variants',
+        //     'title' => 'Quản lý Biến thể',
+        //     'icon' => 'fa fa-layer-group',
+        //     'route' => 'variants.index',
+        //     'children' => [
+        //         ['title' => 'Danh sách biến thể', 'route' => 'variants.index'],
+        //         ['title' => 'Thêm mới biến thể', 'route' => 'variants.create'],
+        //     ]
+        // ],
         [
             'name' => 'contacts',
             'title' => 'Quản lý Liên hệ',

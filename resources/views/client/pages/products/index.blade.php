@@ -51,11 +51,19 @@
                                                 <span class="text-muted text-decoration-line-through"
                                                     style="font-size: 0.75rem;">{{ $item->giaban }}</span>
                                             </div>
-                                            <a href="cart.html"
-                                                class="btn rounded-circle d-flex align-items-center justify-content-center p-0 border-0"
-                                                style="background-color: #667eea; width: 32px; height: 32px; transition: background-color 0.3s ease;">
-                                                <i class="fa fa-shopping-cart text-white" style="font-size: 0.75rem;"></i>
-                                            </a>
+                                            <form action="{{ route('carts.add-to-cart') }}" method="POST"
+                                                class="d-inline add-to-cart-form">
+                                                @csrf
+                                                {{-- <input type="hidden" name="variant_id" value="{{ $item->variant_id }}">
+                                                <input type="hidden" name="sku" value="{{ $item->sku }}">
+                                                <input type="hidden" name="soluong" value="1">
+                                                <button type="submit"
+                                                    class="btn rounded-circle d-flex align-items-center justify-content-center p-0 border-0"
+                                                    style="background-color: #667eea; width: 32px; height: 32px; transition: background-color 0.3s ease;">
+                                                    <i class="fa fa-shopping-cart text-white"
+                                                        style="font-size: 0.75rem;"></i>
+                                                </button> --}}
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

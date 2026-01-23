@@ -16,17 +16,18 @@ class Sanpham extends Model
     protected $table = 'sanpham';
 
     protected $fillable = [
+        'id',
         'tensp',
         'album',
         'hinhnen',
-        'soluong',
         'giaban',
         'discount',
-        'sku',
         'slug',
         'mota',
-        'category_id',
+        'has_attribute',
         'thuonghieu_id',
+        'trangthai',
+        'deleted_at'
     ];
 
     // Nếu bạn muốn truy ngược lại xem sản phẩm này nằm trong đơn hàng nào (ít dùng nhưng có thể cần thống kê)
@@ -34,12 +35,10 @@ class Sanpham extends Model
     {
         return $this->hasMany(CtHoadon::class, 'sanpham_id', 'id');
     }
-    // Check xem user hiện tại đã thích sản phẩm này chưa (Helper function)
-    public function isFavoritedBy($userId)
+
+    public function usersYeuthich()
     {
-        return $this->belongsToMany(User::class, 'yeuthich', 'sanpham_id', 'user_id')
-            ->where('user_id', $userId)
-            ->exists();
+        return $this->belongsToMany(User::class, 'yeuthich', 'sanpham_id', 'user_id');
     }
     public function categories(): BelongsToMany
     {
@@ -58,19 +57,15 @@ class Sanpham extends Model
     //Thêm khóa ngoại cho giỏ hàng
     public function cart()
     {
-        return $this->hasMany(Giohang::class, 'sanpham_id','id');
+        return $this->hasMany(Giohang::class, 'sanpham_id', 'id');
     }
-   // 1-n 1 sản phẩm chứa nhiều variants
-    public function variants(): HasMany
+    // 1-n 1 sản phẩm chứa nhiều variants
+    public function sanpham_variants(): HasMany
     {
-        return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
-    }
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
+        return $this->hasMany(SanphamVariant::class, 'sanpham_id');
     }
     protected $casts = [
         'album' => 'json'
     ];
-    protected $relationable = ['sanpham_variants', 'categories'];
+    public $relationable = ['categories'];
 }

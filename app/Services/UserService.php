@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class UserService extends BaseService
 {
     protected $repository;
-
+    protected $sort = ['id', 'asc'];
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
@@ -23,6 +23,11 @@ class UserService extends BaseService
     {
         $filters = $request->all();
         return $this->repository->getUsers($filters);
+    }
+    public function show($column, $value)
+    {
+        // SỬA: Gọi 'findByField' thay vì 'findBy'
+        return $this->repository->findByField($column, $value);
     }
 
     public function create($request)

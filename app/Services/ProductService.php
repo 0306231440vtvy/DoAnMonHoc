@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\ProductRepository;
 use App\Services\BaseService;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductService extends BaseService
 {
@@ -12,6 +13,9 @@ class ProductService extends BaseService
     protected $filterSearch = ['tensp'];
     protected $simpleFilter = ['trangthai'];
     protected $complexFilter = ['soluong'];
+    protected $sort = ['created_at', 'desc'];
+    protected $perpage = 10;
+    protected $with = ['categories', 'thuonghieu', 'sanpham_variants'];
     public function __construct(
         ProductRepository $repository
     ) {
@@ -19,40 +23,52 @@ class ProductService extends BaseService
     }
     protected function prepageModeldata(Request $request): self
     {
+        $fillable = $this->repository->getFillable();
+        $payload = $request->only($fillable);
+        $this->modelData = $payload;
         return $this;
     }
-    protected function beforeCreate(Request $request): array
+    public function handleRelation(Request $request): self
     {
-        $data = $request->except(['_token', 'send']);
-        $data['album'] = $this->convertToJsonArray($request->input('album', []));
-        return $data;
-    }
-    protected function afterCreate($model, Request $request): void
-    {
-        if (!empty($request->bienthe_id)) {
-            $model->bienthe()->attach($request->bienthe_id);
+        // dd($request);
+        $relations = $this->repository->getRelationable();
+        if (count($relations)) {
+            foreach ($relations as $key => $relation) {
+                // nếu có belongs to many thì xử lý tự động thêm sync có trong laravel
+                if ($request->has($relation)) {
+                    // {} là gọi dữ liệu động method quan hệ
+                    $this->model->{$relation}()->sync($request->$relation);
+                }
+            }
         }
-        if (!empty($request->category_id)) {
-            $model->categories()->attach($request->category_id);
-        }
+        $this->handleProductVariants($request);
+        return $this;
     }
-    protected function beforeUpdate(Request $request, ?int $id): array
+    private function handleProductVariants(Request $request)
     {
-        $data = $request->except(['_token', 'send']);
-        $oldProduct = $this->repository->find($id);
-        $oldAlbum = $oldProduct ? ($oldProduct->album ?? []) : [];
-        $newAlbum = $this->convertToJsonArray($request->input('album', []));
-        $data['album'] = $newAlbum;
-        $data['album'] = $this->convertToJsonArray($request->input('album', []));
-        return $data;
-    }
-    protected function afterUpdate($model, Request $request): void
-    {
-        if (!empty($request->bienthe_id)) {
-            $model->bienthe()->attach($request->bienthe_id);
-        }
-        if (!empty($request->category_id)) {
-            $model->categories()->attach($request->category_id);
+        if (!$request->has('sanpham_variants') || !is_array($request->input('sanpham_variants'))) {
+            return $this;
+        };
+        $variantsData = $request->input('sanpham_variants');
+        if (!is_array($variantsData) || empty($variantData)) {
+            $this->model->sanpham_variants()->each(function ($variants) {
+                $variants->attributesValues()->detach();
+                $variants->delete();
+            });
+            return $this;
+        };
+        foreach ($variantsData as $variantData) {
+            $variant = $this->model->sanpham_variants()->create([
+                ...$variantData,
+                'sku' => $variantData['sku'] ?? '',
+                'giaban' => str_replace([',', '.'], ['', ''], $variantData['giaban']),
+                'soluong' => (int)($variantData['soluong'] ?? 0),
+                'trangthai' => $request->trangthai ?? 1,
+            ]);
+            // Xử lý attributes - attach từng cặp type_id và value_id
+            if (isset($variantData['attributes']) && is_array($variantData['attributes'])) {
+                $variant->attributesValues()->attach($variantData['attributes']);
+            }
         }
     }
 }

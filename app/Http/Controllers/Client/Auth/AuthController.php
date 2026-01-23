@@ -56,35 +56,70 @@ class AuthController extends Controller
     {
         return view('client.pages.auth.login');
     }
+    // public function login(AuthRequest $request): RedirectResponse
+    // {
+    //     // $user = User::where('email', $request->input('email'))->first();
+    //     $user = $this->userService->show('email', $request->input('email'));
+    //     // dd($user);
+    //     if (!$user) {
+    //         return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống'])
+    //             ->onlyInput('email');
+    //     }
+    //     if ($user->email_verified_at === null) {
+    //         return back()->withErrors(['email' => 'Bạn chưa kích hoạt tài khoản email này!.'])
+    //             ->onlyInput('email');
+    //     }
+    //     if ($user->publish != 1) {
+    //         toastr()->error('Tài khoản của bạn đã bị vô hiệu hóa!.');
+    //         return back()->onlyInput('email');
+    //     }
+    //     $credentials = ([
+    //         'email' => $request->input('email'),
+    //         'password' => $request->input('password')
+    //     ]);
+    //     if (!Auth::attempt($credentials)) {
+    //         return back()->withErrors(['email' => 'Thông tin đăng nhập không chính xác!'])
+    //             ->onlyInput('email');
+    //     }
+
+    //     $request->session()->regenerate();
+    //     return redirect()->intended('/');
+    // }
+
     public function login(AuthRequest $request): RedirectResponse
     {
         $user = User::where('email', $request->input('email'))->first();
         // $user = $this->userService->show('email', $request->input('email'));
         // dd($user);
+        // 1. Check xem tìm thấy user không
         if (!$user) {
-            return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống'])
-                ->onlyInput('email');
+            dd('Lỗi: Không tìm thấy email này trong DB');
         }
+
+        // 2. Check trạng thái kích hoạt
         if ($user->email_verified_at === null) {
-            return back()->withErrors(['email' => 'Bạn chưa kích hoạt tài khoản email này!.'])
-                ->onlyInput('email');
+            dd('Lỗi: Chưa kích hoạt email (email_verified_at is NULL)');
         }
-        if ($user->publish !== 1) {
-            toastr()->error('Tài khoản của bạn đã bị vô hiệu hóa!.');
-            return back()->onlyInput('email');
+
+        // 3. Check publish
+        if ($user->publish != 1) {
+            dd('Lỗi: Publish không phải là 1. Giá trị hiện tại là: ' . $user->publish);
         }
-        $credentials = ([
+
+        // 4. Check mật khẩu
+        $credentials = [
             'email' => $request->input('email'),
             'password' => $request->input('password')
-        ]);
+        ];
+
         if (!Auth::attempt($credentials)) {
-            return back()->withErrors(['email' => 'Thông tin đăng nhập không chính xác!'])
-                ->onlyInput('email');
+            dd('Lỗi: Sai mật khẩu (Hoặc mật khẩu trong DB chưa được mã hóa chuẩn)');
         }
 
         $request->session()->regenerate();
         return redirect()->intended('/')->with('success', 'Đăng nhập thành công');
     }
+
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();

@@ -71,12 +71,12 @@ trait HasTransaction
     {
         return $this;
     }
-    public function performDelete(int $id = 0)
+    public function performDelete(int $id)
     {
         $this->repository->delete($id);
         return $this;
     }
-    public function beforeRestore(int $id = 0): self
+    public function beforeRestore(int $id): self
     {
         if (!$this->model = $this->repository->findById($id)) {
             throw new ModelNotFoundException('Không tồn tại record này');
@@ -87,9 +87,9 @@ trait HasTransaction
     {
         return $this;
     }
-    public function restore(int $id = 0)
+    public function performRestore(int $id)
     {
-        $this->repository->delete($id);
+        $this->repository->restore($id);
         return $this;
     }
 }

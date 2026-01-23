@@ -13,23 +13,15 @@
                             enctype="multipart/form-data" class="confirm-submit">
                             @csrf
                             @method('PUT')
-                            <div class="form-group">
-                                <label for="tensp">Tên Sản Phẩm <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('tensp') is-invalid @enderror"
-                                    id="tensp" name="tensp" value="{{ old('tensp', $products->tensp ?? '') }}"
-                                    placeholder="Nhập tên sản phẩm" required>
-                                @error('tensp')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            {{-- <div class="row">
+
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="sku">SKU (Mã sản phẩm)</label>
-                                        <input type="text" class="form-control @error('sku') is-invalid @enderror"
-                                            id="sku" name="sku" value="{{ old('sku', $products->sku ?? '') }}"
-                                            placeholder="VD: SP001">
-                                        @error('sku')
+                                        <label for="tensp">Tên Sản Phẩm <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('tensp') is-invalid @enderror"
+                                            id="tensp" name="tensp" value="{{ old('tensp', $products->tensp ?? '') }}"
+                                            placeholder="Nhập tên sản phẩm" required>
+                                        @error('tensp')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -46,7 +38,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -77,25 +69,35 @@
 
                             {{-- danh mục thương hiệu biến thể --}}
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="category_id">Danh Mục <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('category_id') is-invalid @enderror"
-                                            id="category_id" name="category_id" required>
-                                            <option value="">-- Chọn danh mục --</option>
-                                            @foreach ($categories as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('category_id', $products->category_id ?? '') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
+                                        <label>Danh Mục <span class="text-danger">*</span></label>
+
+                                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                            @foreach ($categories as $category)
+                                                <div class="form-check">
+                                                    <input class="form-check-input category-checkbox" type="checkbox"
+                                                        name="categories[]" value="{{ $category->id }}"
+                                                        id="cat_{{ $category->id }}"
+                                                        {{ in_array(
+                                                            $category->id,
+                                                            old('categories', isset($products) ? $products->categories->pluck('id')->toArray() : []),
+                                                        )
+                                                            ? 'checked'
+                                                            : '' }}>
+
+                                                    <label class="form-check-label" for="cat_{{ $category->id }}">
+                                                        {{ $category->name }}
+                                                    </label>
+                                                </div>
                                             @endforeach
-                                        </select>
+                                        </div>
                                         @error('category_id')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="thuonghieu_id">Thương Hiệu <span class="text-danger">*</span></label>
                                         <select class="form-control @error('thuonghieu_id') is-invalid @enderror"
@@ -113,24 +115,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="bienthe_id">Biến Thể</label>
-                                        <select class="form-control @error('bienthe_id') is-invalid @enderror"
-                                            id="bienthe_id" name="bienthe_id">
-                                            <option value="">-- Không có biến thể --</option>
-                                            @foreach ($bienthe as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('bienthe_id', $products->bienthe_id ?? '') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('bienthe_id')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
                             </div>
                             {{-- ảnh --}}
                             <div class="form-group mb-4">
@@ -222,6 +206,8 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+                            {{-- form để thêm biến thể của sản phẩm --}}
+                            @include('server.pages.products.components.update_variants')
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary ">
                                     <i class="fa fa-save"></i>
@@ -238,7 +224,7 @@
         </div>
     </div>
 
-    <style>
+    {{-- <style>
         .card {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -295,5 +281,5 @@
             margin-top: 5px;
             font-size: 14px;
         }
-    </style>
+    </style> --}}
 @endsection

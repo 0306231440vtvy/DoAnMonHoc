@@ -24,33 +24,19 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="row">
-                                <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="sku">SKU (Mã sản phẩm)</label>
+                                        <label for="sku">SKU</label>
                                         <input type="text" class="form-control @error('sku') is-invalid @enderror"
-                                            id="sku" name="sku" value="{{ $products->sku ?? old('sku', $sku) }}"
-                                            placeholder="VD: SP001">
+                                            id="sku" name="sku" value="{{ old('sku', $sku ?? '') }}"
+                                            min="0" placeholder="Nhập sku">
                                         @error('sku')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="soluong">Số Lượng <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('soluong') is-invalid @enderror"
-                                            id="soluong" name="soluong"
-                                            value="{{ old('soluong', $products->soluong ?? '') }}"
-                                            placeholder="Nhập số lượng" required>
-                                        @error('soluong')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="giaban">Giá Bán (VNĐ) <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('giaban') is-invalid @enderror"
@@ -62,7 +48,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="discount">Giảm Giá (%)</label>
                                         <input type="text" class="form-control @error('discount') is-invalid @enderror"
@@ -75,23 +61,45 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                            {{-- danh mục thương hiệu biến thể --}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="soluong">Số lượng</label>
+                                        <input type="text" class="form-control @error('soluong') is-invalid @enderror"
+                                            id="soluong" name="soluong"
+                                            value="{{ old('soluong', $products->soluong ?? '') }}" min="0"
+                                            placeholder="Nhập số lượng">
+                                        @error('soluong')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- danh mục thương hiệu --}}
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="category_id">Danh Mục <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('category_id') is-invalid @enderror"
-                                            id="category_id" name="category_id" required>
-                                            <option value="">-- Chọn danh mục --</option>
-                                            @foreach ($categories as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('category_id', $products->category_id ?? '') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
+                                        <label>Danh Mục <span class="text-danger">*</span></label>
+
+                                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                            @foreach ($categories as $category)
+                                                <div class="form-check">
+                                                    <input class="form-check-input category-checkbox" type="checkbox"
+                                                        name="categories[]" value="{{ $category->id }}"
+                                                        id="cat_{{ $category->id }}"
+                                                        {{ in_array(
+                                                            $category->id,
+                                                            old('categories', isset($products) ? $products->categories->pluck('id')->toArray() : []),
+                                                        )
+                                                            ? 'checked'
+                                                            : '' }}>
+
+                                                    <label class="form-check-label" for="cat_{{ $category->id }}">
+                                                        {{ $category->name }}
+                                                    </label>
+                                                </div>
                                             @endforeach
-                                        </select>
+                                        </div>
                                         @error('category_id')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -115,24 +123,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="bienthe_id">Biến Thể</label>
-                                        <select class="form-control @error('bienthe_id') is-invalid @enderror"
-                                            id="bienthe_id" name="bienthe_id">
-                                            <option value="">-- Không có biến thể --</option>
-                                            @foreach ($bienthe as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('bienthe_id', $products->bienthe_id ?? '') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('bienthe_id')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
                             </div>
                             {{-- ảnh --}}
                             <div class="form-group mb-4">
@@ -153,8 +143,8 @@
                                                 style="max-width: 300px; max-height: 300px; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}" name="hinhnen"
-                                        id="hinhnen" />
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
+                                        name="hinhnen" id="hinhnen" />
 
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền
@@ -224,6 +214,9 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+                            {{-- form để thêm biến thể của sản phẩm --}}
+                            @include('server.pages.products.components.varriants')
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary confirm-submit">
                                     <i class="fa fa-save"></i>
@@ -238,64 +231,4 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <style>
-        .card {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, #363f5a 0%, #000000 100%);
-            color: white;
-            border-radius: 8px 8px 0 0;
-            padding: 15px 20px;
-        }
-
-        .card-title {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .form-group label {
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .text-danger {
-            color: #e74c3c;
-        }
-
-        .form-control {
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            padding: 10px 15px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: #00060c;
-            border: none;
-        }
-
-        .invalid-feedback {
-            display: block;
-            margin-top: 5px;
-            font-size: 14px;
-        }
-    </style>
-@endsection
+    @endsection

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('slug');
             $table->string('mota')->nullable();
             $table->tinyInteger('trangthai')->default(1);
-            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set Null');
             $table->foreignId('thuonghieu_id')->nullable()->constrained('thuonghieu')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();

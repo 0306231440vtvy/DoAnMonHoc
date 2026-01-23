@@ -15,10 +15,16 @@
                 <a href="{{ route('products.show', $item->id) }}" class="btn btn-action btn-info">Xem chi tiết</a>
                 <a href="{{ route('products.edit', $item->id) }}" class="btn btn-action btn-edit">Sửa</a>
                 <form action="{{ route('products.delete', $item->id) }}" method="POST" style="margin: 0;"
-                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
+                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
                     @csrf
-                    @method('DELETE')
+                    @method('PUT')
                     <button type="submit" class="btn btn-danger btn-md">Xóa</button>
+                </form>
+                <form action="{{ route('products.restore', $item->id) }}" method="POST" style="margin: 0;"
+                    onsubmit="return confirm('Bạn có chắc chắn muốn khôi phục sản phẩm này?')">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-primary btn-md">Khôi phục</button>
                 </form>
             </div>
         </td>

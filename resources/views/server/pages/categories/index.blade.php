@@ -12,18 +12,17 @@
                 <i class="fa fa-plus"></i> Thêm mới danh mục
             </a>
         </div>
-        @if ($categories !==[])
+        @if ($categories !== [])
             <form method="GET" action="{{ route('categories.index') }}" style="padding:3px 0px;">
                 <div class="row">
                     <div class="col-sm-4">
                         <input type="text" name="keyword" class="form-control" placeholder="Nhập tên hoặc mô tả..."
-                            value="{{ request('keyword') }}"
-                            style="padding:3px 0px;">
+                            value="{{ request('keyword') }}" style="padding:3px 0px;">
                     </div>
 
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-primary">
-                            <i class="glyphicon glyphicon-search"></i> Tìm kiếm
+                            <i class="fa fa-search"></i> Tìm kiếm
                         </button>
                     </div>
                 </div>
@@ -33,13 +32,13 @@
             <div class="">
                 <h3 class="">Danh sách danh mục</h3>
             </div>
-            @if($categories->count()==0)
+            @if ($categories->count() == 0)
                 <div class="text-center" style="margin: 40px 0;">
                     <h1 class="text-muted">
-                        <i class="glyphicon glyphicon-folder-open"></i>
-                        <span >Không có danh mục</span>
+                        <i class="fa fa-folder-open"></i>
+                        <span>Không có danh mục</span>
                     </h1>
-                </div> 
+                </div>
             @else
                 <div class="">
                     <div class="">
@@ -54,13 +53,13 @@
                                     <th class="text-center">Thao tác</th>
                                 </tr>
                             </thead>
-                            <tbody>                               
-                                @include('server.pages.categories.components.table')                  
+                            <tbody>
+                                @include('server.pages.categories.components.table')
                             </tbody>
                         </table>
                     </div>
                 </div>
-            @endif    
+            @endif
         </div>
     </div>
 @endsection

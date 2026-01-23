@@ -3,21 +3,6 @@
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Thêm danh mục</h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a href="{{ route('server.layouts') }}">Trang chủ</a>
-                </li>
-                {{-- @if ($category)
-
-                    <li class="active">
-                        <strong>Chỉnh sửa thông tin danh mục <span><b>{{ $category->name }}</b></span></strong>
-                    </li>
-                @else
-                    <li class="active">
-                        <strong>Thêm mới</strong>
-                    </li>
-                @endif --}}
-            </ol>
         </div>
     </div>
 

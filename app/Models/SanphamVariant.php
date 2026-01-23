@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class SanphamVariant extends Model
 {
-    protected $table = ['sanpham_variants'];
+    protected $table = 'sanpham_variants';
+    public $relationable = ['attributesValues'];
     protected $fillable = [
         'sanpham_id',
         'sku',
@@ -26,8 +27,8 @@ class SanphamVariant extends Model
             'bienthe_value_id'
         )->withTimestamps();
     }
-    public function  sanpham(): BelongsTo
+    public function sanpham(): BelongsTo
     {
-        return $this->belongsTo(Sanpham::class);
+        return $this->belongsTo(Sanpham::class, 'sanpham_id');
     }
 }
