@@ -79,17 +79,27 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="category_id">Danh Mục <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('category_id') is-invalid @enderror"
-                                            id="category_id" name="category_id" required>
-                                            <option value="">-- Chọn danh mục --</option>
+                                        <label>Danh Mục <span class="text-danger">*</span></label>
+
+                                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                    {{ old('category_id', $products->category_id ?? '') == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}
-                                                </option>
+                                                <div class="form-check">
+                                                    <input class="form-check-input category-checkbox" type="checkbox"
+                                                        name="categories[]" value="{{ $category->id }}"
+                                                        id="cat_{{ $category->id }}"
+                                                        {{ in_array(
+                                                            $category->id,
+                                                            old('categories', isset($products) ? $products->categories->pluck('id')->toArray() : []),
+                                                        )
+                                                            ? 'checked'
+                                                            : '' }}>
+
+                                                    <label class="form-check-label" for="cat_{{ $category->id }}">
+                                                        {{ $category->name }}
+                                                    </label>
+                                                </div>
                                             @endforeach
-                                        </select>
+                                        </div>
                                         @error('category_id')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror

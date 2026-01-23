@@ -27,7 +27,6 @@ class StoreProductRequest extends FormRequest
             'giaban' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0|max:100',
             'soluong' => 'nullable|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
             'thuonghieu_id' => 'required|exists:thuonghieu,id',
             'hinhnen' => 'nullable|string',
             'album' => 'nullable|array',
@@ -45,7 +44,6 @@ class StoreProductRequest extends FormRequest
         return [
             'tensp.required' => 'Tên sản phẩm là bắt buộc',
             'giaban.required' => 'Giá bán là bắt buộc',
-            'category_id.required' => 'Danh mục là bắt buộc',
             'thuonghieu_id.required' => 'Thương hiệu là bắt buộc',
 
             // 'variants.*.sku.required_with' => 'SKU biến thể là bắt buộc',

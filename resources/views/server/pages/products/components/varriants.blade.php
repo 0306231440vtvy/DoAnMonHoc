@@ -43,7 +43,7 @@
                                                     <th>Phiên bản</th>
                                                     <th>SKU</th>
                                                     <th>Giá (VNĐ)</th>
-                                                    <th>Tồn kho</th>
+                                                    <th>Số lượng</th>
                                                     <th>Xóa</th>
                                                 </tr>
                                             </thead>
@@ -252,11 +252,9 @@
         const tbody = document.getElementById('variantsTableBody');
         // Xóa tất cả rows cũ (giữ emptyState)
         document.querySelectorAll('#variantsTableBody tr[data-variant-index]').forEach(el => el.remove());
-
         combos.forEach((attrs, i) => {
             const name = attrs.map(a => a.value_name).join(' - ');
             let attributeInputs = '';
-
             // Tạo hidden inputs cho attributes
             attrs.forEach(a => {
                 attributeInputs += `
@@ -302,7 +300,6 @@
             });
         });
     }
-
     if (giaInput) {
         giaInput.addEventListener('change', function() {
             document.querySelectorAll('input[name*="sanpham_variants"][name*="giaban"]').forEach(el => {

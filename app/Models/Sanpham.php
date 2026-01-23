@@ -16,6 +16,7 @@ class Sanpham extends Model
     protected $table = 'sanpham';
 
     protected $fillable = [
+        'id',
         'tensp',
         'album',
         'hinhnen',
@@ -23,8 +24,10 @@ class Sanpham extends Model
         'discount',
         'slug',
         'mota',
-        'category_id',
+        'has_attribute',
         'thuonghieu_id',
+        'trangthai',
+        'deleted_at'
     ];
 
     // Nếu bạn muốn truy ngược lại xem sản phẩm này nằm trong đơn hàng nào (ít dùng nhưng có thể cần thống kê)
@@ -63,12 +66,8 @@ class Sanpham extends Model
     {
         return $this->hasMany(SanphamVariant::class, 'sanpham_id');
     }
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
     protected $casts = [
         'album' => 'json'
     ];
-    public $relationable = ['sanpham_variants', 'categories'];
+    public $relationable = ['categories'];
 }

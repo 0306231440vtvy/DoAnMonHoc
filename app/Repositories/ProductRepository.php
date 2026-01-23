@@ -13,11 +13,22 @@ class ProductRepository extends BaseRepository
     ) {
         $this->model = $model;
     }
-    public function pagination(array $specs = [])
+    public function delete($id)
     {
-        $query = DB::table('sanpham')
-            ->join('sanpham_variants', 'sanpham.id', '=', 'sanpham_variants.sanpham_id');
-        // return parent::pagination($specs);
-        return $query->paginate($specs['perpage'] ?? 20);
+        $model = $this->model->find($id);
+        $model->update([
+            'trangthai' => 2,
+            'deleted_at' => now()
+        ]);
+        return $model;
+    }
+    public function restore($id)
+    {
+        $model = $this->model->find($id);
+        $model->update([
+            'trangthai' => 1,
+            'deleted_at' => null
+        ]);
+        return $model;
     }
 }

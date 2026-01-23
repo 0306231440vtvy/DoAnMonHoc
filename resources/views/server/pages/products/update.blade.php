@@ -13,23 +13,15 @@
                             enctype="multipart/form-data" class="confirm-submit">
                             @csrf
                             @method('PUT')
-                            <div class="form-group">
-                                <label for="tensp">Tên Sản Phẩm <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('tensp') is-invalid @enderror"
-                                    id="tensp" name="tensp" value="{{ old('tensp', $products->tensp ?? '') }}"
-                                    placeholder="Nhập tên sản phẩm" required>
-                                @error('tensp')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="sku">SKU (Mã sản phẩm)</label>
-                                        <input type="text" class="form-control @error('sku') is-invalid @enderror"
-                                            id="sku" name="sku" value="{{ old('sku', $products->sku ?? '') }}"
-                                            placeholder="VD: SP001">
-                                        @error('sku')
+                                        <label for="tensp">Tên Sản Phẩm <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('tensp') is-invalid @enderror"
+                                            id="tensp" name="tensp" value="{{ old('tensp', $products->tensp ?? '') }}"
+                                            placeholder="Nhập tên sản phẩm" required>
+                                        @error('tensp')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -79,17 +71,27 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="category_id">Danh Mục <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('category_id') is-invalid @enderror"
-                                            id="category_id" name="category_id" required>
-                                            <option value="">-- Chọn danh mục --</option>
-                                            @foreach ($categories as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('category_id', $products->category_id ?? '') == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
+                                        <label>Danh Mục <span class="text-danger">*</span></label>
+
+                                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                            @foreach ($categories as $category)
+                                                <div class="form-check">
+                                                    <input class="form-check-input category-checkbox" type="checkbox"
+                                                        name="categories[]" value="{{ $category->id }}"
+                                                        id="cat_{{ $category->id }}"
+                                                        {{ in_array(
+                                                            $category->id,
+                                                            old('categories', isset($products) ? $products->categories->pluck('id')->toArray() : []),
+                                                        )
+                                                            ? 'checked'
+                                                            : '' }}>
+
+                                                    <label class="form-check-label" for="cat_{{ $category->id }}">
+                                                        {{ $category->name }}
+                                                    </label>
+                                                </div>
                                             @endforeach
-                                        </select>
+                                        </div>
                                         @error('category_id')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -133,8 +135,8 @@
                                                 style="max-width: 300px; max-height: 300px; object-fit: cover;">
                                         @endif
                                     </div>
-                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}"
-                                        name="hinhnen" id="hinhnen" />
+                                    <input type="hidden" class="image-target" value="{{ $hinhnenValue }}" name="hinhnen"
+                                        id="hinhnen" />
 
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa fa-info-circle"></i> Click vào ảnh để thay đổi hình nền

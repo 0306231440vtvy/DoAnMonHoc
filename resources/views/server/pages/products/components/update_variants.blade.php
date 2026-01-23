@@ -25,71 +25,84 @@
                             class="variant-wrapper {{ old('has_attribute', optional($products)->has_attribute ?? 0) == 1 ? '' : 'd-none' }}">
                             <div class="variant-body mb-3">
                                 <div id="variantAttributesContainer">
-                                    {{-- ✅ Hiển thị attributes hiện tại khi edit --}}
                                     @if ($products && $products->sanpham_variants->count() > 0)
                                         @php
-                                            // Lấy các attributes đã được chọn
-                                            $selectedAttributes = [];
+                                            // Lấy unique type_id từ tất cả variants
+                                            $uniqueTypes = [];
                                             foreach ($products->sanpham_variants as $variant) {
                                                 foreach ($variant->attributesValues as $attr) {
-                                                    $selectedAttributes[$attr->pivot->type_id][] = $attr->id;
+                                                    $typeId = $attr->bienthe_id;
+                                                    if (!isset($uniqueTypes[$typeId])) {
+                                                        $uniqueTypes[$typeId] = [];
+                                                    }
+                                                    $uniqueTypes[$typeId][] = $attr->id;
                                                 }
                                             }
+                                            foreach ($uniqueTypes as $typeId => $values) {
+                                                $uniqueTypes[$typeId] = array_unique($values);
+                                            }
                                         @endphp
-                                        @php
-                                            $attributeIndex = 0;
-                                        @endphp
-                                        @foreach ($selectedAttributes as $typeId => $valueIds)
-                                            @php
-                                                $attrType = $bienthe->where('id', (int) $typeId)->first();
-                                                $attributeIndex++;
-                                            @endphp
-                                            <div class="row mb-3 align-items-start variant-item"
-                                                id="attr-{{ $attributeIndex - 1 }}">
-                                                <div class="col-lg-3">
-                                                    <label class="form-label">Chọn Thuộc Tính <span
-                                                            class="text-danger">*</span></label>
-                                                    <select class="form-control choose-attribute"
-                                                        onchange="onTypeChange({{ $attributeIndex - 1 }})"
-                                                        id="type-{{ $attributeIndex - 1 }}">
-                                                        <option value="">-- Chọn Nhóm thuộc tính --</option>
-                                                        @foreach ($bienthe as $type)
-                                                            <option value="{{ $type->id }}"
-                                                                {{ $type->id == $typeId ? 'selected' : '' }}>
-                                                                {{ $type->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
 
-                                                <div class="col-lg-8">
-                                                    <label class="form-label">Chọn Giá Trị (Click vào ô vuông)</label>
-                                                    <div class="checkbox-group"
-                                                        id="value-container-{{ $attributeIndex - 1 }}">
-                                                        @foreach ($attrType->bienthe_values as $value)
-                                                            <div class="checkbox-item">
-                                                                <input type="checkbox"
-                                                                    id="value-{{ $attributeIndex - 1 }}-{{ $value->id }}"
-                                                                    name="variant-value-{{ $attributeIndex - 1 }}"
-                                                                    value="{{ $value->id }}"
-                                                                    data-value-name="{{ $value->value }}"
-                                                                    {{ in_array($value->id, $valueIds) ? 'checked' : '' }}
-                                                                    onchange="generateVariants()">
-                                                                <label
-                                                                    for="value-{{ $attributeIndex - 1 }}-{{ $value->id }}">{{ $value->value }}</label>
-                                                            </div>
-                                                        @endforeach
+                                        @php $attributeIndex = 0; @endphp
+
+                                        @foreach ($uniqueTypes as $typeId => $valueIds)
+                                            @php
+                                                $attrType = $bienthe->firstWhere('id', $typeId);
+                                            @endphp
+
+                                            @if ($attrType)
+                                                <div class="row mb-3 align-items-start variant-item"
+                                                    id="attr-{{ $attributeIndex }}">
+                                                    <div class="col-lg-3">
+                                                        <label class="form-label">Chọn Thuộc Tính <span
+                                                                class="text-danger">*</span></label>
+                                                        <select class="form-control choose-attribute"
+                                                            onchange="onTypeChange({{ $attributeIndex }})"
+                                                            id="type-{{ $attributeIndex }}">
+                                                            <option value="">-- Chọn Nhóm thuộc tính --</option>
+                                                            @foreach ($bienthe as $type)
+                                                                <option value="{{ $type->id }}"
+                                                                    {{ $type->id == $typeId ? 'selected' : '' }}>
+                                                                    {{ $type->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-8">
+                                                        <label class="form-label">Chọn Giá Trị (Click vào ô
+                                                            vuông)</label>
+                                                        <div class="checkbox-group"
+                                                            id="value-container-{{ $attributeIndex }}">
+                                                            @foreach ($attrType->bienthe_values as $value)
+                                                                <div class="checkbox-item">
+                                                                    <input type="checkbox"
+                                                                        id="value-{{ $attributeIndex }}-{{ $value->id }}"
+                                                                        name="variant-value-{{ $attributeIndex }}"
+                                                                        value="{{ $value->id }}"
+                                                                        data-value-name="{{ $value->value }}"
+                                                                        {{ in_array($value->id, $valueIds) ? 'checked' : '' }}
+                                                                        onchange="generateVariants()">
+                                                                    <label
+                                                                        for="value-{{ $attributeIndex }}-{{ $value->id }}">
+                                                                        {{ $value->value }}
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-1">
+                                                        <label class="form-label">&nbsp;</label>
+                                                        <button type="button"
+                                                            class="btn btn-icon btn-danger w-100 h-100"
+                                                            onclick="removeAttr({{ $attributeIndex }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-lg-1">
-                                                    <label class="form-label">&nbsp;</label>
-                                                    <button type="button" class="btn btn-icon btn-danger w-100 h-100"
-                                                        onclick="removeAttr({{ $attributeIndex - 1 }})">
-                                                        <i class="ti ti-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                                @php $attributeIndex++; @endphp
+                                            @endif
                                         @endforeach
                                     @endif
                                 </div>
@@ -113,23 +126,22 @@
                                                     <th>Phiên bản</th>
                                                     <th>SKU</th>
                                                     <th>Giá (VNĐ)</th>
-                                                    <th>Tồn kho</th>
+                                                    <th>Số lượng</th>
                                                     <th>Xóa</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="variantsTableBody">
-                                                {{-- ✅ Hiển thị variants hiện tại --}}
                                                 @if ($products && $products->sanpham_variants->count() > 0)
                                                     @foreach ($products->sanpham_variants as $index => $variant)
                                                         <tr data-variant-index="{{ $index }}">
+                                                            <input type="hidden"
+                                                                name="sanpham_variants[{{ $index }}][id]"
+                                                                value="{{ $variant->id }}">
                                                             <td>
                                                                 {{ $variant->attributesValues->pluck('value')->join(' - ') }}
-                                                                @foreach ($variant->attributesValues as $j => $attr)
+                                                                @foreach ($variant->attributesValues as $attr)
                                                                     <input type="hidden"
-                                                                        name="sanpham_variants[{{ $index }}][attributes][{{ $j }}][type_id]"
-                                                                        value="{{ $attr->pivot->type_id }}">
-                                                                    <input type="hidden"
-                                                                        name="sanpham_variants[{{ $index }}][attributes][{{ $j }}][value_id]"
+                                                                        name="sanpham_variants[{{ $index }}][attributes][]"
                                                                         value="{{ $attr->id }}">
                                                                 @endforeach
                                                             </td>
@@ -153,7 +165,7 @@
                                                             <td>
                                                                 <button type="button" class="btn btn-sm btn-danger"
                                                                     onclick="removeVariantRow({{ $index }})">
-                                                                    <i class="ti ti-trash"></i>
+                                                                    <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -225,7 +237,7 @@
 
 <script>
     const variantTypes = @json($bienthe ?? []);
-    const baseSku = document.getElementById('sku')?.value || "{{ $sku ?? 'PROD' }}";
+    const baseSku = '{{ $products->sku ?? 'PROD' }}';
     const basePrice = document.getElementById('giaban')?.value || {{ $giaban ?? 0 }};
 
     const variantValues = {};
@@ -233,7 +245,41 @@
         variantValues[t.id] = t.bienthe_values || [];
     });
 
-    let attributeIndex = {{ count($selectedAttributes ?? []) }};
+    let attributeIndex = {{ $attributeIndex ?? 0 }};
+
+    // Hàm tạo SKU unique
+    function generateUniqueSku(attributes, baseSkuValue) {
+        const suffix = attributes.map(a => {
+            return a.value_name.substring(0, 3).toUpperCase().replace(/\s/g, '');
+        }).join('-');
+
+        return `${baseSkuValue}-${suffix}`;
+    }
+
+    function isSkuDuplicate(sku, currentIndex) {
+        const allSkuInputs = document.querySelectorAll('input[name*="sanpham_variants"][name*="sku"]');
+        let isDuplicate = false;
+
+        allSkuInputs.forEach((input, idx) => {
+            if (idx !== currentIndex && input.value === sku) {
+                isDuplicate = true;
+            }
+        });
+
+        return isDuplicate;
+    }
+
+    function ensureUniqueSku(baseSku, attributes, index) {
+        let sku = generateUniqueSku(attributes, baseSku);
+        let counter = 1;
+
+        while (isSkuDuplicate(sku, index)) {
+            sku = `${generateUniqueSku(attributes, baseSku)}-${counter}`;
+            counter++;
+        }
+
+        return sku;
+    }
 
     // Toggle variant wrapper
     document.getElementById('customSwitch').addEventListener('change', function() {
@@ -269,6 +315,7 @@
                     name="variant-value-${id}" 
                     value="${v.id}" 
                     data-value-name="${v.value}"
+                    data-type-id="${typeId}"
                     onchange="generateVariants()">
                 <label for="value-${id}-${v.id}">${v.value}</label>
             `;
@@ -288,7 +335,30 @@
 
     function removeVariantRow(index) {
         const row = document.querySelector(`tr[data-variant-index="${index}"]`);
-        if (row) row.remove();
+        if (row) {
+            row.remove();
+            updateVariantIndices();
+        }
+    }
+
+    function updateVariantIndices() {
+        const rows = document.querySelectorAll('#variantsTableBody tr[data-variant-index]');
+        rows.forEach((row, newIndex) => {
+            row.setAttribute('data-variant-index', newIndex);
+
+            row.querySelectorAll('input').forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    const newName = name.replace(/\[\d+\]/, `[${newIndex}]`);
+                    input.setAttribute('name', newName);
+                }
+            });
+
+            const deleteBtn = row.querySelector('button[onclick]');
+            if (deleteBtn) {
+                deleteBtn.setAttribute('onclick', `removeVariantRow(${newIndex})`);
+            }
+        });
     }
 
     function cartesian(arr) {
@@ -306,9 +376,9 @@
 
             const checkboxes = document.querySelectorAll(`input[name="variant-value-${id}"]:checked`);
             const selected = Array.from(checkboxes).map(cb => ({
-                type_id: type.value,
-                value_id: cb.value,
-                value_name: cb.getAttribute('data-value-name')
+                bienthe_value_id: cb.value,
+                value_name: cb.getAttribute('data-value-name'),
+                type_id: cb.getAttribute('data-type-id') || type.value
             }));
 
             if (selected.length > 0) {
@@ -352,7 +422,7 @@
             <div class="col-lg-1">
                 <label class="form-label">&nbsp;</label>
                 <button type="button" class="btn btn-icon btn-danger w-100 h-100" onclick="removeAttr(${id})">
-                    <i class="ti ti-trash"></i>
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
         `;
@@ -362,56 +432,93 @@
 
     function renderVariants(combos) {
         const tbody = document.getElementById('variantsTableBody');
-        document.querySelectorAll('#variantsTableBody tr[data-variant-index]').forEach(el => el.remove());
+        const existingRows = document.querySelectorAll('#variantsTableBody tr[data-variant-index]');
+
+        // Lưu data của các row hiện có
+        const existingData = [];
+        existingRows.forEach(row => {
+            const variantId = row.querySelector('input[name*="[id]"]')?.value;
+            const sku = row.querySelector('input[name*="[sku]"]')?.value;
+            const giaban = row.querySelector('input[name*="[giaban]"]')?.value;
+            const soluong = row.querySelector('input[name*="[soluong]"]')?.value;
+            const attributes = Array.from(row.querySelectorAll('input[name*="[attributes]"]'))
+                .map(inp => inp.value)
+                .sort()
+                .join(',');
+
+            existingData.push({
+                variantId,
+                sku,
+                giaban,
+                soluong,
+                attributes
+            });
+        });
+
+        // Xóa tất cả rows cũ
+        existingRows.forEach(el => el.remove());
+
+        const currentBaseSku = document.getElementById('sku')?.value || baseSku;
 
         combos.forEach((attrs, i) => {
             const name = attrs.map(a => a.value_name).join(' - ');
-            let attributeInputs = '';
 
-            attrs.forEach((a, j) => {
+            // Match với data cũ
+            const newAttributes = attrs.map(a => a.bienthe_value_id).sort().join(',');
+            const existingMatch = existingData.find(d => d.attributes === newAttributes);
+
+            // Tạo SKU
+            const uniqueSku = existingMatch && existingMatch.sku ?
+                existingMatch.sku :
+                ensureUniqueSku(currentBaseSku, attrs, i);
+
+            // Tạo attribute inputs
+            let attributeInputs = '';
+            attrs.forEach(a => {
                 attributeInputs += `
-                <input type="hidden" name="sanpham_variants[${i}][attributes][${j}][type_id]" value="${a.type_id}">
-                <input type="hidden" name="sanpham_variants[${i}][attributes][${j}][value_id]" value="${a.value_id}">
-            `;
+                    <input type="hidden" 
+                           name="sanpham_variants[${i}][attributes][]" 
+                           value="${a.bienthe_value_id}">
+                `;
             });
 
             const row = document.createElement('tr');
             row.setAttribute('data-variant-index', i);
             row.innerHTML = `
-            <td>
-                ${name}
-                ${attributeInputs}
-            </td>
-            <td>
-                <input class="form-control" type="text" name="sanpham_variants[${i}][sku]" value="${baseSku}-${i + 1}" required>
-            </td>
-            <td>
-                <input type="number" class="form-control" name="sanpham_variants[${i}][giaban]" value="${basePrice}" min="0" step="0.01" required>
-            </td>
-            <td>
-                <input type="number" class="form-control" name="sanpham_variants[${i}][soluong]" value="0" min="0" required>
-            </td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger" onclick="removeVariantRow(${i})">
-                    <i class="ti ti-trash"></i>
-                </button>
-            </td>
-        `;
+                ${existingMatch && existingMatch.variantId ? `<input type="hidden" name="sanpham_variants[${i}][id]" value="${existingMatch.variantId}">` : ''}
+                <td>
+                    ${name}
+                    ${attributeInputs}
+                </td>
+                <td>
+                    <input class="form-control" type="text" 
+                           name="sanpham_variants[${i}][sku]" 
+                           value="${uniqueSku}" 
+                           required>
+                </td>
+                <td>
+                    <input type="number" class="form-control" 
+                           name="sanpham_variants[${i}][giaban]" 
+                           value="${existingMatch ? existingMatch.giaban : basePrice}" 
+                           min="0" step="0.01" required>
+                </td>
+                <td>
+                    <input type="number" class="form-control" 
+                           name="sanpham_variants[${i}][soluong]" 
+                           value="${existingMatch ? existingMatch.soluong : 0}" 
+                           min="0" required>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removeVariantRow(${i})">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            `;
             tbody.appendChild(row);
         });
     }
 
-    // Lắng nghe thay đổi SKU và Giá sản phẩm cha
-    const skuInput = document.getElementById('sku');
     const giaInput = document.getElementById('giaban');
-
-    if (skuInput) {
-        skuInput.addEventListener('change', function() {
-            document.querySelectorAll('input[name*="sanpham_variants"][name*="sku"]').forEach((el, idx) => {
-                el.value = this.value + '-' + (idx + 1);
-            });
-        });
-    }
     if (giaInput) {
         giaInput.addEventListener('change', function() {
             document.querySelectorAll('input[name*="sanpham_variants"][name*="giaban"]').forEach(el => {

@@ -37,9 +37,13 @@ class ProductController extends Controller
     }
     public function show(string $slug): View
     {
-        // $products = $this->productRepository->findById($id);
-        $products = Sanpham::where('slug', $slug);
-        // dd($products);
+        $products = Sanpham::where('slug', $slug)
+            ->with([
+                'categories',
+                'thuonghieu',
+                'sanpham_variants.attributesValues'
+            ])
+            ->firstOrFail();
         return view('client.pages.products.show', compact('products'));
     }
 }

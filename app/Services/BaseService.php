@@ -159,7 +159,7 @@ abstract class BaseService
             return $this
                 ->beginTransaction()
                 ->beforeRestore($id)
-                ->restore($id)
+                ->performRestore($id)
                 ->afterRestore($id)
                 ->commit();
         } catch (\Throwable $th) {

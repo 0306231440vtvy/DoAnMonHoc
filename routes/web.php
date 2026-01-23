@@ -38,6 +38,16 @@ Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts
 // Route::get('/gioi-thieu', function () {
 //     return view('client.pages.gioithieu');
 // })->name('gioi-thieu');
+Route::prefix('products')->name('client.products.')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/new', [HomeController::class, 'newProducts'])->name('new');
+    Route::get('/bestseller', [HomeController::class, 'bestsellerProducts'])->name('bestseller');
+});
+// Danh mục
+Route::get('/category/{slug}', [HomeController::class, 'categoryShow'])->name('client.category.show');
+
+// Chi tiết sản phẩm (cần tạo controller riêng)
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('client.product.detail');
 Route::controller(PageController::class)->group(function () {
     Route::get('thong-tin-ban-hang', 'salesInfo')->name('thong-tin-ban-hang');
     Route::get('dich-vu-ban-hang', 'saleService')->name('dich-vu-ban-hang');
@@ -140,7 +150,8 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::post('store', [ProductController::class, 'store'])->name('.store');
             Route::get('edit/{id}', [ProductController::class, 'edit'])->name('.edit');
             Route::put('update/{id}', [ProductController::class, 'update'])->name('.update');
-            Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('.delete');
+            Route::put('delete/{id}', [ProductController::class, 'delete'])->name('.delete');
+            Route::put('restore/{id}', [ProductController::class, 'restore'])->name('.restore');
         });
         // =================BRAND================//
         Route::prefix('/brands')->name('brands')->group(function () {

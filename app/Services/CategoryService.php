@@ -11,6 +11,7 @@ class CategoryService extends BaseService
 {
     protected $repository;
     protected $payload;
+    protected $with = ['sanphams'];
     protected function prepageModeldata(Request $request): self
     {
         $this->payload = $request->only([
