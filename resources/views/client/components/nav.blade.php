@@ -30,6 +30,15 @@
                               Blog
                           </a>
                       </li>
+                      <li><a href="{{ route('client.profile.index') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">Tài
+                              khoản</a></li>
+                      <li><a href="{{ route('contact') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">Liên hệ</a>
+                      </li>
+                      <li><a href="{{ route('blog') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">Tin tức</a>
+                      </li>
                       <li>
                           <a href="{{ route('contact') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
@@ -133,7 +142,6 @@
               </div>
           </div>
       </div>
-
       <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">

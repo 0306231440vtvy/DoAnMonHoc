@@ -23,7 +23,7 @@ use App\Http\Controllers\Server\SlideController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientOrderCOntroller;
 use App\Http\Controllers\Client\PageController;
-use App\Http\Controllers\Server\RoleController;
+use App\Http\Controllers\Client\FavoriteController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
 //Thêm route gửi liên hệ
@@ -57,7 +57,11 @@ Route::controller(PageController::class)->group(function () {
     Route::get('bao-mat-thong-tin', 'privacyPolicy')->name('bao-mat-thong-tin');
     Route::get('gioi-thieu', 'aboutUs')->name('gioi-thieu');
 });
+// Req 22 & 23: Trang tin tức (Danh sách & Tìm kiếm)
+Route::get('/tin-tuc', [PageController::class, 'blog'])->name('blog');
 
+// Chi tiết tin tức
+Route::get('/tin-tuc/{id}', [PageController::class, 'blogDetail'])->name('blog.detail');
 Route::middleware('auth')->prefix('/')->group(function () {
     //Route cho trang giỏ hàng
     Route::prefix('gio-hang')->name('carts')->group(function () {
@@ -71,10 +75,26 @@ Route::middleware('auth')->prefix('/')->group(function () {
         Route::post('/calculate-selected', [CartController::class, 'calculateSelected'])
             ->name('.calculate-selected');
     });
-    Route::prefix('/profile')->name('profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'index']);
-        Route::post('/update', [ProfileController::class, 'update'])
-            ->name('.update');
+    // --- KHU VỰC PROFILE (Tài khoản & Đơn hàng) ---
+    // Gom nhóm prefix 'profile' để đường dẫn đẹp: domain.com/profile/...
+    Route::prefix('profile')->name('client.profile.')->group(function () {
+
+        // Thông tin cá nhân (Req 30)
+        Route::get('/', [ProfileController::class, 'index'])->name('index'); // Tên route: client.profile.index
+        Route::post('/update', [ProfileController::class, 'update'])->name('update'); // Tên route: client.profile.update
+
+        // Lịch sử đánh giá (Req 33)
+        Route::get('/reviews', [ProfileController::class, 'reviews'])->name('reviews'); // Tên route: client.profile.reviews
+
+        // Quản lý đơn hàng (Req 31, 32)
+        // Lưu ý: Mình đặt tên route là 'orders' thay vì 'client.orders.index' để khớp với prefix nhóm
+        Route::get('/orders', [ClientOrderController::class, 'index'])->name('orders'); // Tên route: client.profile.orders
+        Route::get('/orders/{id}', [ClientOrderController::class, 'show'])->name('orders.show');
+        Route::post('/orders/cancel/{id}', [ClientOrderController::class, 'cancel'])->name('orders.cancel');
+
+        // --- KHU VỰC YÊU THÍCH (Favorites) ---
+        Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
+        Route::get('/favorite/toggle/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
     });
     Route::prefix('/order')->name('order')->group(function () {
         // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
@@ -88,6 +108,9 @@ Route::middleware('auth')->prefix('/')->group(function () {
         Route::post('/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
             ->name('.cancel');
     });
+    // Route lấy danh sách xã theo ID tỉnh
+    Route::get('/get-wards/{province_id}', [App\Http\Controllers\Client\ProfileController::class, 'getWards']);
+
     //Thêm route cho trang thanh toán
     Route::prefix('/checkout')->name('checkout')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('.index');
@@ -104,13 +127,11 @@ Route::middleware('guest')->prefix('/auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::get('active-email/{email}', [AuthController::class, 'active'])->name('auth.active.email');
 });
-
-
 //========================================SERVER============================================//
 
 Route::prefix('/server')->middleware(['auth', 'role:2,3'])
     ->group(function () {
-        Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.layouts');
+        Route::get('dashboard', [DashboardServerController::class, 'index'])->name('server.dashboard');
         // ==================USER====================//
         Route::prefix('users')->name('users')->group(function () {
             Route::get('index', [UserController::class, 'index'])->name('.index');

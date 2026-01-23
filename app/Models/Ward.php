@@ -11,10 +11,10 @@ class Ward extends Model
     protected $fillable = [
         'ward_code',
         'name',
-        'province_code'
+        'province_code' // Cột này dùng để nối với bảng provinces
     ];
-    public function province()
+    public function province(): BelongsTo
     {
-        return $this->belongsTo(Province::class,'province_code','province_code');
+        return $this->belongsTo(Province::class, 'province_code', 'province_code');
     }
 }
