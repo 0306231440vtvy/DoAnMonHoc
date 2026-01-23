@@ -49,7 +49,7 @@
 
                 <div class="row g-2 g-md-3 mt-3">
                     <div class="col-12 col-sm-6">
-                        <a href="{{ route('products') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                        <a href="{{ route('client.search') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
                             style="transition: all 0.3s ease;">
                             <i class="fa fa-arrow-left me-2"></i>Tiếp Tục Mua Sắm
                         </a>
@@ -83,12 +83,12 @@
                             <span class="fw-bold" style="color: #10b981; font-size: 1.5rem;">2,230,000đ</span>
                         </div>
                     </div>                    
-                    <a href={{ route('checkout') }} class="btn w-100 text-white py-3 fw-semibold mb-2"
+                    <a href={{ route('checkouts') }} class="btn w-100 text-white py-3 fw-semibold mb-2"
                         style="background-color: #10b981; transition: background-color 0.3s ease;">
                         Tiến Hành Thanh Toán
                     </a>
 
-                    <a href="{{ route('products') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                    <a href="{{ route('client.search') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
                         style="transition: all 0.3s ease;">
                         Tiếp Tục Mua Sắm
                     </a>

@@ -15,6 +15,10 @@ class Giohang extends Model
     protected $table = 'giohang';
     protected $fillable = [
         'user_id',
+        'product_id', 
+        'variant_id', 
+        'soluong', 
+        'giaban'
     ];
     public function user(): BelongsTo
     {

@@ -37,7 +37,7 @@
                           </a>
                       </li>
                       <li>
-                          <a href="{{ route('products') }}"
+                          <a href="{{ route('client.search') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
                               Sản Phẩm
                           </a>

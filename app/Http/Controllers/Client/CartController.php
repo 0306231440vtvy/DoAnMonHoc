@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 use App\Services\CartService;
 use Illuminate\Http\Request;
+use App\Models\Sanpham;
+use App\Models\Giohang;
 
 class CartController extends Controller
 {
@@ -49,12 +51,13 @@ class CartController extends Controller
 
         // Kiểm tra sản phẩm đã tồn tại trong giỏ chưa
         $cartItem = Giohang::where('user_id', $userId)
-                            ->where('sanpham_id', $productId)
-                            ->where('variant_id', $variantId) // Nếu bạn có lưu biến thể
+                            // ->where('sanpham_id', $productId)
+                            // ->where('variant_id', $variantId) // Nếu bạn có lưu biến thể
                             ->first();
 
         if ($cartItem) {
             $cartItem->soluong += $quantity;
+            $cartItem->giaban = $price;
             $cartItem->save();
         } else {
             Giohang::create([

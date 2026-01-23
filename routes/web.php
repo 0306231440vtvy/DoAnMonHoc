@@ -26,7 +26,6 @@ use App\Http\Controllers\Client\PageController;
 use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
-Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
 Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
 Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
 // Thêm name('carts') vào route hiển thị trang giỏ hàng

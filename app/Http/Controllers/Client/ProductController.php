@@ -117,11 +117,11 @@ class ProductController extends Controller
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
 
-        // 1. Xử lý Ajax (Gợi ý nhanh) - Thêm tìm theo mô tả
+        // 1. XỬ LÝ AJAX (Gợi ý nhanh khi đang gõ vào ô tìm kiếm)
         if ($request->ajax()) {
             $products = Sanpham::where(function($q) use ($keyword) {
                     $q->where('tensp', 'LIKE', "%$keyword%")
-                    ->orWhere('mota', 'LIKE', "%$keyword%"); // Thêm tìm kiếm theo mô tả
+                    ->orWhere('mota', 'LIKE', "%$keyword%");
                 })
                 ->with('variants')
                 ->limit(5)
@@ -133,7 +133,6 @@ class ProductController extends Controller
                 $img = asset('client/img/' . basename($item->hinhnen));
                 $url = route('client.products.show', $item->id);
 
-                // Thêm icon nhỏ vào phần gợi ý
                 $output .= "
                     <a href='{$url}' class='list-group-item list-group-item-action d-flex align-items-center p-2'>
                         <img src='{$img}' style='width: 45px; height: 45px; object-fit: cover;' class='me-3 border rounded'>
@@ -146,33 +145,39 @@ class ProductController extends Controller
             return $products->isEmpty() ? '<div class="p-3 text-center text-muted small">Không thấy sản phẩm</div>' : $output;
         }
 
-        // 2. Xử lý trang kết quả lớn (Kết hợp tiêu chí)
+        // 2. XỬ LÝ TRANG KẾT QUẢ (Khi nhấn nút Lọc hoặc Enter)
         $query = Sanpham::query()->with('variants');
 
+        // Lọc theo từ khóa (Tên hoặc Mô tả)
         if ($keyword) {
             $query->where(function($q) use ($keyword) {
                 $q->where('tensp', 'LIKE', "%$keyword%")
-                ->orWhere('mota', 'LIKE', "%$keyword%"); // Tìm kiếm kết hợp mô tả
+                ->orWhere('mota', 'LIKE', "%$keyword%");
             });
         }
 
+        // Lọc theo giá tối thiểu (Tìm trong bảng variants)
         if ($minPrice) {
             $query->whereHas('variants', function($q) use ($minPrice) {
-                $q->where('giaban', '>=', $minPrice); // Lọc theo tiêu chí giá
+                $q->where('giaban', '>=', $minPrice);
             });
         }
 
+        // Lọc theo giá tối đa (Tìm trong bảng variants)
         if ($maxPrice) {
             $query->whereHas('variants', function($q) use ($maxPrice) {
-                $q->where('giaban', '<=', $maxPrice); // Lọc theo tiêu chí giá
+                $q->where('giaban', '<=', $maxPrice);
             });
         }
 
-        $products = $query->paginate(15)->withQueryString();
+        // Phân trang và giữ lại các tham số trên URL (để khi sang trang 2 không bị mất kết quả lọc)
+        $products = $query->paginate(10)->withQueryString();
+
         return view('client.pages.products.search_results', compact('products', 'keyword'));
     }
 
 
+    
 
     public function toggle($id) {
         $user = auth()->user();

@@ -54,6 +54,39 @@
                 @endforeach
             </div>
 
+
+            <div class="card border-0 shadow-sm mb-4" style="border-radius: 10px; background: #f9f9f9;">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Để lại đánh giá của bạn</h6>
+                    <form id="commentForm" action="{{ route('client.products.show', $product->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-2">
+                            <div class="star-rating">
+                                @for($i = 5; $i >= 1; $i--)
+                                    <input type="radio" id="write-star{{ $i }}" name="danhgia" value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }} />
+                                    <label for="write-star{{ $i }}"><span style="font-size: 20px; cursor:pointer;">⭐</span></label>
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="noidung" class="form-control" placeholder="Viết bình luận..." required>
+                            <button class="btn btn-primary" type="submit">Gửi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <style>
+                /* CSS để chọn sao ngược từ phải qua trái (kỹ thuật radio rating) */
+                .star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+                .star-rating input { display: none; }
+                .star-rating label { filter: grayscale(100%); opacity: 0.3; transition: 0.2s; }
+                .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { 
+                    filter: grayscale(0%); opacity: 1; 
+                }
+            </style>
+
+
             @if(count($product->binhluans) > 2)
                 <div style="margin-top: 10px;">
                     <button id="toggleCommentBtn" class="btn btn-link p-0" data-status="closed" style="text-decoration: none; font-weight: bold; color: #007bff;">
@@ -62,6 +95,22 @@
                 </div>
             @endif
 
+            <script>
+                document.getElementById('commentForm').addEventListener('submit', function(e) {
+                    // Biến checkLogin được render từ Blade
+                    var isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+                    
+                    if (!isLoggedIn) {
+                        // Ngừng việc gửi form
+                        e.preventDefault();
+                        
+                        // Thông báo nhẹ hoặc chuyển hướng ngay lập tức
+                        alert('Vui lòng đăng nhập để gửi đánh giá!');
+                        window.location.href = "{{ route('login') }}";
+                    }
+                });
+            </script>
+            
 
         </div>
     
