@@ -71,11 +71,121 @@ class ProductController extends Controller
     //     return view('client.pages.products.index', compact('products', 'categories'));
     // }
 
-    public function show(string $slug): View
+   
+    // public function show($products) 
+    // {
+    // // Lấy sản phẩm theo ID
+    // // Load kèm theo các biến thể và giá trị (màu, size) của chúng
+    // $product = Sanpham::with([
+    //     'variants',                          // Lấy các dòng giá/kho
+    //     'variants.attributeValues',          // Chạy tiếp qua bảng trung gian lấy Màu/Size
+    //     'variants.attributeValues.attributeType' // Chạy tiếp lấy tên loại "Màu sắc" hay "Kích thước"
+    // ])->findOrFail($products);
+
+    // return view('client.pages.products.show', compact('product'));
+    // }
+    
+        public function show($products) 
     {
-        // $products = $this->productRepository->findById($id);
-        $products = Sanpham::where('slug', $slug);
-        // dd($products);
-        return view('client.pages.products.show', compact('products'));
+        $product = Sanpham::with(['variants.attributeValues.attributeType','binhluans.user'])->findOrFail($products);
+
+        $product->increment('view');
+        // Lấy tất cả các giá trị (ví dụ: Trắng, Đen, S, M) từ tất cả biến thể
+        // Sau đó gom nhóm chúng theo tên loại (Màu sắc, Kích thước)
+        $groupedAttributes = $product->variants->flatMap->attributeValues
+            ->groupBy(function($item) {
+                return $item->attributeType->name; // Nhóm theo "Màu sắc" hoặc "Kích thước"
+            })
+            ->map(function($group) {
+                return $group->pluck('value')->unique(); // Chỉ lấy tên giá trị và không trùng lặp
+            });
+
+            $relatedProducts = Sanpham::where('category_id', $product->category_id) // Dùng category_id thay vì iddanhmuc
+                ->where('id', '!=', $product->id)
+                ->where('trangthai', '<>', 0)
+                ->withAvg('binhluans', 'danhgia') // Tính trung bình cột danhgia
+                ->take(5) // Lấy 5 sản phẩm cho đẹp giao diện
+                ->get();
+
+        return view('client.pages.products.show', compact('product', 'groupedAttributes','relatedProducts'));
     }
+    
+
+        public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        // 1. Xử lý Ajax (Gợi ý nhanh) - Thêm tìm theo mô tả
+        if ($request->ajax()) {
+            $products = Sanpham::where(function($q) use ($keyword) {
+                    $q->where('tensp', 'LIKE', "%$keyword%")
+                    ->orWhere('mota', 'LIKE', "%$keyword%"); // Thêm tìm kiếm theo mô tả
+                })
+                ->with('variants')
+                ->limit(5)
+                ->get();
+
+            $output = '';
+            foreach ($products as $item) {
+                $price = number_format($item->variants->first()->giaban ?? 0, 0, ',', '.');
+                $img = asset('client/img/' . basename($item->hinhnen));
+                $url = route('client.products.show', $item->id);
+
+                // Thêm icon nhỏ vào phần gợi ý
+                $output .= "
+                    <a href='{$url}' class='list-group-item list-group-item-action d-flex align-items-center p-2'>
+                        <img src='{$img}' style='width: 45px; height: 45px; object-fit: cover;' class='me-3 border rounded'>
+                        <div>
+                            <div class='fw-bold small text-dark'><i class='fa-solid fa-magnifying-glass me-1 opacity-50'></i>{$item->tensp}</div>
+                            <div class='text-danger small fw-bold'>{$price}đ</div>
+                        </div>
+                    </a>";
+            }
+            return $products->isEmpty() ? '<div class="p-3 text-center text-muted small">Không thấy sản phẩm</div>' : $output;
+        }
+
+        // 2. Xử lý trang kết quả lớn (Kết hợp tiêu chí)
+        $query = Sanpham::query()->with('variants');
+
+        if ($keyword) {
+            $query->where(function($q) use ($keyword) {
+                $q->where('tensp', 'LIKE', "%$keyword%")
+                ->orWhere('mota', 'LIKE', "%$keyword%"); // Tìm kiếm kết hợp mô tả
+            });
+        }
+
+        if ($minPrice) {
+            $query->whereHas('variants', function($q) use ($minPrice) {
+                $q->where('giaban', '>=', $minPrice); // Lọc theo tiêu chí giá
+            });
+        }
+
+        if ($maxPrice) {
+            $query->whereHas('variants', function($q) use ($maxPrice) {
+                $q->where('giaban', '<=', $maxPrice); // Lọc theo tiêu chí giá
+            });
+        }
+
+        $products = $query->paginate(15)->withQueryString();
+        return view('client.pages.products.search_results', compact('products', 'keyword'));
+    }
+
+
+
+    public function toggle($id) {
+        $user = auth()->user();
+        // Kiểm tra xem đã thích chưa
+        $isFavorite = $user->favorites()->where('sanpham_id', $id)->exists();
+
+        if ($isFavorite) {
+            $user->favorites()->detach($id); // Bỏ thích
+            return response()->json(['status' => 'removed']);
+        } else {
+            $user->favorites()->attach($id); // Thêm thích
+            return response()->json(['status' => 'added']);
+        }
+    }
+
 }

@@ -33,7 +33,8 @@ class HomeController extends Controller
     {
         // 1. Lấy sản phẩm mới nhất (8 sản phẩm)
         // Đã xóa ->where('publish', 1) để tránh lỗi
-        $newProducts = Sanpham::orderBy('created_at', 'desc')
+        $newProducts = Sanpham::where('trangthai', '<>', 0)
+            ->orderBy('created_at', 'asc')
             ->take(8)
             ->get();
 
@@ -60,4 +61,7 @@ class HomeController extends Controller
             'slide',
         ));
     }
+
+       
+    
 }

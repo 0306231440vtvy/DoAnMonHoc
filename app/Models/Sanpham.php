@@ -30,10 +30,7 @@ class Sanpham extends Model
     ];
 
     // Nếu bạn muốn truy ngược lại xem sản phẩm này nằm trong đơn hàng nào (ít dùng nhưng có thể cần thống kê)
-    public function chiTietHoadon()
-    {
-        return $this->hasMany(CtHoadon::class, 'sanpham_id', 'id');
-    }
+    
 
     // Check xem user hiện tại đã thích sản phẩm này chưa (Helper function)
     public function isFavoritedBy($userId)
@@ -57,9 +54,9 @@ class Sanpham extends Model
     // }
     public function variants(): HasMany
     {
-        return $this->hasMany(SanphamVariant::class);
-    }
-    public function getRouteKeyName(): string
+        // Kiểm tra xem SanphamVariant::class có tồn tại không
+        return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
+    }    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -67,4 +64,13 @@ class Sanpham extends Model
         'album' => 'array'
     ];
     protected $relationable = ['sanpham_variants'];
+
+    // Trong file App\Models\Sanpham.php
+    // app/Models/Sanpham.php
+
+        public function binhluans() 
+        {
+           
+            return $this->hasMany(Binhluan::class, 'sanpham_id', 'id');
+        }
 }

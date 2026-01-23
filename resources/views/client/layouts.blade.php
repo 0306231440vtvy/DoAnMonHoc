@@ -13,6 +13,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{ asset('client/library/customzime.css') }}">
     <link rel="stylesheet" href="{{ asset('client/library/chat.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>

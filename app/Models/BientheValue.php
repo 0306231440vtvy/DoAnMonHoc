@@ -18,8 +18,9 @@ class BientheValue extends Model
     {
         return $this->BelongsTo(BienThe::class);
     }
-    public function variants(): BelongsToMany
+    public function attributeType(): BelongsTo
     {
-        return $this->belongsToMany(SanphamVariant::class, 'variant_attribute_values', 'bienthe_value_id', 'variant_id');
+        // 'bienthe_id' là cột khóa ngoại trong bảng bienthe_values
+        return $this->belongsTo(BienThe::class, 'bienthe_id', 'id');
     }
 }

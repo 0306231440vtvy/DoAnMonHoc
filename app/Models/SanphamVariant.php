@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class SanphamVariant extends Model
 {
-    protected $table = ['sanpham_variants'];
+    protected $table = 'sanpham_variants';
     protected $fillable = [
         'sanpham_id',
         'sku',
@@ -17,17 +17,16 @@ class SanphamVariant extends Model
         'soluong',
         'trangthai'
     ];
-    public function  sanpham(): BelongsTo
+    public function product()
     {
-        return $this->belongsTo(Sanpham::class);
+        // Liên kết ngược lại sản phẩm chính
+        return $this->belongsTo(Sanpham::class, 'sanpham_id', 'id');
     }
-    public function attributesValues(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            BientheValue::class,
-            'variant_attribute_values',
-            'variant_id',
-            'bienthe_value_id'
-        )->withTimestamps();
+    
+
+    public function attributeValues() {
+    // Kết nối từ variant qua bảng trung gian bienthe_variant_values
+    // Để lấy được giá trị như "Trắng", "S", "M"...
+    return $this->belongsToMany(BientheValue::class, 'variant_attribute_values', 'variant_id', 'bienthe_value_id');
     }
 }

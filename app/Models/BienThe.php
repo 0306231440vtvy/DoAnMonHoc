@@ -14,4 +14,10 @@ class BienThe extends Model
         'value',
         'trangthai'
     ];
+
+    public function values()
+    {
+        // Một loại (Màu sắc) có NHIỀU giá trị (Trắng, Đen...)
+        return $this->hasMany(BientheValue::class, 'bienthe_id', 'id');
+    }
 }

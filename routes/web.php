@@ -29,8 +29,12 @@ Route::get('/', [HomeController::class, 'index'])->name('layouts');
 Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
 Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
 Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
+// Thêm name('carts') vào route hiển thị trang giỏ hàng
 Route::get('/gio-hang', [CartController::class, 'index'])->name('carts');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('client.cart.add');
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
+Route::get('/search', [ClientProductController::class, 'search'])->name('client.search');
+Route::post('/wishlist/toggle/{id}', [ClientProductController::class, 'toggle'])->middleware('auth');
 
 // Route::get('/categories/{slug}',[Catego])
 // Route::get('/gioi-thieu', function () {
@@ -106,6 +110,7 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
         });
         // =================PRODUCT================//
         Route::prefix('/products')->name('products')->group(function () {
+            Route::get('/san-pham/{id}', [HomeController::class, 'productDetail'])->name('client.product.detail');
             Route::get('index', [ProductController::class, 'index'])->name('.index');
             Route::get('show/{id}', [ProductController::class, 'show'])->name('.show');
             Route::get('create', [ProductController::class, 'create'])->name('.create');
