@@ -9,8 +9,7 @@
                     @if (isset($products) && count($products) > 0)
                         @foreach ($products as $item)
                             <div class="col">
-                                <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden"
-                                    style="transition: all 0.3s ease;">
+                                <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden">
                                     <div class="position-relative" style="padding-bottom: 100%; overflow: hidden;">
                                         <a href="{{ route('client.products.show', $item->slug) }}"
                                             class="d-block position-absolute top-0 start-0 w-100 h-100">
@@ -49,7 +48,8 @@
                                                 {{-- <span class="fw-bold"
                                                     style="color: #667eea; font-size: 0.875rem;">780,000đ</span> --}}
                                                 <span class="text-muted text-decoration-line-through"
-                                                    style="font-size: 0.75rem;">{{ $item->giaban }}</span>
+                                                    style="font-size: 0.75rem;">{{ number_format($item->giaban) }}
+                                                    đ</span>
                                             </div>
                                             <form action="{{ route('carts.add-to-cart') }}" method="POST"
                                                 class="d-inline add-to-cart-form">

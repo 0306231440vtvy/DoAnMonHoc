@@ -18,7 +18,6 @@ class Sanpham extends Model
     protected $fillable = [
         'id',
         'tensp',
-        'album',
         'hinhnen',
         'giaban',
         'discount',
@@ -62,10 +61,7 @@ class Sanpham extends Model
     // 1-n 1 sản phẩm chứa nhiều variants
     public function sanpham_variants(): HasMany
     {
-        return $this->hasMany(SanphamVariant::class, 'sanpham_id');
+        return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
     }
-    protected $casts = [
-        'album' => 'json'
-    ];
     public $relationable = ['categories'];
 }

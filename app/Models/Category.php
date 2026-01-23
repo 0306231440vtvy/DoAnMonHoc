@@ -39,5 +39,5 @@ class Category extends Model
     {
         return 'slug';
     }
-    public $relationable = [];
+    public $relationable = ['sanpham'];
 }
