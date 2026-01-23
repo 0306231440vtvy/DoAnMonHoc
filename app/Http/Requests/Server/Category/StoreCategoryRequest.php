@@ -26,7 +26,6 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name' => 'required|string|min:4|max:100',
             'slug' => 'required|string',
-            'publish' => 'integer|gte:1|lte:2',
         ];
     }
     public function prepareForValidation()

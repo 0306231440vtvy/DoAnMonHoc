@@ -1,6 +1,6 @@
 @extends('client.layouts')
 @section('content')
-    <<<<<<< HEAD <div class="container py-5">
+    <div class="container py-5">
         <div class="row">
             <div class="col-md-3">
                 @include('client.pages.profile.layout_menu')
@@ -55,5 +55,5 @@
                 </table>
             </div>
         </div>
-        </div>
-    @endsection
+    </div>
+@endsection

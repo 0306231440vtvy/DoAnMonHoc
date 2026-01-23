@@ -98,9 +98,9 @@
         <div class="d-flex flex-column gap-4">
             <div class="w-100">
                 <div class="bg-white p-2 rounded shadow-sm mb-3 d-flex justify-content-between align-items-center">
-                    <p class="text-secondary mb-0" style="font-size: 0.75rem;">
+                    {{-- <p class="text-secondary mb-0" style="font-size: 0.75rem;">
                         Hiển thị <span class="fw-semibold">{{ $sanpham->count() }}</span> sản phẩm
-                    </p>
+                    </p> --}}
                     <form method="GET" action="{{ route('client.products.index') }}" class="d-inline">
                         <select name="sort" class="form-select form-select-sm" style="width: auto; font-size: 0.75rem;"
                             onchange="this.form.submit()">
@@ -117,20 +117,17 @@
                 </div>
 
                 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
-                    @forelse($sanpham as $sp)
-                        @include('client.partials.product-card', ['product' => $sp])
+                    {{-- @forelse($sanpham as $sp)
+                        @include('client.components.product-card', ['product' => $sp])
                     @empty
                         <div class="col-12 text-center py-5">
                             <p class="text-muted">Không có sản phẩm nào.</p>
                         </div>
-                    @endforelse
+                    @endforelse --}}
                 </div>
-                <!-- Pagination -->
-                @if ($sanpham->hasPages())
-                    <div class="d-flex justify-content-center mt-4">
-                        {{ $sanpham->links() }}
-                    </div>
-                @endif
+                <div class="d-flex justify-content-center mt-4">
+                    {{-- {{ $sanpham->links() }} --}}
+                </div>
             </div>
         </div>
     </div>

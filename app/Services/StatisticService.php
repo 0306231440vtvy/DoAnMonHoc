@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\Statistic\StatisticRepository;
+use App\Repositories\StatisticRepository;
 
 class StatisticService
 {

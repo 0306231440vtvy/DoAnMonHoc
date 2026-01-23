@@ -24,18 +24,9 @@
                               Sản Phẩm
                           </a>
                       </li>
-                      <li>
-                          <a href="{{ route('gioi-thieu') }}"
-                              class="font-medium uppercase hover:text-[#667eea] transition">
-                              Blog
-                          </a>
-                      </li>
                       <li><a href="{{ route('client.profile.index') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">Tài
                               khoản</a></li>
-                      <li><a href="{{ route('contact') }}"
-                              class="font-medium uppercase hover:text-[#667eea] transition">Liên hệ</a>
-                      </li>
                       <li><a href="{{ route('blog') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">Tin tức</a>
                       </li>
@@ -61,7 +52,7 @@
                                           <p class="text-xs opacity-90 mb-1">Chào mừng</p>
                                           <p class="font-semibold truncate">{{ Auth::user()->name }}</p>
                                       </div>
-                                      <a href="{{ route('profile') }}"
+                                      <a href="{{ route('client.profile.index') }}"
                                           class="block px-4 py-2 text-sm hover:bg-gray-100 transition">
                                           <i class="fa fa-user mr-2"></i>Thông tin
                                       </a>

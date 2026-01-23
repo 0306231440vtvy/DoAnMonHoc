@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class UserService extends BaseService
 {
     protected $repository;
-
+    protected $sort = ['id', 'asc'];
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;

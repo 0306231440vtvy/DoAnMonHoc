@@ -38,15 +38,15 @@
                     <h4 class="footer-wid-title">Tài Khoản </h4>
                     <ul>
                         <li><a href="{{ route('layouts') }}">Trang chủ</a></li>
-                        <li><a href="{{ route('profile') }}">Tài khoản của tôi</a></li>
+                        <li><a href="{{ route('client.profile.index') }}">Tài khoản của tôi</a></li>
                         <li><a href="#">Lịch sử đơn hàng</a></li>
                         <li><a href="#">Sản phẩm yêu thích</a></li>
                         <li><a href="{{ route('bao-mat-thong-tin') }}">Bảo mật thông tin</a></li>
-                        <li><a href="{{ Auth::check() ? route('client.profile.index') : route('auth.login') }}">Tài
+                        <li><a href="{{ Auth::check() ? route('client.profile.index') : route('login') }}">Tài
                                 khoản của tôi</a></li>
-                        <li><a href="{{ Auth::check() ? route('client.profile.orders') : route('auth.login') }}">Lịch
+                        <li><a href="{{ Auth::check() ? route('client.profile.orders') : route('login') }}">Lịch
                                 sử đơn hàng</a></li>
-                        <li><a href="{{ Auth::check() ? route('client.profile.favorite') : route('auth.login') }}">Sản
+                        <li><a href="{{ Auth::check() ? route('client.profile.favorite') : route('login') }}">Sản
                                 phẩm yêu thích</a></li>
                         <li><a href="{{ route('contact') }}">Liên hệ nhà cung cấp</a></li>
                         <li><a href="{{ route('layouts') }}">Trang chủ</a></li>

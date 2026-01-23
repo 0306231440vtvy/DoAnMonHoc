@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Repositories\Statistic;
+namespace App\Repositories;
 
-use App\Models\Hoadon;
-use App\Models\User;
 use App\Models\Sanpham;
-use App\Repositories\BaseRepository;
+use App\Models\Hoadon;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class StatisticRepository extends BaseRepository
 {
-    public function getModel()
+    public function __construct(Hoadon $model)
     {
-        return Hoadon::class;
+        $this->model = $model;
     }
 
     // Hàm 1: Thống kê số liệu tổng quan (Card)
@@ -23,7 +23,7 @@ class StatisticRepository extends BaseRepository
             'users' => User::count(),
             'products' => Sanpham::count(),
             'orders' => $this->model->count(),
-            
+
             // SỬA: Join sang ct_hoadon để tính tổng tiền
             'revenue' => $this->model
                 ->join('ct_hoadon', 'hoadon.id', '=', 'ct_hoadon.hoadon_id')
@@ -38,11 +38,11 @@ class StatisticRepository extends BaseRepository
         return $this->model
             ->join('ct_hoadon', 'hoadon.id', '=', 'ct_hoadon.hoadon_id') // <--- QUAN TRỌNG: Phải Join bảng
             ->select(
-                DB::raw('DATE(hoadon.created_at) as date'), 
-                
+                DB::raw('DATE(hoadon.created_at) as date'),
+
                 // SỬA: Tính tổng tiền từ bảng chi tiết (ct_hoadon.thanhtien)
                 DB::raw('SUM(ct_hoadon.thanhtien) as total_money'),
-                
+
                 // SỬA: Đếm số đơn hàng duy nhất (tránh đếm trùng do Join)
                 DB::raw('COUNT(DISTINCT hoadon.id) as total_orders')
             )

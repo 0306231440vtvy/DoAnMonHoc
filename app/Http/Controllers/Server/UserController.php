@@ -47,7 +47,7 @@ class UserController extends Controller
 
     public function update(StoreUserRequest $request, $id)
     {
-        if ($this->userService->update($id, $request)) {
+        if ($this->userService->save($request, $id)) {
             return redirect()->route('users.index')->with('success', 'Cập nhật thành viên thành công');
         }
         return redirect()->route('users.index')->with('error', 'Có lỗi xảy ra');

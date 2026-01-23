@@ -3,11 +3,6 @@
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Thêm danh mục</h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a href="{{ route('server.layouts') }}">Trang chủ</a>
-                </li>
-            </ol>
         </div>
     </div>
 

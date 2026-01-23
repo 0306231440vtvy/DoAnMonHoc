@@ -88,14 +88,10 @@ class AuthController extends Controller
 
     public function login(AuthRequest $request): RedirectResponse
     {
-<<<<<<< HEAD
         $user = User::where('email', $request->input('email'))->first();
         // $user = $this->userService->show('email', $request->input('email'));
         // dd($user);
-=======
         // 1. Check xem tìm thấy user không
-        $user = $this->userService->show('email', $request->input('email'));
->>>>>>> c7e0d9dec02562545a1861c92565067c181d38da
         if (!$user) {
             dd('Lỗi: Không tìm thấy email này trong DB');
         }
@@ -115,7 +111,7 @@ class AuthController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password')
         ];
-        
+
         if (!Auth::attempt($credentials)) {
             dd('Lỗi: Sai mật khẩu (Hoặc mật khẩu trong DB chưa được mã hóa chuẩn)');
         }

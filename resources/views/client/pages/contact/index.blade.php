@@ -1,19 +1,17 @@
 @extends('client.layouts')
-@section('title','Trang liên hệ')
+@section('title', 'Trang liên hệ')
 @section('content')
     <!-- Page Content -->
     @foreach ($settings as $setting)
-        
     @endforeach
     <div class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Liên Hệ Với Chúng Tôi</h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <!-- Contact Form -->
             <div>
                 <div class="bg-white rounded-lg shadow p-8">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Gửi Tin Nhắn</h3>
-                    <form class="space-y-4" action="{{ route('contact.send') }}" method="POST" >
+                    <form class="space-y-4" action="{{ route('contact.send') }}" method="POST">
                         @csrf
                         <div>
                             @error('name')
@@ -48,8 +46,6 @@
                     </form>
                 </div>
             </div>
-
-            <!-- Contact Info -->
             <div>
                 <div class="bg-white rounded-lg shadow p-8 mb-6">
                     <h3 class="text-2xl font-bold mb-6 text-gray-800">Thông Tin Liên Hệ</h3>
@@ -78,7 +74,7 @@
                             </div>
                             <div>
                                 <h4 class="font-semibold mb-1 text-gray-800">Email</h4>
-                                <p class="text-gray-600">support@ethoitrang.com<br>sales@ethoitrang.com</p>
+                                <p class="text-gray-600">{{ $setting->email }}</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -126,4 +122,4 @@
             </div>
         </div>
     </div> --}}
-@endsection
+    @endsection

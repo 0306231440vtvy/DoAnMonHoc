@@ -24,6 +24,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ClientOrderCOntroller;
 use App\Http\Controllers\Client\PageController;
 use App\Http\Controllers\Client\FavoriteController;
+use App\Http\Controllers\Server\RoleController;
 // ======================================CLIENT==============================================//
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
 //Thêm route gửi liên hệ
@@ -212,5 +213,6 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::get('edit/{id}', [SlideController::class, 'edit'])->name('.edit');
             Route::put('update/{id}', [SlideController::class, 'update'])->name('.update');
             Route::delete('delete/{id}', [SlideController::class, 'delete'])->name('.delete');
+            Route::put('restore/{id}', [SlideController::class, 'restore'])->name('.restore');
         });
     });

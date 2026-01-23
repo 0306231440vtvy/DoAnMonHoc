@@ -18,4 +18,5 @@ class Slide extends Model
         'trangthai',
         'mota'
     ];
+    public $relationable = [];
 }
