@@ -42,6 +42,8 @@ Route::get('/category/{slug}', [HomeController::class, 'categoryShow'])->name('c
 
 // Chi tiết sản phẩm (cần tạo controller riêng)
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('client.product.detail');
+Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
+Route::get('/search', [ClientProductController::class, 'search'])->name('client.search');
 
 Route::controller(PageController::class)->group(function () {
     Route::get('thong-tin-ban-hang', 'salesInfo')->name('thong-tin-ban-hang');
@@ -159,6 +161,7 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
         });
         // =================PRODUCT================//
         Route::prefix('/products')->name('products')->group(function () {
+            Route::get('/san-pham/{id}', [HomeController::class, 'productDetail'])->name('client.product.detail');
             Route::get('index', [ProductController::class, 'index'])->name('.index');
             Route::get('show/{id}', [ProductController::class, 'show'])->name('.show');
             Route::get('create', [ProductController::class, 'create'])->name('.create');

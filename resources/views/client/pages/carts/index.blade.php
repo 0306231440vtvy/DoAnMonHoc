@@ -88,7 +88,6 @@
                 <div class="col-lg-4">
                     <div class="bg-white rounded shadow-sm p-4 absolute" style="top:100px">
                         <h5 class="fw-bold mb-3">Tổng đơn hàng</h5>
-
                         <div class="d-flex justify-content-between mb-3">
                             <span>Tạm tính</span>
                             <strong>{{ number_format($totals['totalAmount']) }} ₫</strong>
@@ -167,3 +166,61 @@
         });
     });
 </script>
+
+                <div class="row g-2 g-md-3 mt-3">
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('client.search') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                            style="transition: all 0.3s ease;">
+                            <i class="fa fa-arrow-left me-2"></i>Tiếp Tục Mua Sắm
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <button class="btn btn-outline-danger w-100 py-3 fw-semibold" style="transition: all 0.3s ease;">
+                            <i class="fa fa-trash me-2"></i>Xóa Tất Cả
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-white rounded shadow-sm p-3 p-md-4 position-sticky" style="top: 100px;">
+                    <h3 class="h5 fw-bold mb-4">Tổng Đơn Hàng</h3>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Tạm tính (4 sản phẩm):</span>
+                            <span class="fw-semibold">2,300,000đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Phí vận chuyển:</span>
+                            <span class="fw-semibold">30,000đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Giảm giá:</span>
+                            <span class="fw-semibold" style="color: #ef4444;">-100,000đ</span>
+                        </div>
+                        <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                            <span class="fw-bold" style="font-size: 1.125rem;">Tổng cộng:</span>
+                            <span class="fw-bold" style="color: #10b981; font-size: 1.5rem;">2,230,000đ</span>
+                        </div>
+                    </div>                    
+                    <a href={{ route('checkouts') }} class="btn w-100 text-white py-3 fw-semibold mb-2"
+                        style="background-color: #10b981; transition: background-color 0.3s ease;">
+                        Tiến Hành Thanh Toán
+                    </a>
+
+                    <a href="{{ route('client.search') }}" class="btn btn-outline-secondary w-100 py-3 fw-semibold"
+                        style="transition: all 0.3s ease;">
+                        Tiếp Tục Mua Sắm
+                    </a>
+                    <div class="mt-4 pt-4 border-top">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <i class="fa fa-shield-alt" style="color: #10b981; font-size: 1.25rem;"></i>
+                            <span style="font-size: 0.875rem;" class="text-muted">Thanh toán an toàn & bảo mật</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <i class="fa fa-truck" style="color: #10b981; font-size: 1.25rem;"></i>
+                            <span style="font-size: 0.875rem;" class="text-muted">Miễn phí vận chuyển đơn > 500K</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa fa-undo" style="color: #10b981; font-size: 1.25rem;"></i>
+                            <span style="font-size: 0.875rem;" class="text-muted">Đổi trả trong 7 ngày</span>

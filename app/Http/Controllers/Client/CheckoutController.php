@@ -102,4 +102,5 @@ class CheckoutController extends Controller
         session()->forget('order_success_id');
         return view('client.pages.checkout.success', compact('order'));
     }
+    public function store() {}
 }

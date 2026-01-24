@@ -4,13 +4,31 @@
                   <a href="{{ route('layouts') }}" class=" text-2xl font-bold">
                       e<span class="font-extrabold">Thời trang</span>
                   </a>
-                  <form method="GET" action="">
-                      <div>
-                          <input type="text" value="{{ request('keyword') }}" placeholder="Nhập từ khóa tìm kiếm"
-                              name="keyword" />
-                          <button class="btn btn-primary"><i class="fa fa-search">Tìm kiếm</i></button>
-                      </div>
-                  </form>
+                  
+
+
+                <form method="GET" action="{{ route('client.search') }}" class="position-relative">
+                    <div class="input-group">
+                        <input type="text" 
+                            id="search-input"
+                            autocomplete="off"
+                            class="form-control"
+                            value="{{ request('keyword') }}" 
+                            placeholder="Nhập từ khóa tìm kiếm..."
+                            name="keyword" />
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                    <div id="search-results" class="list-group position-absolute w-100 shadow-lg d-none" 
+                        style="z-index: 1000; max-height: 400px; overflow-y: auto; top: 100%;">
+                    </div>
+                </form>
+
+
+
+
+
                   <ul class="flex gap-2 items-center">
                       <li>
                           <a href="{{ route('layouts') }}"
@@ -19,7 +37,7 @@
                           </a>
                       </li>
                       <li>
-                          <a href="{{ route('products') }}"
+                          <a href="{{ route('client.search') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
                               Sản Phẩm
                           </a>
@@ -173,6 +191,46 @@
                           <button type="submit" class="btn btn-primary block full-width m-b">Đăng
                               ký</button>
 
+                        <p class="text-muted text-center"><small>Bạn đã có tài
+                                khoản?</small></p>
+                        <a href="#" id="switchToLogin" class="btn btn-sm btn-white btn-block">Đăng nhập
+                            ngay</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+            let keyword = this.value;
+            let resultsBox = document.getElementById('search-results');
+
+            if (keyword.length < 1) {
+                resultsBox.classList.add('d-none');
+                return;
+            }
+
+            fetch(`{{ route('client.search') }}?keyword=${keyword}`, {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+            .then(response => response.text())
+            .then(data => {
+                resultsBox.innerHTML = data;
+                resultsBox.classList.remove('d-none');
+            });
+        });
+
+        // Đóng khung kết quả khi click ra ngoài
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('search-input').contains(e.target)) {
+                document.getElementById('search-results').classList.add('d-none');
+            }
+        });
+        </script>
                           <p class="text-muted text-center"><small>Bạn đã có tài
                                   khoản?</small></p>
                           <a href="#" id="switchToLogin" class="btn btn-sm btn-white btn-block">Đăng nhập

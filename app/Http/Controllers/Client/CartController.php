@@ -14,7 +14,7 @@ use App\Services\ProductService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Sanpham;
-
+use App\Models\Giohang;
 class CartController extends Controller
 {
     protected $cartService;

@@ -13,8 +13,7 @@
                 @foreach ($slide as $index => $item)
                     <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                         <a href="{{ $item->linklienket }}">
-                            <img src="{{ $item->hinhthunho }}" class="d-block w-100"
-                                style="height: 400px; object-fit: cover;" alt="{{ $item->tieude }}"></a>
+                            <img src="{{ asset('client/img/' . basename($item->hinhthunho)) }}" class="d-block w-100"></a>
                         <div class="carousel-caption d-none d-md-block">
                             <h5>{{ $item->tieude }}</h5>
                             <p>{{ $item->mota }}</p>
@@ -106,6 +105,37 @@
                 <div class="d-flex justify-content-center mt-4">
                     {{ $sanpham->links() }}
                 </div>
+
+                <style>
+                    /* Ép tên sản phẩm hiển thị 2 dòng để các ô luôn đều nhau */
+                    .text-truncate-2 {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                    }
+
+                    /* Hiệu ứng xám ảnh khi hết hàng */
+                    .grayscale {
+                        filter: grayscale(1);
+                    }
+
+                    .product-card {
+                        transition: transform 0.2s ease;
+                    }
+
+                    .product-card:hover {
+                        transform: translateY(-3px);
+                    }
+
+                    .img-wrapper {
+                        overflow: hidden;
+                    }
+                </style>
+
+
+
+                
             </div>
         </div>
     </div>
