@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Server\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\Auth\AuthController;
 use App\Http\Controllers\Client\CartController;
@@ -154,5 +155,13 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::get('edit/{id}', [SlideController::class, 'edit'])->name('.edit');
             Route::put('update/{id}', [SlideController::class, 'update'])->name('.update');
             Route::delete('delete/{id}', [SlideController::class, 'delete'])->name('.delete');
+            
         });
+
+        Route::prefix('/comment')->name('comment')->group(function () {
+            Route::get('index', [CommentController::class, 'index'])->name('.index');
+            Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('.delete');
+            
+        });
+
     });

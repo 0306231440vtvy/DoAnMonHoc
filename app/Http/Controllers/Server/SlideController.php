@@ -60,4 +60,5 @@ class SlideController extends Controller
         $slide = $this->slideService->delete($id);
         return redirect()->route('slides.index')->with('success', 'Xóa slide thành công');
     }
+    
 }
