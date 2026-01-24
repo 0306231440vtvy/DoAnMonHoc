@@ -22,11 +22,10 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id');
+
         return [
-            'name' => 'required|string|min:4|max:100|unique:categories,name,' .$id,
+            'name' => 'required|string|min:4|max:100',
             'slug' => 'required|string',
-            'publish' => 'integer|gte:1|lte:2',
         ];
     }
     public function prepareForValidation()

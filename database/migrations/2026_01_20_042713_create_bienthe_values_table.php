@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //bảng giá trị thuộc tính
         Schema::create('bienthe_values', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bienthe_id')->nullable()->constrained('bienthe')->onDelete('set null');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Server;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Server\Category\StoreCategoryRequest;
+use App\Http\Requests\Server\Category\UpdateCategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,13 +38,13 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request) // Lưu danh mục mới
     {
-        $category = $this->categoryService->save($request);
+        $category = $this->categoryService->createCategory($request);
         return redirect()->route('categories.index')->with('success', 'Thêm danh mục thành công');
     }
 
-    public function update(Request $request, $id) //Lưu danh mục được cập nhật
+    public function update(UpdateCategoryRequest $request, $id) //Lưu danh mục được cập nhật
     {
-        $this->categoryService->update($request, $id);
+        $this->categoryService->updateCategory($id, $request);
         return redirect()->route('categories.index')->with('success', 'Cập nhật danh mục thành công');
     }
 

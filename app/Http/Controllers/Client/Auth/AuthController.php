@@ -58,20 +58,23 @@ class AuthController extends Controller
     }
     public function login(AuthRequest $request): RedirectResponse
     {
-        $user = User::where('email', $request->input('email'))->first();
-        // $user = $this->userService->show('email', $request->input('email'));
+        // $user = User::where('email', $request->input('email'))->first();
+        $user = $this->userService->show('email', $request->input('email'));
         // dd($user);
         if (!$user) {
+            toastr()->error('Email không tồn tại trong hệ thống');
             return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống'])
                 ->onlyInput('email');
         }
         if ($user->email_verified_at === null) {
+            toastr()->error('Bạn chưa kích hoạt tài khoản email này!.');
             return back()->withErrors(['email' => 'Bạn chưa kích hoạt tài khoản email này!.'])
                 ->onlyInput('email');
         }
-        if ($user->publish !== 1) {
+        if ($user->publish != 1) {
             toastr()->error('Tài khoản của bạn đã bị vô hiệu hóa!.');
-            return back()->onlyInput('email');
+            return back()->withErrors(['email' => 'Tài khoản của bạn đã bị vô hiệu hóa!.'])
+                ->onlyInput('email');
         }
         $credentials = ([
             'email' => $request->input('email'),
@@ -83,7 +86,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect()->intended('/')->with('success', 'Đăng nhập thành công');
+        return redirect()->intended('/');
     }
     public function logout(Request $request): RedirectResponse
     {

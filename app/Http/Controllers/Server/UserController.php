@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Requests\Server\User\StoreUserRequest;
-use App\Models\User; 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -40,14 +40,14 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        if(!$user) return redirect()->route('users.index')->with('error', 'Thành viên không tồn tại');
-        
+        if (!$user) return redirect()->route('users.index')->with('error', 'Thành viên không tồn tại');
+
         return view('server.pages.users.save', ['user' => $user, 'config' => 'update']);
     }
 
-    public function update($id, StoreUserRequest $request)
+    public function update(StoreUserRequest $request, $id)
     {
-        if ($this->userService->update($id, $request)) {
+        if ($this->userService->save($request, $id)) {
             return redirect()->route('users.index')->with('success', 'Cập nhật thành viên thành công');
         }
         return redirect()->route('users.index')->with('error', 'Có lỗi xảy ra');
@@ -59,10 +59,9 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', 'Bạn không thể khóa tài khoản của chính mình!');
         }
 
-        if ($id == 1) {
+        if ($id == 3) {
             return redirect()->route('users.index')->with('error', 'Không thể khóa tài khoản Super Admin!');
         }
-
         if ($this->userService->delete($id)) {
             return redirect()->route('users.index')
                 ->with('success', 'Đã chuyển thành viên sang trạng thái ngừng hoạt động!');

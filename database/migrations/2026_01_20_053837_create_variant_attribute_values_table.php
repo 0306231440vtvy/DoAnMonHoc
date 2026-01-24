@@ -19,7 +19,10 @@ return new class extends Migration
             $table->unique(['variant_id', 'bienthe_value_id']);
         });
     }
-
+    // set null - set về null khi xóa cha
+    // cascade - xóa luôn con khi xóa cha
+    // restrict - không cho xóa khi còn con
+    // no action giống restrict
     /**
      * Reverse the migrations.
      */

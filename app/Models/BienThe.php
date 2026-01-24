@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BienThe extends Model
 {
@@ -11,13 +12,19 @@ class BienThe extends Model
     protected $fillable = [
         'name',
         'type',
-        'value',
         'trangthai'
     ];
+// <<<<<<< tinh
 
-    public function values()
+//     public function values()
+//     {
+//         // Một loại (Màu sắc) có NHIỀU giá trị (Trắng, Đen...)
+//         return $this->hasMany(BientheValue::class, 'bienthe_id', 'id');
+//     }
+// =======
+    public function bienthe_values(): HasMany
     {
-        // Một loại (Màu sắc) có NHIỀU giá trị (Trắng, Đen...)
-        return $this->hasMany(BientheValue::class, 'bienthe_id', 'id');
+        return $this->hasMany(BientheValue::class, 'bienthe_id');
     }
+    public $relationable = [];
 }

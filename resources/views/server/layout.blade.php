@@ -9,6 +9,8 @@
     <title>@yield('title')</title>
 
     <link href="{{ asset('server/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+        rel="stylesheet">
     <link href="{{ asset('server/plugins/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('server/css/plugins/morris/morris-0.4.3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('server/css/animate.css') }}" rel="stylesheet">
@@ -33,6 +35,7 @@
     <script>
         const BASE_URL = "{{ url('/') }}";
     </script>
+    @stack('scripts')
 </body>
 
 </html>

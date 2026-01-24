@@ -1,6 +1,7 @@
 <!-- Mainly scripts -->
 <script src="{{ asset('server/js/jquery-3.1.1.min.js') }}"></script>
 <script src="{{ asset('server/js/bootstrap.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('server/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
 <script src="server/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
