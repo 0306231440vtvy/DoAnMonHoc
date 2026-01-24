@@ -30,7 +30,7 @@ class Sanpham extends Model
     ];
 
     // Nếu bạn muốn truy ngược lại xem sản phẩm này nằm trong đơn hàng nào (ít dùng nhưng có thể cần thống kê)
-    
+
 
     public function usersYeuthich()
     {
@@ -61,5 +61,8 @@ class Sanpham extends Model
         return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
     }
     public $relationable = ['categories'];
-
+    public function binhluan(): HasMany
+    {
+        return $this->HasMany(Binhluan::class, 'sanpham_id', 'id');
+    }
 }

@@ -29,12 +29,11 @@ use App\Http\Controllers\Server\RoleController;
 Route::get('/', [HomeController::class, 'index'])->name('layouts');
 //Thêm route gửi liên hệ
 Route::post('/lien-he/send', [ClientContactController::class, 'send'])->name('contact.send');
-Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
-Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
+// Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
 Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
 Route::prefix('products')->name('client.products.')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/', [ClientProductController::class, 'index'])->name('index');
     Route::get('/new', [HomeController::class, 'newProducts'])->name('new');
 });
 // Danh mục
@@ -43,7 +42,6 @@ Route::get('/category/{slug}', [HomeController::class, 'categoryShow'])->name('c
 // Chi tiết sản phẩm (cần tạo controller riêng)
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('client.product.detail');
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
-Route::get('/search', [ClientProductController::class, 'search'])->name('client.search');
 
 Route::controller(PageController::class)->group(function () {
     Route::get('thong-tin-ban-hang', 'salesInfo')->name('thong-tin-ban-hang');
@@ -61,6 +59,7 @@ Route::get('/tin-tuc', [PageController::class, 'blog'])->name('blog');
 Route::get('/tin-tuc/{id}', [PageController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/get-wards/{provinceCode}', [CheckoutController::class, 'getWards'])->name('get-wards');
 Route::middleware('auth')->prefix('/')->group(function () {
+    Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
     //Route cho trang giỏ hàng
     Route::prefix('gio-hang')->name('carts')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('.index');

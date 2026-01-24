@@ -71,7 +71,6 @@
                           })
                           .catch(error => console.error('Error loading cart:', error));
                   }
-
                   // Load khi trang load
                   @auth
                   loadCartSummary();

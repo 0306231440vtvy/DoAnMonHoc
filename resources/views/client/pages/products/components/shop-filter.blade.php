@@ -1,9 +1,8 @@
 <div class="card">
-    <form method="GET" action="{{ route('client.search') }}" class="no-effect-form">
+    <form method="GET" action="{{ route('client.products.index') }}" class="no-effect-form">
         <div class="filter-card p-3">
             <input type="text" name="keyword" class="form-control mb-2" placeholder="Tìm theo tên hoặc mô tả"
                 value="{{ request('keyword') }}">
-
             <select name="category_id" class="form-control mb-2">
                 <option value="">-- Tất cả danh mục --</option>
                 @foreach ($categories ?? [] as $category)
