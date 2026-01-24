@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Server\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\Auth\AuthController;
 use App\Http\Controllers\Client\CartController;
@@ -210,4 +211,11 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
             Route::delete('delete/{id}', [SlideController::class, 'delete'])->name('.delete');
             Route::put('restore/{id}', [SlideController::class, 'restore'])->name('.restore');
         });
+
+        Route::prefix('/comment')->name('comment')->group(function () {
+            Route::get('index', [CommentController::class, 'index'])->name('.index');
+            Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('.delete');
+            
+        });
+
     });

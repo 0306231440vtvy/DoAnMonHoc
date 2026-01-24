@@ -97,5 +97,14 @@ return [
                 ['title' => 'Thêm mới slide', 'route' => 'slides.create'],
             ]
         ],
+        [
+            'name' => 'comment',
+            'title' => 'Quản lý Bình luận ',
+            'icon' => 'fa fa-images',
+            'route' => 'comment.index',
+            'children' => [
+                ['title' => 'Danh sách Bình luận', 'route' => 'comment.index'],
+            ]
+        ],
     ]
 ];
