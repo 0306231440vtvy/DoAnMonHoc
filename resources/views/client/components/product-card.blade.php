@@ -9,7 +9,7 @@
     // Lấy tên sản phẩm
     $tenSP = $product->tensp ?? 'Sản phẩm';
     // Link chi tiết sản phẩm
-    $productUrl = route('client.product.detail', $product->slug ?? $product->id);
+    $productUrl = route('client.products.show', $product->slug);
     // Số lượng tồn kho
     $tonKho = 0;
     if ($product->has_attribute == 1 && $product->sanpham_variants) {
@@ -38,13 +38,13 @@
                     <span class="badge bg-info" style="font-size: 10px;">Mới</span>
                 </div>
             @endif
-            {{-- @foreach ($product->sanpham_variants as $variant) --}}
-            <button
-                class="btn btn-light btn-sm rounded-circle position-absolute top-0 start-0 m-1 opacity-0 hover:opacity-100 transition-opacity"
-                onclick="toggleFavorite({{ $product->id }})">
-                <i class="fa fa-heart text-danger" style="font-size: 12px;"></i>
-            </button>
-            {{-- @endforeach --}}
+            @foreach ($product->sanpham_variants as $variant)
+                <button
+                    class="btn btn-light btn-sm rounded-circle position-absolute top-0 start-0 m-1 opacity-0 hover:opacity-100 transition-opacity"
+                    onclick="toggleFavorite({{ $product->id }})">
+                    <i class="fa fa-heart text-danger" style="font-size: 12px;"></i>
+                </button>
+            @endforeach
             @if ($tonKho == 0)
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                     style="background: rgba(0,0,0,0.5);">

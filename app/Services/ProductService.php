@@ -10,8 +10,13 @@ class ProductService extends BaseService
 {
     protected $repository;
     protected $filterSearch = ['tensp'];
-    protected $simpleFilter = ['trangthai'];
-    protected $complexFilter = ['soluong'];
+    protected $relationFilter = [
+        'categories' => 'category_id',
+    ];
+    protected $complexFilter = [
+        ['sanpham_variants.giaban', '>=', 'min_price'],
+        ['sanpham_variants.giaban', '<=', 'max_price'],
+    ];
     protected $with = ['categories', 'thuonghieu', 'sanpham_variants'];
     public function __construct(
         ProductRepository $repository

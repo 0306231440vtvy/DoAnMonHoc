@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,20 +10,20 @@ class Binhluan extends Model
     use HasFactory;
 
     // 1. Khai báo tên bảng trong Database (Sửa lại nếu bảng của bạn tên khác, v.d: 'danhgia', 'comments')
-    protected $table = 'binhluan'; 
+    protected $table = 'binhluan';
 
     protected $fillable = [
         'user_id',
-        'product_id',
+        'sanpham_id',
         'noidung',
-        'stars', // Số sao đánh giá
+        'danhgia', // Số sao đánh giá
         'trangthai'
     ];
 
     // 2. Liên kết ngược lại với bảng Sản phẩm để lấy tên/ảnh sản phẩm
     public function sanpham()
     {
-        return $this->belongsTo(Sanpham::class, 'product_id', 'id');
+        return $this->belongsTo(Sanpham::class, 'sanpham_id', 'id');
     }
 
     // 3. Liên kết với User (nếu cần hiển thị tên người bình luận)

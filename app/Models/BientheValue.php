@@ -20,7 +20,7 @@ class BientheValue extends Model
     {
         return $this->BelongsTo(BienThe::class, 'bienthe_id');
     }
-    public function attributeType(): BelongsTo
+    public function attributeType(): BelongsToMany
     {
         return $this->belongsToMany(
             SanphamVariant::class,

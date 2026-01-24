@@ -37,7 +37,7 @@
                                                     <i class="fa fa-heart text-danger" style="font-size: 12px;">Bỏ thích</i>
                                                 </button>
                                                 {{-- Có thể thêm nút xem chi tiết nếu cần --}}
-                                                <a href="{{ route('products') }}"
+                                                <a href="{{ route('client.products.index') }}"
                                                     class="btn btn-primary btn-sm btn-block mt-2">
                                                     Xem chi tiết
                                                 </a>
@@ -48,7 +48,8 @@
                             @empty
                                 <div class="col-12 text-center py-5">
                                     <p class="text-muted">Bạn chưa có sản phẩm yêu thích nào.</p>
-                                    <a href="{{ route('products') }}" class="btn btn-primary">Khám phá sản phẩm ngay</a>
+                                    <a href="{{ route('client.products.index') }}" class="btn btn-primary">Khám phá sản phẩm
+                                        ngay</a>
                                 </div>
                             @endforelse
                         </div>
