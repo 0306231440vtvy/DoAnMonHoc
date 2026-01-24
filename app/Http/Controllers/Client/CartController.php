@@ -33,14 +33,16 @@ class CartController extends Controller
         $this->productRepository = $productRepository;
         $this->productService = $productService;
     }
-    public function index()
+    public function index(Request $request)
     {
         $user_id = Auth::id();
         $carts = $this->cartRepository->cartIndex($user_id);
         $totals = $this->cartRepository->calculateTotals($carts);
+        $cartItems = $this->cartService->pagination($request);
         return view('client.pages.carts.index', compact(
             'carts',
-            'totals'
+            'totals',
+            'cartItems'
         ));
     }
     public function summary()
@@ -48,81 +50,58 @@ class CartController extends Controller
         $summary = $this->cartRepository->getSummary();
         return response()->json($summary);
     }
-    // public function addToCart(Request $request)
-    // {
-    //     $request->validate([
-    //         'sanpham_id' => 'required|exists:products,id',
-    //         'variant_id' => 'required|exists:product_variants,id',
-    //         'soluong' => 'required|integer|min:1',
-    //     ]);
-    //     $user = Auth::user();
-    //     if (!$user) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Vui lòng đăng nhập'
-    //         ], 401);
-    //     }
-    //     $cart = Giohang::firstOrCreate([
-    //         'user_id' => $user->id
-    //     ]);
-    //     $item = GioHang::firstOrCreate(
-    //         [
-    //             'user_id' => Auth::id(),
-    //             'sku' => $request->sku
-    //         ],
-    //         [
-    //             'soluong' => 0
-    //         ]
-    //     );
-    //     $variant = SanphamVariant::where('sku', $request->sku)->first();
-    //     if ($item->soluong + $request->soluong > $variant->soluong) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Vượt quá số lượng tồn kho'
-    //         ], 422);
-    //     }
-    //     $item->increment('soluong', $request->soluong ?? 1);
-    //     return response()->json([
-    //         'success' => true,
-    //         'cart_count' => GioHang::where('user_id', $user->id)->sum('soluong')
-    //     ]);
-    // }
     public function addToCart(Request $request)
     {
-        // Kiểm tra đăng nhập
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để mua hàng!');
+        $request->validate([
+            'sku' => 'required|string',
+            'soluong' => 'required|integer|min:1',
+        ]);
+        $user = Auth::user();
+        // Tìm variant theo SKU
+        $sku = trim($request->sku);
+        $variant = SanphamVariant::where('sku', $sku)->first();
+        if (!$variant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại'
+            ], 404);
         }
-
-        $userId = auth()->id();
-        $productId = $request->product_id;
-        $variantId = $request->variant_id;
-        $quantity = $request->quantity;
-
-        // Lấy giá từ biến thể
-        $product = Sanpham::findOrFail($productId);
-        $price = $product->variants->where('id', $variantId)->first()->giaban ?? 0;
-
-        // Kiểm tra sản phẩm đã tồn tại trong giỏ chưa
-        $cartItem = Giohang::where('user_id', $userId)
-            ->where('sanpham_id', $productId)
-            ->where('variant_id', $variantId) // Nếu bạn có lưu biến thể
+        // dd($variant);
+        // Tìm hoặc tạo item trong giỏ hàng
+        $item = Giohang::where('user_id', $user->id)
+            ->where('sku', $request->sku)
             ->first();
-
-        if ($cartItem) {
-            $cartItem->soluong += $quantity;
-            $cartItem->save();
+        if ($item) {
+            // Kiểm tra tồn kho trước khi tăng
+            if ($item->soluong + $request->soluong > $variant->soluong) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vượt quá số lượng tồn kho (Còn lại: ' . $variant->soluong . ')'
+                ], 422);
+            }
+            // Tăng số lượng
+            $item->increment('soluong', $request->soluong);
         } else {
+            // Tạo mới
+            if ($request->soluong > $variant->soluong) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vượt quá số lượng tồn kho (Còn lại: ' . $variant->soluong . ')'
+                ], 422);
+            }
             Giohang::create([
-                'user_id' => $userId,
-                'sanpham_id' => $productId,
-                'variant_id' => $variantId,
-                'giaban' => $price,
-                'soluong' => $quantity,
+                'user_id' => $user->id,
+                'sku' => $request->sku,
+                'soluong' => $request->soluong, // Lưu giá bán hiện tại
             ]);
         }
-
-        return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
+        // Tính tổng số lượng trong giỏ hàng
+        $cartCount = Giohang::where('user_id', $user->id)->sum('soluong');
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã thêm vào giỏ hàng!',
+            'cart_count' => $cartCount
+        ]);
     }
     public function calculateSelected(Request $request)
     {

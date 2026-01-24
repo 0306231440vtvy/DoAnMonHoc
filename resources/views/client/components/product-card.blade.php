@@ -38,11 +38,13 @@
                     <span class="badge bg-info" style="font-size: 10px;">Mới</span>
                 </div>
             @endif
+            {{-- @foreach ($product->sanpham_variants as $variant) --}}
             <button
                 class="btn btn-light btn-sm rounded-circle position-absolute top-0 start-0 m-1 opacity-0 hover:opacity-100 transition-opacity"
-                {{-- onclick="toggleFavorite({{ $product->id }}, {{ $variant->id }})" --}}>
+                onclick="toggleFavorite({{ $product->id }})">
                 <i class="fa fa-heart text-danger" style="font-size: 12px;"></i>
             </button>
+            {{-- @endforeach --}}
             @if ($tonKho == 0)
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                     style="background: rgba(0,0,0,0.5);">
@@ -108,11 +110,16 @@
 @push('scripts')
     <script>
         function addToCart(sku) {
+            sku = sku.trim();
+
+            console.log('SKU gửi đi:', sku);
+
             fetch('/gio-hang/add-to-cart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         sku: sku,
@@ -137,23 +144,44 @@
                 .catch(err => console.error(err));
         }
 
-
-
-        // function toggleFavorite(productId, variantId) {
-        //     fetch(`/favorite/toggle/${productId}`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        //             }
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             if (data.success) {
-        //                 alert(data.message);
-        //             }
-        //         })
-        //         .catch(error => console.error('Error:', error));
-        // }
+        function toggleFavorite(productId) {
+            fetch(`/profile/favorite/toggle/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    // Kiểm tra nếu redirect (302)
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                        return;
+                    }
+                    // Kiểm tra content-type
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        return response.text().then(text => {
+                            console.error('Response không phải JSON:', text);
+                            throw new Error('Server không trả về JSON');
+                        });
+                    }
+                })
+                .then(data => {
+                    if (data && data.success) {
+                        alert(data.message);
+                        // Có thể toggle icon tim ở đây
+                        location.reload(); // Reload để cập nhật UI
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra, vui lòng thử lại!');
+                });
+        }
     </script>
 @endpush

@@ -93,7 +93,7 @@
                             <span>Tạm tính</span>
                             <strong>{{ number_format($totals['totalAmount']) }} ₫</strong>
                         </div>
-                        <form id="checkout-form" action="{{ route('checkout.index') }}" method="GET">
+                        <form id="checkout-form" action="{{ route('thanh-toan.index') }}" method="GET">
                             <button type="submit" class="btn btn-success w-100 py-3 fw-bold mb-2">
                                 Đặt hàng
                             </button>

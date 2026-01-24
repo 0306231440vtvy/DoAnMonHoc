@@ -13,14 +13,12 @@ class Giohang extends Model
     use HasFactory, HasQuery;
 
     protected $table = 'giohang';
-    public $incrementing = false;
 
     protected $fillable = [
         'user_id',
         'sku',
         'soluong',
         'giaban',
-        'sku'
     ];
 
     public function user(): BelongsTo
@@ -31,5 +29,5 @@ class Giohang extends Model
     {
         return $this->belongsTo(SanphamVariant::class, 'sku', 'sku');
     }
-    public $relationable = ['user'];
+    public $relationable = ['user', 'variants'];
 }

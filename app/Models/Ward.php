@@ -17,4 +17,5 @@ class Ward extends Model
     {
         return $this->belongsTo(Province::class, 'province_code', 'province_code');
     }
+    public $relationable = [];
 }

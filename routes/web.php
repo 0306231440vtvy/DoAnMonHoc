@@ -57,6 +57,7 @@ Route::get('/tin-tuc', [PageController::class, 'blog'])->name('blog');
 
 // Chi tiết tin tức
 Route::get('/tin-tuc/{id}', [PageController::class, 'blogDetail'])->name('blog.detail');
+Route::get('/get-wards/{provinceCode}', [CheckoutController::class, 'getWards'])->name('get-wards');
 Route::middleware('auth')->prefix('/')->group(function () {
     //Route cho trang giỏ hàng
     Route::prefix('gio-hang')->name('carts')->group(function () {
@@ -89,7 +90,7 @@ Route::middleware('auth')->prefix('/')->group(function () {
 
         // --- KHU VỰC YÊU THÍCH (Favorites) ---
         Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
-        Route::get('/favorite/toggle/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+        Route::post('/favorite/toggle/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
     });
     Route::prefix('/order')->name('order')->group(function () {
         // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
@@ -103,8 +104,9 @@ Route::middleware('auth')->prefix('/')->group(function () {
         Route::post('/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
             ->name('.cancel');
     });
+
     //Thêm route cho trang thanh toán
-    Route::prefix('/checkout')->name('checkout')->group(function () {
+    Route::prefix('/checkout')->name('thanh-toan')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('.index');
         Route::post('/', [CheckoutController::class, 'store'])->name('.store');
         Route::get('bank/{order}', [CheckoutController::class, 'bank'])->name('.bank');

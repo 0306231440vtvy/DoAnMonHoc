@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\ProvinceRepository;
-use App\Repositories\WardRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\CartRepository;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Models\Hoadon;
 use App\Http\Requests\CLient\Checkout\CheckoutRequest;
+use App\Models\Ward;
 use App\Services\CheckoutService;
+use App\Repositories\WardRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,49 +44,26 @@ class CheckoutController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        $user = $this->userRepository->findById(Auth::id());
-        $selectedCartIds = $request->input('cart_ids', []);
-        $allCarts = $this->cartRepository->findByField('user_id', Auth::id());
-        if (!$allCarts) {
-            return redirect()->route('carts.index');
-        }
-        if (!empty($selectedCartIds)) {
-            $carts = $allCarts->filter(function ($cart) use ($selectedCartIds) {
-                return in_array($cart['cart_id'], $selectedCartIds);
-            });
-        } else {
-            // Nếu không có selectedCartIds, lấy tất cả (fallback)
-            $carts = $allCarts;
-        }
-        if ($carts->isEmpty()) {
-            return redirect()->route('carts.index')
-                ->with('error', 'Vui lòng chọn sản phẩm trước khi thanh toán');
-        }
+        $checkout = session('checkout', [
+            'items' => [],
+            'totalPrice' => 0,
+            'totalDiscount' => 0
+        ]);
         $provinces = $this->provinceRepository->index();
-        $wards = $this->wardRepository->index();
-        $total = $this->cartRepository->calculateTotals($carts);
-        $checkout = [
-            'items' => $carts->map(function ($cart) {
-                return [
-                    'ten' => $cart['tensp'],
-                    'so_luong' => $cart['cart_quantity'],
-                    'gia_goc' => $cart['giaban'],
-                    'thanh_tien' => $cart['subtotal'],
-                    'discount' => 0, // Thêm logic discount nếu có
-                ];
-            }),
-            'totalPrice' => $total['totalAmount'],
-            'totalDiscount' => 0, // Tính discount nếu có
-        ];
         return view('client.pages.checkout.index', compact(
-            'wards',
             'provinces',
-            'user',
-            'carts',
-            'total'
+            'checkout'
         ));
     }
-
+    // API lấy phường/xã theo quận/huyện
+    public function getWards($provinceCode)
+    {
+        // $wards = $this->wardRepository->findByField('province_code', $provinceCode)->values();
+        $wards = Ward::where('province_code', $provinceCode)
+            ->select('ward_code', 'name')
+            ->orderBy('name')->get();
+        return response()->json($wards);
+    }
     public function store(CheckoutRequest $request, CheckoutService $service)
     {
         $checkout = session('checkout');
