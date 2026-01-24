@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CartService extends BaseService
 {
     protected $repository;
-    protected $existingCart = null;
+    protected $with = ['variants'];
     protected function prepageModeldata(Request $request): self
     {
         $fillable = $this->repository->getFillable();
@@ -37,7 +37,6 @@ class CartService extends BaseService
                 return $cart->delete();
             }
         }
-
         return $cart->save();
     }
 }

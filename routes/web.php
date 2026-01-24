@@ -32,23 +32,17 @@ Route::post('/lien-he/send', [ClientContactController::class, 'send'])->name('co
 Route::get('/san-pham', [ClientProductController::class, 'index'])->name('products');
 Route::get('/chi-tiet-san-pham/{products}', [ClientProductController::class, 'show'])->name('client.products.show');
 Route::get('/lien-he', [ClientContactController::class, 'index'])->name('contact');
-// Route::get('/gio-hang', [CartController::class, 'index'])->name('carts');
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
-
-// Route::get('/categories/{slug}',[Catego])
-// Route::get('/gioi-thieu', function () {
-//     return view('client.pages.gioithieu');
-// })->name('gioi-thieu');
 Route::prefix('products')->name('client.products.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/new', [HomeController::class, 'newProducts'])->name('new');
-    Route::get('/bestseller', [HomeController::class, 'bestsellerProducts'])->name('bestseller');
 });
 // Danh mục
 Route::get('/category/{slug}', [HomeController::class, 'categoryShow'])->name('client.category.show');
 
 // Chi tiết sản phẩm (cần tạo controller riêng)
-Route::get('/product/{slug}', [ProductController::class, 'show'])->name('client.product.detail');
+Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('client.product.detail');
+
 Route::controller(PageController::class)->group(function () {
     Route::get('thong-tin-ban-hang', 'salesInfo')->name('thong-tin-ban-hang');
     Route::get('dich-vu-ban-hang', 'saleService')->name('dich-vu-ban-hang');
@@ -63,6 +57,7 @@ Route::get('/tin-tuc', [PageController::class, 'blog'])->name('blog');
 
 // Chi tiết tin tức
 Route::get('/tin-tuc/{id}', [PageController::class, 'blogDetail'])->name('blog.detail');
+Route::get('/get-wards/{provinceCode}', [CheckoutController::class, 'getWards'])->name('get-wards');
 Route::middleware('auth')->prefix('/')->group(function () {
     //Route cho trang giỏ hàng
     Route::prefix('gio-hang')->name('carts')->group(function () {
@@ -95,7 +90,7 @@ Route::middleware('auth')->prefix('/')->group(function () {
 
         // --- KHU VỰC YÊU THÍCH (Favorites) ---
         Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
-        Route::get('/favorite/toggle/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
+        Route::post('/favorite/toggle/{id}', [FavoriteController::class, 'toggle'])->name('favorite.toggle');
     });
     Route::prefix('/order')->name('order')->group(function () {
         // ================= KHU VỰC ORDER (Quản lý đơn hàng) =================
@@ -109,11 +104,9 @@ Route::middleware('auth')->prefix('/')->group(function () {
         Route::post('/orders/{id}/cancel', [ClientOrderController::class, 'cancel'])
             ->name('.cancel');
     });
-    // Route lấy danh sách xã theo ID tỉnh
-    Route::get('/get-wards/{province_id}', [App\Http\Controllers\Client\ProfileController::class, 'getWards']);
 
     //Thêm route cho trang thanh toán
-    Route::prefix('/checkout')->name('checkout')->group(function () {
+    Route::prefix('/checkout')->name('thanh-toan')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('.index');
         Route::post('/', [CheckoutController::class, 'store'])->name('.store');
         Route::get('bank/{order}', [CheckoutController::class, 'bank'])->name('.bank');

@@ -31,4 +31,7 @@ class SanphamVariant extends Model
     {
         return $this->belongsTo(Sanpham::class, 'sanpham_id');
     }
+    protected $casts = [
+        'album' => 'array'
+    ];
 }

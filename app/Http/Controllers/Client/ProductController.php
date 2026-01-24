@@ -27,11 +27,11 @@ class ProductController extends Controller
     }
     public function index(Request $request): View
     {
-        $products = $this->productService->pagination($request);
+        $product = $this->productService->pagination($request);
         // dd($products);
         $categories = $this->categoryService->pagination($request);
         return view('client.pages.products.index', compact(
-            'products',
+            'product',
             'categories'
         ));
     }

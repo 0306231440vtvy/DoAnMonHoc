@@ -47,4 +47,8 @@ class CategoryRepository extends BaseRepository
         $model->update($payload);
         return $model;
     }
+    public function getTrangThai()
+    {
+        return $this->model->where('publish', 1)->get();
+    }
 }

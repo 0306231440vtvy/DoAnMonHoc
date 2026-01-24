@@ -35,97 +35,103 @@
                                 <input type="text" name="phone" class="form-control" value="{{ $user->phone }}">
                             </div>
 
-                            {{-- KHU VỰC ĐỊA CHỈ (Đã sửa thành Select Box) --}}
-                            <div class="mb-3">
-                                <label class="form-label">Tỉnh / Thành phố</label>
-                                {{-- Thêm id="province-select" --}}
-                                <select name="province_id" id="province-select" class="form-control">
-                                    <option value="">-- Chọn Tỉnh --</option>
-                                    @foreach ($provinces as $province)
-                                        <option value="{{ $province->id }}"
-                                            {{ $user->province_id == $province->id ? 'selected' : '' }}>
-                                            {{ $province->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2 font-medium">Tỉnh/Thành phố *</label>
+                                    @error('province_code')
+                                        <small class="text-red-600">{{ $message }}</small>
+                                    @enderror
+                                    <select id="province" name="province_code"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
+                                        required>
+                                        <option value="">-- Chọn Tỉnh/Thành phố --</option>
+                                        @foreach ($provinces as $province)
+                                            <option value="{{ $province->province_code }}"
+                                                {{ old('province_code') == $province->province_code ? 'selected' : '' }}>
+                                                {{ $province->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Phường / Xã</label>
-                                {{-- Thêm id="ward-select" --}}
-                                <select name="ward_id" id="ward-select" class="form-control">
-                                    <option value="">-- Chọn Phường/Xã --</option>
-                                    {{-- Nếu user đã có xã cũ, load lại (Optional logic phức tạp, tạm thời để trống load sau) --}}
-                                </select>
+                                <div>
+                                    <label class="block text-gray-700 mb-2 font-medium">Phường/Xã *</label>
+                                    @error('ward_code')
+                                        <small class="text-red-600">{{ $message }}</small>
+                                    @enderror
+                                    <select id="ward" name="ward_code"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
+                                        required disabled>
+                                        <option value="">-- Chọn Phường/Xã --</option>
+                                    </select>
+                                </div>
                             </div>
-
-                            {{-- Ngày sinh --}}
-                            <div class="mb-3">
-                                <label class="form-label">Ngày sinh</label>
-                                <input type="date" name="birthday" class="form-control" value="{{ $user->birthday }}">
-                            </div>
-
-                            {{-- Giới tính --}}
-                            <div class="mb-3">
-                                <label class="form-label">Giới tính</label>
-                                <select name="gender" class="form-control">
-                                    <option value="1" {{ $user->gender == 1 ? 'selected' : '' }}>Nam</option>
-                                    <option value="2" {{ $user->gender == 2 ? 'selected' : '' }}>Nữ</option>
-                                </select>
-                            </div>
-
-                            <button class="btn btn-primary">Cập nhật thông tin</button>
-                        </form>
                     </div>
+
+
+                    {{-- Ngày sinh --}}
+                    <div class="mb-3">
+                        <label class="form-label">Ngày sinh</label>
+                        <input type="date" name="birthday" class="form-control" value="{{ $user->birthday }}">
+                    </div>
+
+                    {{-- Giới tính --}}
+                    <div class="mb-3">
+                        <label class="form-label">Giới tính</label>
+                        <select name="gender" class="form-control">
+                            <option value="1" {{ $user->gender == 1 ? 'selected' : '' }}>Nam</option>
+                            <option value="2" {{ $user->gender == 2 ? 'selected' : '' }}>Nữ</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary">Cập nhật thông tin</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{-- Nếu web bạn đã có jquery ở master layout rồi thì bỏ dòng trên đi --}}
-
+    </div>
+@endsection
+@push('scripts')
     <script>
         $(document).ready(function() {
-            // 1. Khi người dùng thay đổi Tỉnh
-            $('#province-select').on('change', function() {
-                var provinceId = $(this).val();
+            // Khi chọn Tỉnh/Thành phố
+            $('#province').change(function() {
+                let provinceCode = $(this).val();
 
-                // Xóa danh sách xã cũ đi, chỉ để lại option mặc định
-                $('#ward-select').html('<option value="">-- Đang tải... --</option>');
+                // Reset ward dropdown
+                $('#ward').html('<option value="">-- Chọn Phường/Xã --</option>').prop('disabled', true);
 
-                if (provinceId) {
-                    // 2. Gửi yêu cầu lên Server lấy danh sách xã
+                if (provinceCode) {
+                    // Hiển thị loading
+                    $('#ward').html('<option value="">Đang tải...</option>');
+                    // Gọi API lấy danh sách phường/xã - SỬA LẠI URL
                     $.ajax({
-                        url: '/get-wards/' + provinceId,
+                        url: "{{ url('/get-wards') }}/" + provinceCode,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            // 3. Khi Server trả dữ liệu về -> Đổ vào ô Select Xã
-                            $('#ward-select').html(
-                                '<option value="">-- Chọn Phường/Xã --</option>');
+                            $('#ward').html('<option value="">-- Chọn Phường/Xã --</option>');
 
-                            $.each(data, function(key, ward) {
-                                // Dựa vào ảnh database: value là id, hiển thị là name
-                                $('#ward-select').append('<option value="' + ward.id +
-                                    '">' + ward.name + '</option>');
-                            });
-                        },
-                        error: function() {
-                            $('#ward-select').html(
-                                '<option value="">-- Lỗi tải dữ liệu --</option>');
+                            if (data.length > 0) {
+                                $.each(data, function(index, ward) {
+                                    $('#ward').append(
+                                        `<option value="${ward.ward_code}">${ward.name}</option>`
+                                    );
+                                });
+                                $('#ward').prop('disabled', false);
+                            }
                         }
                     });
-                } else {
-                    $('#ward-select').html('<option value="">-- Chọn Phường/Xã --</option>');
+
                 }
             });
-
-            // (Tùy chọn) Kích hoạt sự kiện change 1 lần khi trang vừa load 
-            // để nếu user đang có Tỉnh lưu sẵn thì nó tự load Xã luôn (logic nâng cao)
-            // var oldProvince = $('#province-select').val();
-            // if(oldProvince) { $('#province-select').trigger('change'); }
+            // Highlight payment method khi chọn
+            $('input[name="payment_method"]').change(function() {
+                $('input[name="payment_method"]').parent().parent().removeClass(
+                    'border-indigo-600 bg-indigo-50');
+                $(this).parent().parent().addClass('border-indigo-600 bg-indigo-50');
+            });
         });
     </script>
-@endsection
+@endpush

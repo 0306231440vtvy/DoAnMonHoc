@@ -1,4 +1,8 @@
-{{-- resources/views/server/pages/products/components/varriants.blade.php --}}
+@if ($errors->has('sanpham_variants'))
+    <div class="alert alert-danger">
+        {{ $errors->first('sanpham_variants') }}
+    </div>
+@endif
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
@@ -122,8 +126,6 @@
     });
 
     let attributeIndex = 0;
-
-    // Toggle variant wrapper
     document.getElementById('customSwitch').addEventListener('change', function() {
         const wrapper = document.querySelector('.variant-wrapper');
         if (this.checked) {
@@ -185,7 +187,6 @@
 
     function generateVariants() {
         const groups = [];
-
         document.querySelectorAll('[id^="attr-"]').forEach(row => {
             const id = row.id.split('-')[1];
             const type = document.getElementById(`type-${id}`);
@@ -240,7 +241,7 @@
             <div class="col-lg-1">
                 <label class="form-label">&nbsp;</label>
                 <button type="button" class="btn btn-icon btn-danger w-100 h-100" onclick="removeAttr(${id})">
-                    <i class="ti ti-trash"></i>
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
         `;
@@ -249,6 +250,9 @@
     }
 
     function renderVariants(combos) {
+        const currentSku = document.getElementById('sku')?.value || 'SP'.now();
+        const currentPrice = document.getElementById('giaban')?.value || 1000;
+        const currentQuantity = document.getElementById('soluong')?.value || 1;
         const tbody = document.getElementById('variantsTableBody');
         // Xóa tất cả rows cũ (giữ emptyState)
         document.querySelectorAll('#variantsTableBody tr[data-variant-index]').forEach(el => el.remove());
@@ -271,18 +275,30 @@
                 ${name}
                 ${attributeInputs}
             </td>
-            <td>
-                <input class="form-control" type="text" name="sanpham_variants[${i}][sku]" value="${baseSku}-${i + 1}" required>
+           <td>
+            <input class="form-control"
+                   type="text"
+                   name="sanpham_variants[${i}][sku]"
+                   value="${currentSku}-${i + 1}"
+                   required>
             </td>
             <td>
-                <input type="number" class="form-control" name="sanpham_variants[${i}][giaban]" value="${basePrice}" min="0" step="0.01" required>
+            <input type="text"
+                   class="form-control"
+                   name="sanpham_variants[${i}][giaban]"
+                   value="${currentPrice}"
+                   required>
             </td>
             <td>
-                <input type="number" class="form-control" name="sanpham_variants[${i}][soluong]" value="0" min="0" required>
+            <input type="text"
+                   class="form-control"
+                   name="sanpham_variants[${i}][soluong]"
+                   value="${currentQuantity}"
+                   required>
             </td>
             <td>
                 <button type="button" class="btn btn-sm btn-danger" onclick="removeVariantRow(${i})">
-                    <i class="ti ti-trash"></i>
+                    <i class="fa fa-trash"></i>
                 </button>
             </td>
         `;
@@ -292,17 +308,26 @@
     // Lắng nghe thay đổi SKU và Giá sản phẩm cha
     const skuInput = document.getElementById('sku');
     const giaInput = document.getElementById('giaban');
-
+    const soluongInput = document.getElementById('soluong');
     if (skuInput) {
-        skuInput.addEventListener('change', function() {
+        skuInput.addEventListener('input', function() {
             document.querySelectorAll('input[name*="sanpham_variants"][name*="sku"]').forEach((el, idx) => {
                 el.value = this.value + '-' + (idx + 1);
             });
         });
     }
     if (giaInput) {
-        giaInput.addEventListener('change', function() {
+        giaInput.addEventListener('input', function() {
             document.querySelectorAll('input[name*="sanpham_variants"][name*="giaban"]').forEach(el => {
+                if (el.value === '0' || el.value === '') {
+                    el.value = this.value;
+                }
+            });
+        });
+    }
+    if (soluongInput) {
+        soluongInput.addEventListener('input', function() {
+            document.querySelectorAll('input[name*="sanpham_variants"][name*="soluong"]').forEach(el => {
                 if (el.value === '0' || el.value === '') {
                     el.value = this.value;
                 }
