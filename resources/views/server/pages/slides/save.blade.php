@@ -23,16 +23,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="linklienket">Link Liên Kết</label>
-                                <input type="url" class="form-control @error('linklienket') is-invalid @enderror"
+                                <input type="text" class="form-control @error('linklienket') is-invalid @enderror"
                                     id="linklienket" name="linklienket"
                                     value="{{ old('linklienket', $slide->linklienket ?? '') }}"
-                                    placeholder="https://example.com">
+                                    placeholder="san-pham/iphone-15">
                                 @error('linklienket')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
-                                {{-- <small class="text-muted">
-                                    <i class="fa fa-info-circle"></i> Nhập URL đầy đủ (bao gồm http:// hoặc https://)
-                                </small> --}}
                             </div>
                             <div class="form-group mb-4">
                                 <label>Hình Nền Slide</label>
@@ -71,7 +68,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="stt">Số Thứ Tự</label>
-                                <input type="number" class="form-control @error('stt') is-invalid @enderror" id="stt"
+                                <input type="text" class="form-control @error('stt') is-invalid @enderror" id="stt"
                                     name="stt" value="{{ old('stt', $slide->stt ?? 0) }}" placeholder="Nhập số thứ tự"
                                     min="0">
                                 @error('stt')

@@ -31,34 +31,37 @@ class HomeController extends Controller
     }
     public function index(Request $request)
     {
-        // 1. Lấy sản phẩm mới nhất (8 sản phẩm)
-        // Đã xóa ->where('publish', 1) để tránh lỗi
-        $newProducts = Sanpham::where('trangthai', '<>', 0)
-            ->orderBy('created_at', 'asc')
-            ->take(8)
-            ->get();
-
-        // 2. Lấy danh mục nổi bật
-        // Lưu ý: Nếu bảng categories cũng chưa có cột 'publish' thì bạn xóa đoạn ->where('publish', 1) đi nhé
-        $categories = Category::where('publish', 1)->take(3)->get();
-        // Nếu lỗi ở dòng trên, hãy sửa thành: $categories = Category::take(3)->get();
-
-        // 3. Lấy sản phẩm nổi bật/ngẫu nhiên
-        // Đã xóa ->where('publish', 1) để tránh lỗi
-        $hotProducts = Sanpham::inRandomOrder()
-            ->take(4)
-            ->get();
-        $sliderequest = clone request();
-
+        $sliderequest = new request();
         $slide = $this->slideService->pagination($sliderequest->merge([
+            'type' => 'all',
             'sort' => 'stt,asc',
-            'perpage' => 4
         ]));
+        $sanphamRequest = new request();
+        $sanphamRequest->merge([
+            'trangthai' => 1,
+        ]);
+        $sanpham = $this->productService->pagination($sanphamRequest);
+        $sanphamMoiRequest = clone $request;
+        $sanphamMoiRequest->merge([
+            'sort' => 'created_at,desc',
+            'perpage' => 10,
+        ]);
+        $sanphamMoi = $this->productService->pagination($sanphamMoiRequest);
         return view('client.pages.home', compact(
-            'newProducts',
-            'categories',
-            'hotProducts',
             'slide',
+            'sanphamMoi',
+            'sanpham'
+        ));
+    }
+    public function newProducts(Request $request)
+    {
+        $request->merge([
+            'sort' => 'created_at,desc',
+            'trangthai' => 1
+        ]);
+        $products = $this->productService->pagination($request);
+        return view('client.pages.products.new', compact(
+            'products',
         ));
     }
 

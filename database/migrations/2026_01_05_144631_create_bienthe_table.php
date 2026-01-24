@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //bảng thuộc tính
         Schema::create('bienthe', function (Blueprint $table) {
             $table->id();
             $table->string('name');

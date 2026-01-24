@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\SanphamVariant;
 
 class BientheValue extends Model
 {
@@ -12,15 +13,21 @@ class BientheValue extends Model
     protected $fillable = [
         'bienthe_id',
         'value',
-        'code'
+        'code',
+        'trangthai'
     ];
     public function bienthe(): BelongsTo
     {
-        return $this->BelongsTo(BienThe::class);
+        return $this->BelongsTo(BienThe::class, 'bienthe_id');
     }
     public function attributeType(): BelongsTo
     {
-        // 'bienthe_id' là cột khóa ngoại trong bảng bienthe_values
-        return $this->belongsTo(BienThe::class, 'bienthe_id', 'id');
+        return $this->belongsToMany(
+            SanphamVariant::class,
+            'variant_attribute_values',
+            'bienthe_value_id',
+            'variant_id'
+        );
     }
+    public $relationable = [];
 }

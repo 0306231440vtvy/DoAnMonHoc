@@ -24,10 +24,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="linklienket">Link Liên Kết</label>
-                                <input type="url" class="form-control @error('linklienket') is-invalid @enderror"
+                                <input type="text" class="form-control @error('linklienket') is-invalid @enderror"
                                     id="linklienket" name="linklienket"
-                                    value="{{ old('linklienket', $slides->linklienket ?? '') }}"
-                                    placeholder="https://example.com">
+                                    value="{{ old('linklienket', $slide->linklienket ?? '') }}"
+                                    placeholder="san-pham/iphone-15">
                                 @error('linklienket')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror

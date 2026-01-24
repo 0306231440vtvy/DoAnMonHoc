@@ -3,33 +3,24 @@
 namespace App\Http\Controllers\Server;
 
 use App\Http\Controllers\Controller;
-use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Services\StatisticService;
 
 class DashboardServerController extends Controller
 {
-    public function __construct() {}
-    public function index(): View
+    protected $statisticService;
+
+    public function __construct(StatisticService $statisticService)
     {
-        $breadcrumb = $this->breadcrumb();
-        return view('server.layout', compact(
-            'breadcrumb'
-        ));
+        $this->statisticService = $statisticService;
     }
-    private function breadcrumb()
+
+    public function index()
     {
-        return [
-            [
-                'title' => 'Trang chủ',
-                'route' => 'layouts'
-            ],
-            [
-                'title' => 'Trang chủ',
-                'route' => 'layouts'
-            ],
-            [
-                'title' => 'Trang chủ',
-                'route' => 'layouts'
-            ],
-        ];
+        // Gọi Service lấy toàn bộ data
+        $dashboardData = $this->statisticService->getDashboardData();
+
+        // Trả về view kèm dữ liệu
+        return view('server.pages.dashboard.index', compact('dashboardData'));
     }
 }

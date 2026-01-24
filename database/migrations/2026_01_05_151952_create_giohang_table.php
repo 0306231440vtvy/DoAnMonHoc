@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('giohang', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->decimal('giaban', 15, 2);
-            $table->integer('soluong')->nullable(1);
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+            // $table->decimal('giaban', 15, 2);
+            $table->integer('soluong')->default(1);
+            $table->string('sku');
             $table->timestamps();
         });
     }

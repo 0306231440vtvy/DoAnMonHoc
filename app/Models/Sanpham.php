@@ -16,28 +16,25 @@ class Sanpham extends Model
     protected $table = 'sanpham';
 
     protected $fillable = [
+        'id',
         'tensp',
-        'album',
         'hinhnen',
-        'soluong',
         'giaban',
         'discount',
-        'sku',
         'slug',
         'mota',
-        'category_id',
+        'has_attribute',
         'thuonghieu_id',
+        'trangthai',
+        'deleted_at'
     ];
 
     // Nếu bạn muốn truy ngược lại xem sản phẩm này nằm trong đơn hàng nào (ít dùng nhưng có thể cần thống kê)
     
 
-    // Check xem user hiện tại đã thích sản phẩm này chưa (Helper function)
-    public function isFavoritedBy($userId)
+    public function usersYeuthich()
     {
-        return $this->belongsToMany(User::class, 'yeuthich', 'sanpham_id', 'user_id')
-            ->where('user_id', $userId)
-            ->exists();
+        return $this->belongsToMany(User::class, 'yeuthich', 'sanpham_id', 'user_id');
     }
     public function categories(): BelongsToMany
     {
@@ -52,25 +49,17 @@ class Sanpham extends Model
     // {
     //     return number_format($this->giaban, 0, ',', '.') . ' d';
     // }
-    public function variants(): HasMany
+
+    //Thêm khóa ngoại cho giỏ hàng
+    public function cart()
     {
-        // Kiểm tra xem SanphamVariant::class có tồn tại không
-        return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
-    }    public function getRouteKeyName(): string
-    {
-        return 'slug';
+        return $this->hasMany(Giohang::class, 'sanpham_id', 'id');
     }
-    protected $casts = [
-        'album' => 'array'
-    ];
-    protected $relationable = ['sanpham_variants'];
+    // 1-n 1 sản phẩm chứa nhiều variants
+    public function sanpham_variants(): HasMany
+    {
+        return $this->hasMany(SanphamVariant::class, 'sanpham_id', 'id');
+    }
+    public $relationable = ['categories'];
 
-    // Trong file App\Models\Sanpham.php
-    // app/Models/Sanpham.php
-
-        public function binhluans() 
-        {
-           
-            return $this->hasMany(Binhluan::class, 'sanpham_id', 'id');
-        }
 }

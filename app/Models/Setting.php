@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Trait\HasQuery;
+use App\Trait\HasTransaction;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    use HasTransaction, HasQuery;
     protected $fillable = [
         'name',
         'address',
@@ -25,4 +28,5 @@ class Setting extends Model
         'privacy_policy',
         'publish',
     ];
+    public $relationable = [];
 }

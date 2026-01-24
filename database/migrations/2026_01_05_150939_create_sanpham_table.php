@@ -18,11 +18,9 @@ return new class extends Migration
             $table->decimal('giaban', 15, 2);
             $table->decimal('discount', 5, 2)->default(0);
             $table->integer('view')->default(0);
-            $table->integer('star')->nullable();
             $table->string('slug');
             $table->string('mota')->nullable();
             $table->tinyInteger('trangthai')->default(1);
-            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set Null');
             $table->foreignId('thuonghieu_id')->nullable()->constrained('thuonghieu')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();

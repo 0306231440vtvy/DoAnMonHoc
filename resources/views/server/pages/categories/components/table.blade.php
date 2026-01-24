@@ -27,15 +27,15 @@
                 @endif
             </td>
             <td class="">
-                <a href="{{ route('categories.edit', $item->id) }}" class="btn btn-xs btn-warning">
-                    <i class="glyphicon glyphicon-edit"></i> Sửa
+                <a href="{{ route('categories.edit', ['id' => $item->id]) }}" class="btn btn-xs btn-warning">
+                    <i class="fa fa-edit"></i> Sửa
                 </a>
-                <form action="{{ route('categories.destroy', $item->id) }}" method="POST" class="d-inline"
+                <form action="{{ route('categories.destroy', ['id' => $item->id]) }}" method="POST" class="d-inline"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-xs btn-danger">
-                        <i class="glyphicon glyphicon-trash"></i> Xóa
+                        <i class="fa fa-trash"></i> Xóa
                     </button>
                 </form>
             </td>
@@ -45,4 +45,3 @@
     <div>Không có danh mục!</div>
 @endif
 <strong>{{ $categories->links() }}</strong>
-

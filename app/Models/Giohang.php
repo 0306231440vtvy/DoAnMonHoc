@@ -13,15 +13,21 @@ class Giohang extends Model
     use HasFactory, HasQuery;
 
     protected $table = 'giohang';
+
     protected $fillable = [
         'user_id',
-        'product_id', 
-        'variant_id', 
-        'soluong', 
-        'giaban'
+        'sku',
+        'soluong',
+        'giaban',
     ];
+
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function variants(): BelongsTo
+    {
+        return $this->belongsTo(SanphamVariant::class, 'sku', 'sku');
+    }
+    public $relationable = ['user', 'variants'];
 }

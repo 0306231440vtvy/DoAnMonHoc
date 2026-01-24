@@ -1,51 +1,171 @@
 @extends('client.layouts')
 @section('content')
     <div class="container py-4 py-md-5">
-        <h1 class="h2 fw-bold mb-4">Giỏ Hàng (số lượng sản phẩm trong giỏ hàng)</h1>
 
-        <div class="row g-3 g-md-4">
-            <div class="col-lg-8">
-                <div class="bg-white rounded shadow-sm">
-                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 p-3 p-md-4 border-bottom"
-                        style="transition: background-color 0.3s ease;">
-                        <a href="product.html" class="" style="width: 120px; height: 120px;">
-                            <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=150"
-                                class="w-100 h-100 object-fit-cover rounded" alt="Áo Sơ Mi">
-                        </a>
-                        <div class="w-100">
-                            <a href="product.html" class="text-decoration-none">
-                                <h3 class="h6 fw-semibold mb-2 text-dark" style="transition: color 0.3s ease;">
-                                    Áo Sơ Mi Nam Trắng
-                                </h3>
-                            </a>
-                            <p class="text-muted mb-2" style="font-size: 0.875rem;">
-                                Kích thước: <span class="fw-semibold text-dark">M</span> |
-                                Màu: <span class="fw-semibold text-dark">Trắng</span>
-                            </p>
-                            <p class="mb-0 fw-bold" style="color: #10b981; font-size: 1.125rem;">450,000đ</p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center gap-3 w-100 w-md-auto justify-content-between justify-content-md-start">
-                            <div class="d-flex align-items-center border rounded" style="border-width: 2px !important;">
-                                <button class="btn btn-sm border-0 d-flex align-items-center justify-content-center"
-                                    style="width: 36px; height: 40px; transition: background-color 0.3s ease;">
-                                    <i class="fa fa-minus" style="font-size: 0.75rem;"></i>
-                                </button>
-                                <input type="number" value="2"
-                                    class="form-control border-0 border-start border-end text-center"
-                                    style="width: 60px; height: 40px; border-width: 2px !important;">
-                                <button class="btn btn-sm border-0 d-flex align-items-center justify-content-center"
-                                    style="width: 36px; height: 40px; transition: background-color 0.3s ease;">
-                                    <i class="fa fa-plus" style="font-size: 0.75rem;"></i>
-                                </button>
+        @if (count($carts) === 0)
+            <div class="text-center my-5">
+                <h4 class="text-muted">
+                    <i class="fa fa-shopping-cart fa-2x mb-3"></i><br>
+                    Giỏ hàng trống
+                </h4>
+                <a href="{{ route('products') }}" class="btn btn-success mt-3">
+                    Tiếp tục mua sắm
+                </a>
+            </div>
+        @else
+            <div class="row g-4">
+                <!-- LEFT -->
+                <div class="col-lg-8">
+                    @foreach ($carts as $cart)
+                        <div class="bg-white rounded shadow-sm p-3 mb-3">
+                            <div class="row align-items-center g-3">
+                                <div class="col-1 text-center">
+                                    <input type="checkbox" class="form-check-input cart-checkbox" name="cart_ids[]"
+                                        value="{{ $cart['cart_id'] }}" checked>
+                                </div>
+                                <!-- IMAGE -->
+                                <div class="col-3 col-md-2">
+                                    <img src="{{ asset($cart['hinhnen']) }}" class="img-fluid rounded"
+                                        style="height:80px; object-fit:cover;">
+                                </div>
+                                <!-- INFO -->
+                                <div class="col-9 col-md-4">
+                                    <h6 class="mb-1">{{ $cart['tensp'] }}</h6>
+                                    <span class="text-success fw-bold">
+                                        {{ number_format($cart['giaban']) }} ₫
+                                    </span>
+                                </div>
+                                <!-- QUANTITY -->
+                                <div class="col-md-3 d-flex align-items-center gap-2">
+                                    {{-- TĂNG --}}
+                                    <form action="{{ route('carts.update-quantity') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="cart_id" value="{{ $cart['cart_id'] }}">
+                                        <input type="hidden" name="type" value="increase">
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </form>
+                                    {{-- GIẢM --}}
+                                    <form action="{{ route('carts.update-quantity') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="cart_id" value="{{ $cart['cart_id'] }}">
+                                        <input type="hidden" name="type" value="decrease">
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </form>
+                                    <span class="fw-bold">{{ $cart['cart_quantity'] }}</span>
+                                </div>
+                                <!-- SUBTOTAL -->
+                                <div class="col-md-2 text-success fw-bold">
+                                    {{ number_format($cart['subtotal']) }} ₫
+                                </div>
+                                <!-- DELETE -->
+                                <div class="action-buttons-inline" style="display: flex; gap: 8px; align-items: center;">
+                                    <form action="{{ route('carts.delete') }}" method="POST" style="margin: 0;"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
+                                        @csrf
+                                        <input type="hidden" name="cart_id" value="{{ $cart['cart_id'] }}">
+                                        <button type="submit" class="btn btn-danger btn-md">Xóa</button>
+                                    </form>
+                                </div>
+
                             </div>
-                            <button class="btn btn-sm d-flex align-items-center justify-content-center rounded"
-                                style="width: 40px; height: 40px; color: #ef4444; transition: all 0.3s ease;">
-                                <i class="fa fa-trash" style="font-size: 1rem;"></i>
-                            </button>
                         </div>
+                    @endforeach
+                    <!-- SUMMARY -->
+                    <div class="bg-light rounded p-3 mt-3">
+                        <p class="mb-1">Tổng số lượng: <strong>{{ $totals['totalQuantity'] }}</strong></p>
+                        <p class="mb-0">Tổng tiền:
+                            <strong class="text-success">
+                                {{ number_format($totals['totalAmount']) }} ₫
+                            </strong>
+                        </p>
                     </div>
                 </div>
+                <!-- RIGHT -->
+                <div class="col-lg-4">
+                    <div class="bg-white rounded shadow-sm p-4 absolute" style="top:100px">
+                        <h5 class="fw-bold mb-3">Tổng đơn hàng</h5>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Tạm tính</span>
+                            <strong>{{ number_format($totals['totalAmount']) }} ₫</strong>
+                        </div>
+                        <form id="checkout-form" action="{{ route('thanh-toan.index') }}" method="GET">
+                            <button type="submit" class="btn btn-success w-100 py-3 fw-bold mb-2">
+                                Đặt hàng
+                            </button>
+                        </form>
+                        <a href="{{ route('products') }}" class="btn btn-outline-secondary w-100">
+                            Tiếp tục mua sắm
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+@endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.cart-checkbox');
+        const checkoutForm = document.getElementById('checkout-form');
+
+        function updateTotals() {
+            const selectedIds = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selectedIds.push(parseInt(cb.value));
+                }
+            });
+            // Update tổng tiền
+            fetch('{{ route('carts.calculate-selected') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        cart_ids: selectedIds
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    document.querySelector('.total-quantity').textContent = data.totalQuantity;
+                    document.querySelectorAll('.total-amount').forEach(el => {
+                        el.textContent = new Intl.NumberFormat('vi-VN').format(data.totalAmount) +
+                            ' ₫';
+                    });
+                })
+                .catch(err => console.error('Lỗi:', err));
+        }
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateTotals);
+        });
+        // ✅ THÊM ĐOẠN NÀY: Khi submit form checkout, gửi cart_ids đã chọn
+        checkoutForm.addEventListener('submit', function(e) {
+            const selectedIds = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selectedIds.push(cb.value);
+                }
+            });
+            if (selectedIds.length === 0) {
+                e.preventDefault();
+                alert('Vui lòng chọn ít nhất 1 sản phẩm!');
+                return;
+            }
+            // Thêm input hidden với cart_ids
+            selectedIds.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'cart_ids[]';
+                input.value = id;
+                checkoutForm.appendChild(input);
+            });
+        });
+    });
+</script>
 
                 <div class="row g-2 g-md-3 mt-3">
                     <div class="col-12 col-sm-6">
@@ -104,10 +224,3 @@
                         <div class="d-flex align-items-center gap-3">
                             <i class="fa fa-undo" style="color: #10b981; font-size: 1.25rem;"></i>
                             <span style="font-size: 0.875rem;" class="text-muted">Đổi trả trong 7 ngày</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection

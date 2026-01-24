@@ -878,7 +878,6 @@ class ProductSeeder extends Seeder
             if (!$categoryId || !$thuongHieuId) {
                 continue;
             }
-
             // Tạo sản phẩm chính
             $productId = DB::table('sanpham')->insertGetId([
                 'tensp' => $productData['tensp'],

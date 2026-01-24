@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class SanphamVariant extends Model
 {
     protected $table = 'sanpham_variants';
+    public $relationable = ['attributesValues'];
     protected $fillable = [
         'sanpham_id',
         'sku',
@@ -17,16 +18,20 @@ class SanphamVariant extends Model
         'soluong',
         'trangthai'
     ];
-    public function product()
+    public function attributesValues(): BelongsToMany
     {
-        // Liên kết ngược lại sản phẩm chính
-        return $this->belongsTo(Sanpham::class, 'sanpham_id', 'id');
+        return $this->belongsToMany(
+            BientheValue::class,
+            'variant_attribute_values',
+            'variant_id',
+            'bienthe_value_id'
+        )->withTimestamps();
     }
-    
-
-    public function attributeValues() {
-    // Kết nối từ variant qua bảng trung gian bienthe_variant_values
-    // Để lấy được giá trị như "Trắng", "S", "M"...
-    return $this->belongsToMany(BientheValue::class, 'variant_attribute_values', 'variant_id', 'bienthe_value_id');
+    public function sanpham(): BelongsTo
+    {
+        return $this->belongsTo(Sanpham::class, 'sanpham_id');
     }
+    protected $casts = [
+        'album' => 'array'
+    ];
 }

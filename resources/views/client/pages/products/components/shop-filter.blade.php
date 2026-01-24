@@ -12,7 +12,6 @@
                     </option>
                 @endforeach
             </select>
-
             <div class="row">
                 <div class="col">
                     <input type="number" name="min_price" class="form-control" placeholder="Giá từ"
@@ -23,7 +22,6 @@
                         value="{{ request('max_price') }}">
                 </div>
             </div>
-
             <button type="submit" class="btn btn-primary w-100 mt-3">
                 <i class="fa fa-filter"></i> Lọc sản phẩm
             </button>

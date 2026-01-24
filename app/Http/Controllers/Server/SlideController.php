@@ -52,12 +52,17 @@ class SlideController extends Controller
     }
     public function update(UpdateSlideRequest $request, $id)
     {
-        $slide = $this->slideService->update($request, $id);
+        $slide = $this->slideService->save($request, $id);
         return redirect()->route('slides.index')->with('success', 'Cập nhật slide thành công');
     }
     public function delete($id)
     {
         $slide = $this->slideService->delete($id);
         return redirect()->route('slides.index')->with('success', 'Xóa slide thành công');
+    }
+    public function restore($id)
+    {
+        $slide = $this->slideService->restore($id);
+        return redirect()->route('slides.index')->with('success', 'Cập nhật trạng thái slide thành công');
     }
 }

@@ -35,9 +35,20 @@ class CategoryRepository extends BaseRepository
             'publish' => 0
         ]);
     }
-    // public function update($id, $payload=[]){
-    //     $model = $this->model->findOrFail($id);
-    //     $model->update($payload);
-    //     return $model;
-    // }
+
+    public function createCategory($payload)
+    {
+        return $this->model->create($payload)->fresh();
+    }
+
+    public function updateCategory($id, $payload = [])
+    {
+        $model = $this->model->findOrFail($id);
+        $model->update($payload);
+        return $model;
+    }
+    public function getTrangThai()
+    {
+        return $this->model->where('publish', 1)->get();
+    }
 }

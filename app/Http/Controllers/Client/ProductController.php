@@ -27,11 +27,11 @@ class ProductController extends Controller
     }
     public function index(Request $request): View
     {
-        $products = $this->productService->pagination($request);
+        $product = $this->productService->pagination($request);
         // dd($products);
         $categories = $this->categoryService->pagination($request);
         return view('client.pages.products.index', compact(
-            'products',
+            'product',
             'categories'
         ));
     }
@@ -108,6 +108,16 @@ class ProductController extends Controller
                 ->get();
 
         return view('client.pages.products.show', compact('product', 'groupedAttributes','relatedProducts'));
+    public function show(string $slug): View
+    {
+        $products = Sanpham::where('slug', $slug)
+            ->with([
+                'categories',
+                'thuonghieu',
+                'sanpham_variants.attributesValues'
+            ])
+            ->firstOrFail();
+        return view('client.pages.products.show', compact('products'));
     }
     
 
@@ -175,10 +185,6 @@ class ProductController extends Controller
 
         return view('client.pages.products.search_results', compact('products', 'keyword'));
     }
-
-
-    
-
     public function toggle($id) {
         $user = auth()->user();
         // Kiểm tra xem đã thích chưa

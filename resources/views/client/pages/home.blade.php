@@ -33,65 +33,77 @@
             </button>
         </div>
     </div>
+    <!-- Sản Phẩm Mới -->
+    @if (isset($sanphamMoi) && $sanphamMoi->count() > 0)
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h3 fw-bold text-dark">Sản Phẩm Mới</h2>
+                <a href="{{ route('client.products.new') }}" class="text-decoration-none text-primary">
+                    Xem tất cả <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
+                @foreach ($sanphamMoi as $sp)
+                    @include('client.components.product-card', ['product' => $sp])
+                @endforeach
+            </div>
+        </div>
+    @endif
+    <!-- Danh Mục Sản Phẩm -->
+    @if (isset($danhMucNoiBat) && $danhMucNoiBat->count() > 0)
+        @foreach ($danhMucNoiBat as $category)
+            @if ($category->sanphams && $category->sanphams->count() > 0)
+                <div class="container py-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="h3 fw-bold text-dark">{{ $category->name }}</h2>
+                        <a href="{{ route('client.category.show', $category->slug) }}"
+                            class="text-decoration-none text-primary">
+                            Xem tất cả <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
+                        @foreach ($category->sanphams->take(10) as $sp)
+                            @include('client.components.product-card', ['product' => $sp])
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    @endif
     <div class="container py-4">
         <h1 class="h2 fw-bold mb-4 text-dark">Cửa Hàng</h1>
         <div class="d-flex flex-column gap-4">
             <div class="w-100">
                 <div class="bg-white p-2 rounded shadow-sm mb-3 d-flex justify-content-between align-items-center">
-                    <p class="text-secondary mb-0" style="font-size: 0.75rem;">Hiển thị <span class="fw-semibold">5</span>
-                        sản
-                        phẩm</p>
-                    <select class="form-select form-select-sm" style="width: auto; font-size: 0.75rem;">
-                        <option>Sắp xếp mặc định</option>
-                        <option>Giá: Thấp đến Cao</option>
-                        <option>Giá: Cao đến Thấp</option>
-                        <option>Mới nhất</option>
-                        <option>Bán chạy nhất</option>
-                    </select>
+                    <p class="text-secondary mb-0" style="font-size: 0.75rem;">
+                        Hiển thị <span class="fw-semibold">{{ $sanpham->count() }}</span> sản phẩm
+                    </p>
+                    <form method="GET" action="{{ route('client.products.index') }}" class="d-inline">
+                        <select name="sort" class="form-select form-select-sm" style="width: auto; font-size: 0.75rem;"
+                            onchange="this.form.submit()">
+                            <option value="">Sắp xếp mặc định</option>
+                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá: Thấp
+                                đến
+                                Cao</option>
+                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá: Cao
+                                đến
+                                Thấp</option>
+                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất
+                            </option>
+                        </select>
+                    </form>
                 </div>
-
-
-
                 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2">
-                    @foreach($newProducts as $item) 
-                        <div class="col">
-                            <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden product-card">
-                                
-                                {{-- Logic kiểm tra tồn kho --}}
-                                @php $totalStock = $item->variants->sum('soluong'); @endphp
-
-                                {{-- Nhãn HẾT HÀNG chỉ hiện khi số lượng = 0 --}}
-                                @if($totalStock <= 0)
-                                    <div class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
-                                        <span class="badge bg-danger shadow-sm px-2 py-1" style="font-size: 10px;">HẾT HÀNG</span>
-                                    </div>
-                                @endif
-
-                                <a href="{{ route('client.products.show', $item->id) }}" class="text-decoration-none">
-                                    {{-- Hình ảnh sản phẩm --}}
-                                    <div class="img-wrapper">
-                                        <img src="{{ asset('client/img/' . basename($item->hinhnen)) }}" 
-                                            class="card-img-top {{ $totalStock <= 0 ? 'opacity-50 grayscale' : '' }}" 
-                                            alt="{{ $item->tensp }}"
-                                            style="aspect-ratio: 1/1; object-fit: cover;">
-                                    </div>
-
-                                    {{-- Thông tin Tên và Giá --}}
-                                    <div class="card-body p-2">
-                                        <h6 class="text-dark mb-1 fw-normal small text-truncate-2" style="height: 38px; line-height: 1.4;">
-                                            {{ $item->tensp }}
-                                        </h6>
-
-                                        <div class="d-flex align-items-center">
-                                            <span class="text-dark fw-bold fs-6">
-                                                {{ number_format($item->variants->first()->giaban ?? 0, 0, ',', '.') }}đ
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                    @forelse($sanpham as $sp)
+                        @include('client.components.product-card', ['product' => $sp])
+                    @empty
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">Không có sản phẩm nào.</p>
                         </div>
-                    @endforeach
+                    @endforelse
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $sanpham->links() }}
                 </div>
 
                 <style>
@@ -125,4 +137,6 @@
 
                 
             </div>
-        @endsection
+        </div>
+    </div>
+@endsection
