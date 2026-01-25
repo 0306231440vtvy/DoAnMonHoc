@@ -24,6 +24,12 @@
                           </a>
                       </li>
                       <li>
+                          <a href="{{ route('gioi-thieu') }}"
+                              class="font-medium uppercase hover:text-[#667eea] transition">
+                              Giới thiệu
+                          </a>
+                      </li>
+                      <li>
                           <a href="{{ route('client.products.index') }}"
                               class="font-medium uppercase hover:text-[#667eea] transition">
                               Sản Phẩm

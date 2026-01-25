@@ -1,8 +1,8 @@
 @extends('client.layouts')
+@section('title', 'Trang thanh toán')
 @section('content')
     <div class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold mb-8 text-gray-800">Thanh Toán</h1>
-
         <form action="{{ route('thanh-toan.store') }}" method="POST">
             @csrf
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -11,7 +11,6 @@
                     <!-- Thông tin giao hàng -->
                     <div class="bg-white rounded-lg shadow p-6">
                         <h3 class="text-xl font-bold mb-4 text-gray-800">Thông Tin Giao Hàng</h3>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label class="block text-gray-700 mb-2 font-medium">Họ và tên *</label>
@@ -22,7 +21,6 @@
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                                     placeholder="Nhập họ và tên" required>
                             </div>
-
                             <div>
                                 <label class="block text-gray-700 mb-2 font-medium">Số điện thoại *</label>
                                 @error('phone')
@@ -33,7 +31,6 @@
                                     placeholder="0901234567" required>
                             </div>
                         </div>
-
                         <div class="mb-4">
                             <label class="block text-gray-700 mb-2 font-medium">Email *</label>
                             @error('email')

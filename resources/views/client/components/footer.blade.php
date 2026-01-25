@@ -10,16 +10,16 @@
                     <p>{{ $setting->description }}</p>
                     <div class="footer-social">
                         <a href="{{ $setting->facebook_url }}" target="_blank">
-                            <i class="fa fa-facebook"></i>
+                            <i class="fa-brands fa-facebook"></i>
                         </a>
                         <a href="{{ $setting->youtube_url }}" target="_blank">
-                            <i class="fa fa-youtube"></i>
+                            <i class="fa-brands fa-youtube"></i>
                         </a>
                         <a href="{{ $setting->instagram_url }}" target="_blank">
-                            <i class="fa fa-instagram"></i>
+                            <i class="fa-brands fa-instagram"></i>
                         </a>
                         <a href="{{ $setting->linkedin_url }}" target="_blank">
-                            <i class="fa fa-linkedin"></i>
+                            <i class="fa-brands fa-linkedin"></i>
                         </a>
                     </div>
                 </div>

@@ -31,4 +31,8 @@ class ProductRepository extends BaseRepository
         ]);
         return $model;
     }
+    public function getTrangThai()
+    {
+        return $this->model->where('trangthai', 2)->paginate(10);
+    }
 }

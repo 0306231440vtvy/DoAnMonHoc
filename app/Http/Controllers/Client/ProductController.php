@@ -186,8 +186,6 @@ class ProductController extends Controller
 
         return back()->with('success', 'Cảm ơn bạn đã đánh giá sản phẩm!');
     }
-
-    // ✅ THÊM METHOD NÀY - Toggle wishlist
     public function toggleWishlist($productId)
     {
         if (!Auth::check()) {
@@ -197,7 +195,6 @@ class ProductController extends Controller
                 'redirect' => route('login')
             ], 401);
         }
-
         $productExists = DB::table('sanpham')->where('id', $productId)->exists();
         if (!$productExists) {
             return response()->json([
@@ -268,18 +265,4 @@ class ProductController extends Controller
             ]
         ]);
     }
-
-    // ✅ XÓA METHOD NÀY - Không dùng nữa
-    // public function toggle($id)
-    // {
-    //     $user = auth()->user();
-
-    //     if ($user->favorites()->where('sanpham_id', $id)->exists()) {
-    //         $user->favorites()->detach($id);
-    //         return response()->json(['status' => 'removed']);
-    //     }
-
-    //     $user->favorites()->attach($id);
-    //     return response()->json(['status' => 'added']);
-    // }
 }

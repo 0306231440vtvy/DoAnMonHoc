@@ -12,7 +12,7 @@
         @endif
         <td>
             <div class="action-buttons-inline" style="display: flex; gap: 8px; align-items: center;">
-                <a href="{{ route('products.show', $item->id) }}" class="btn btn-action btn-info">Xem chi tiết</a>
+
                 <a href="{{ route('products.edit', $item->id) }}" class="btn btn-action btn-edit">Sửa</a>
                 <form action="{{ route('products.delete', $item->id) }}" method="POST" style="margin: 0;"
                     onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
@@ -20,12 +20,8 @@
                     @method('PUT')
                     <button type="submit" class="btn btn-danger btn-md">Xóa</button>
                 </form>
-                <form action="{{ route('products.restore', $item->id) }}" method="POST" style="margin: 0;"
-                    onsubmit="return confirm('Bạn có chắc chắn muốn khôi phục sản phẩm này?')">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-primary btn-md">Khôi phục</button>
-                </form>
+                <a href="{{ route('products.show', $item->id) }}" class="btn btn-action btn-info">Trang khôi phục dữ
+                    liệu</a>
             </div>
         </td>
     </tr>

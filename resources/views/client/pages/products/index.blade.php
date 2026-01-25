@@ -1,4 +1,5 @@
 @extends('client.layouts')
+@section('title', 'Trang sản phẩm')
 @section('content')
     <div class="container py-4">
         <h1 class="h2 fw-bold mb-4 text-dark">Cửa Hàng</h1>

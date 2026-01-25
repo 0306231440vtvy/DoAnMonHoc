@@ -1,5 +1,5 @@
-@extends('client.layouts') {{-- Hãy chắc chắn tên layout đúng với file của bạn --}}
-
+@extends('client.layouts')
+@section('title', 'Trang người dùng')
 @section('content')
     <div class="container py-5">
         <div class="row">

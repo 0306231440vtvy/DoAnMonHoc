@@ -68,7 +68,7 @@ abstract class BaseRepository
         foreach ($conditions  as $field => $val) {
             $query->where($field, $val);
         }
-        return $query;
+        return $query->get();
     }
     public function getFillable(): array
     {
