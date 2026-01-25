@@ -131,7 +131,55 @@ class ProductService extends BaseService
     }
     private function clearPrice($price)
     {
-        $cleaned = str_replace([',', '.'], '', $price);
-        return (float)$cleaned;
+        if (empty($price)) {
+            return 0;
+        }
+
+        // Loại bỏ khoảng trắng
+        $price = trim($price);
+
+        // Xử lý theo định dạng Việt Nam: 1.000.000 hoặc 1,000,000
+        // Giữ lại dấu chấm/phẩy cuối cùng làm phân cách thập phân
+
+        // Đếm số dấu chấm và phẩy
+        $dotCount = substr_count($price, '.');
+        $commaCount = substr_count($price, ',');
+
+        // Nếu có nhiều dấu chấm -> định dạng VN (1.000.000)
+        if ($dotCount > 1) {
+            $price = str_replace('.', '', $price); // Xóa dấu chấm phân cách hàng nghìn
+            $price = str_replace(',', '.', $price); // Chuyển dấu phẩy thành dấu chấm thập phân
+        }
+        // Nếu có nhiều dấu phẩy -> định dạng US (1,000,000)
+        elseif ($commaCount > 1) {
+            $price = str_replace(',', '', $price); // Xóa dấu phẩy phân cách hàng nghìn
+        }
+        // Nếu có cả chấm và phẩy -> xác định cái nào là thập phân
+        elseif ($dotCount > 0 && $commaCount > 0) {
+            // Cái nào xuất hiện sau là dấu thập phân
+            $lastDot = strrpos($price, '.');
+            $lastComma = strrpos($price, ',');
+
+            if ($lastDot > $lastComma) {
+                // Dấu chấm là thập phân (1,000.50)
+                $price = str_replace(',', '', $price);
+            } else {
+                // Dấu phẩy là thập phân (1.000,50)
+                $price = str_replace('.', '', $price);
+                $price = str_replace(',', '.', $price);
+            }
+        }
+        // Chỉ có 1 dấu phẩy -> có thể là thập phân VN (100,50) hoặc hàng nghìn (1,000)
+        elseif ($commaCount == 1) {
+            // Nếu sau dấu phẩy có 3 chữ số -> đó là hàng nghìn
+            if (preg_match('/,\d{3}$/', $price)) {
+                $price = str_replace(',', '', $price);
+            } else {
+                // Ngược lại là thập phân
+                $price = str_replace(',', '.', $price);
+            }
+        }
+        // Chuyển thành float
+        return (float) $price;
     }
 }

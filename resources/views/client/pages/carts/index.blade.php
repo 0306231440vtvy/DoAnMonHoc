@@ -8,7 +8,7 @@
                     <i class="fa fa-shopping-cart fa-2x mb-3"></i><br>
                     Giỏ hàng trống
                 </h4>
-                <a href="{{ route('products') }}" class="btn btn-success mt-3">
+                <a href="{{ route('client.products.index') }}" class="btn btn-success mt-3">
                     Tiếp tục mua sắm
                 </a>
             </div>

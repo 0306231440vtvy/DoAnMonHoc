@@ -18,6 +18,7 @@ class CtHoadon extends Model
         'dongia',
         'hoadon_id',
         'sanpham_id',
+        'variant_id'
     ];
 
     // 1. Thuộc về Hóa đơn
@@ -30,6 +31,10 @@ class CtHoadon extends Model
     public function sanpham()
     {
         return $this->belongsTo(Sanpham::class, 'sanpham_id', 'id');
+    }
+    public function variant()
+    {
+        return $this->belongsTo(SanphamVariant::class, 'variant_id', 'id');
     }
     public $relationable = [];
 }

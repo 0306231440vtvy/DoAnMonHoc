@@ -26,7 +26,7 @@ class ClientOrderController extends Controller
         $order = Hoadon::find($id);
         // Chỉ cho hủy khi đơn hàng là của mình VÀ đang chờ duyệt (trạng thái = 1)
         if ($order && $order->user_id == Auth::id() && $order->trangthai == 1) {
-            $order->update(['trangthai' => 5]); // 5 = Đã hủy
+            $order->update(['trangthai' => 0]); // 5 = Đã hủy
             return back()->with('success', 'Đã hủy đơn hàng thành công');
         }
 

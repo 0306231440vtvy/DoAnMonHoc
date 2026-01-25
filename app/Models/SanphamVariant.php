@@ -16,7 +16,8 @@ class SanphamVariant extends Model
         'hinhanh',
         'giaban',
         'soluong',
-        'trangthai'
+        'trangthai',
+        'album'
     ];
     public function attributesValues(): BelongsToMany
     {

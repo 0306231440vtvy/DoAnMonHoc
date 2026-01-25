@@ -23,33 +23,46 @@
                             <th>Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($orders as $item)
-                            <tr>
-                                <td>#{{ $item->id }}</td>
-                                <td>{{ $item->created_at->format('d/m/Y') }}</td>
-                                <td>
-                                    @if ($item->trangthai == 1)
-                                        <span class="text-warning">Chờ duyệt</span>
-                                    @elseif($item->trangthai == 3)
-                                        <span class="text-success">Thành công</span>
-                                    @elseif($item->trangthai == 0)
-                                        <span class="text-danger">Đã hủy</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-info">Xem</a>
-                                    {{-- Nút hủy chỉ hiện khi chờ duyệt --}}
-                                    @if ($item->trangthai == 1)
-                                        <form action="{{ route('client.profile.orders.cancel', $item->id) }}" method="POST"
-                                            class="d-inline" onsubmit="return confirm('Hủy đơn này?')">
-                                            @csrf
-                                            <button class="btn btn-sm btn-danger">Hủy</button>
+                   <tbody>
+                        @foreach($orders as $item)
+                        <tr>
+                            {{-- Hiển thị Mã đơn --}}
+                            <td>#{{ $item->id }}</td>
 
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
+                            {{-- Hiển thị Ngày đặt --}}
+                            <td>{{ $item->created_at->format('d/m/Y') }}</td>
+
+                            {{-- Hiển thị Trạng thái (FIX LỖI TRỐNG CỘT TRẠNG THÁI) --}}
+                            <td>
+                                @if($item->trangthai == 1)
+                                    <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                @elseif($item->trangthai == 2)
+                                    <span class="badge bg-info text-dark">Đang giao</span>
+                                @elseif($item->trangthai == 3)
+                                    <span class="badge bg-success">Hoàn thành</span>
+                                @elseif($item->trangthai == 0)
+                                    <span class="badge bg-danger">Đã hủy</span>
+                                @else
+                                    <span class="badge bg-secondary">Không xác định</span>
+                                @endif
+                            </td>
+
+                            {{-- Cột Thao tác --}}
+                            <td>
+                               
+                                <a href="#" class="btn btn-sm btn-primary">Xem</a>
+
+                                @if($item->trangthai == 1)
+                                    <form action="{{ route('client.orders.cancel', $item->id) }}" 
+                                        method="POST" 
+                                        style="display: inline-block;"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-danger">Hủy</button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

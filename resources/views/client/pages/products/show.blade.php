@@ -3,7 +3,14 @@
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
             <strong>Thành công!</strong> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <strong>Lỗi!</strong> {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
@@ -16,129 +23,156 @@
         </nav>
 
         <div class="row">
-            {{-- Cột trái: Hình ảnh sản phẩm --}}
+            {{-- Cột trái: Hình ảnh --}}
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm border-0 mb-3">
                     <img src="{{ asset($product->hinhnen) }}" class="img-fluid rounded main-image" id="mainImage"
                         alt="{{ $product->tensp }}">
                 </div>
 
-                {{-- ALBUM ẢNH --}}
-                @if (isset($albumImages) && $albumImages->count() > 0)
-                    <div class="row g-2 mb-4">
-                        <div class="col-3">
-                            <img src="{{ asset($product->hinhnen) }}"
-                                class="img-thumbnail cursor-pointer thumbnail-img active"
-                                onclick="changeMainImage('{{ asset($product->hinhnen) }}')"
-                                style="height: 80px; width: 100%; object-fit: cover; cursor: pointer;">
-                        </div>
-
-                        @foreach ($albumImages->take(7) as $img)
+                {{-- Album ảnh - FIXED --}}
+                <div class="row g-2 mb-4" id="album-container">
+                    <div class="col-3">
+                        <img src="{{ asset($product->hinhnen) }}" class="img-thumbnail cursor-pointer thumbnail-img active"
+                            onclick="changeMainImage('{{ asset($product->hinhnen) }}')"
+                            style="height: 80px; width: 100%; object-fit: cover; cursor: pointer;">
+                    </div>
+                    @if ($defaultVariant && $defaultVariant->album)
+                        @foreach ($defaultVariant->album as $img)
                             <div class="col-3">
                                 <img src="{{ asset($img) }}" class="img-thumbnail cursor-pointer thumbnail-img"
                                     onclick="changeMainImage('{{ asset($img) }}')"
                                     style="height: 80px; width: 100%; object-fit: cover; cursor: pointer;">
                             </div>
                         @endforeach
-                    </div>
-                @endif
+                    @endif
+                </div>
 
                 {{-- Phần bình luận --}}
-                {{-- <div id="comment-container" class="mt-4">
-                    @foreach ($product->binhluan as $index => $bl)
-                        <div class="comment {{ $index >= 2 ? 'd-none hidden-comment' : '' }}"
-                            style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding: 10px 0;">
-                            <strong>{{ $bl->user->name }}:</strong>
-                            <p>
-                                {{ $bl->noidung }}
-                                <span class="emoji-stars" style="margin-left: 10px;">
-                                    @php
-                                        $starCount = (int) ($bl->danhgia ?? 5);
-                                    @endphp
-
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($i <= $starCount)
-                                            <span style="color: gold;">⭐</span>
-                                        @else
-                                            <span style="filter: grayscale(100%); opacity: 0.2;">⭐</span>
-                                        @endif
-                                    @endfor
-                                </span>
-                            </p>
-                            <small class="text-muted">{{ $bl->created_at->diffForHumans() }}</small>
-                        </div>
-                    @endforeach
-                </div> --}}
-
-                {{-- Form đánh giá --}}
-                <div class="card border-0 shadow-sm mb-4" style="border-radius: 10px; background: #f9f9f9;">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Đánh giá sản phẩm ({{ $ratingCount }})</h5>
+                    </div>
                     <div class="card-body">
-                        <h6 class="fw-bold mb-3">Để lại đánh giá của bạn</h6>
-                        {{-- <form id="commentForm" action="{{ route('client.products.comment', $product->slug) }}"
-                            method="POST">
-                            @csrf
-                            <div class="mb-2">
-                                <div class="star-rating">
-                                    @for ($i = 5; $i >= 1; $i--)
-                                        <input type="radio" id="write-star{{ $i }}" name="danhgia"
-                                            value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }} />
-                                        <label for="write-star{{ $i }}">
-                                            <span style="font-size: 20px; cursor:pointer;">⭐</span>
-                                        </label>
-                                    @endfor
-                                </div>
+                        @if ($product->binhluan->where('trangthai', 1)->count() > 0)
+                            <div id="comment-container">
+                                @foreach ($product->binhluan->where('trangthai', 1) as $index => $bl)
+                                    <div class="comment {{ $index >= 3 ? 'd-none hidden-comment' : '' }}"
+                                        style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding: 10px 0;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <strong>{{ $bl->user->name }}</strong>
+                                            <span class="ms-auto text-warning">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $bl->danhgia)
+                                                        ⭐
+                                                    @else
+                                                        <span style="color: #ddd;">⭐</span>
+                                                    @endif
+                                                @endfor
+                                            </span>
+                                        </div>
+                                        <p class="mb-1">{{ $bl->noidung }}</p>
+                                        <small class="text-muted">{{ $bl->created_at->diffForHumans() }}</small>
+                                    </div>
+                                @endforeach
                             </div>
-                            <div class="input-group">
-                                <input type="text" name="noidung" class="form-control" placeholder="Viết bình luận..."
-                                    required>
-                                <button class="btn btn-primary" type="submit">Gửi</button>
-                            </div>
-                        </form> --}}
+
+                            @if ($product->binhluan->where('trangthai', 1)->count() > 3)
+                                <button id="toggleCommentBtn" class="btn btn-link p-0" data-status="closed">
+                                    Xem thêm đánh giá...
+                                </button>
+                            @endif
+                        @else
+                            <p class="text-muted text-center">Chưa có đánh giá nào</p>
+                        @endif
                     </div>
                 </div>
 
-                {{-- @if (count($product->binhluan) > 2)
-                    <div style="margin-top: 10px;">
-                        <button id="toggleCommentBtn" class="btn btn-link p-0" data-status="closed"
-                            style="text-decoration: none; font-weight: bold; color: #007bff;">
-                            Xem thêm bình luận...
-                        </button>
+                {{-- Form đánh giá --}}
+                @auth
+                    @if ($hasPurchased)
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body">
+                                {{-- <h6 class="fw-bold mb-3">Để lại đánh giá của bạn</h6>
+                                <form action="{{ route('client.products.comment', $product->slug) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-2">
+                                        <div class="star-rating">
+                                            @for ($i = 5; $i >= 1; $i--)
+                                                <input type="radio" id="write-star{{ $i }}" name="danhgia"
+                                                    value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }} />
+                                                <label for="write-star{{ $i }}">
+                                                    <span style="font-size: 24px; cursor:pointer;">⭐</span>
+                                                </label>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" name="noidung" class="form-control"
+                                            placeholder="Viết đánh giá của bạn..." required maxlength="500">
+                                        <button class="btn btn-primary" type="submit">Gửi</button>
+                                    </div>
+                                </form> --}}
+                            </div>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Bạn cần mua và nhận sản phẩm này để có thể đánh giá
+                        </div>
+                    @endif
+                @else
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-circle"></i> Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để đánh
+                        giá sản phẩm
                     </div>
-                @endif --}}
+                @endauth
             </div>
 
             {{-- Cột phải: Thông tin sản phẩm --}}
             <div class="col-md-6">
-                <h1 class="h2 fw-bold text-uppercase">{{ $product->tensp }}</h1>
+                <h1 class="h2 fw-bold">{{ $product->tensp }}</h1>
 
-                {{-- Lượt xem --}}
-                <div class="view-count border-start ps-3 mb-2">
-                    <span class="text-muted small">
+                {{-- Thống kê --}}
+                <div class="d-flex gap-3 mb-3 text-muted small">
+                    <span>
                         <i class="fa-regular fa-eye me-1"></i>
                         <strong>{{ number_format($product->view) }}</strong> lượt xem
+                    </span>
+                    <span>
+                        <i class="fa-regular fa-heart me-1"></i>
+                        <strong id="wishlist-count">{{ number_format($wishlistCount) }}</strong> yêu thích
+                    </span>
+                    <span>
+                        <i class="fa-regular fa-star me-1"></i>
+                        <strong>{{ $averageRating }}</strong>/5 ({{ $ratingCount }} đánh giá)
                     </span>
                 </div>
 
                 {{-- Đánh giá trung bình --}}
                 <div class="mb-3">
-                    @if ($product->binhluan->count() > 0)
-                        @php
-                            $averageRating = $product->binhluan->avg('danhgia');
-                        @endphp
-                        <span class="average-rating" style="font-size: 1rem;">
-                            <span style="color: #ffc107;">⭐</span>
-                            <strong style="color: #333;">{{ number_format($averageRating, 1) }}</strong>
-                            <small class="text-muted" style="font-size: 0.8rem;">/5</small>
-                            <small class="text-muted" style="font-size: 0.8rem; margin-left: 5px;">
-                                ({{ $product->binhluan->count() }} đánh giá)
-                            </small>
-                        </span>
-                    @else
-                        <small style="font-size: 0.8rem; color: #ccc;">(Chưa có đánh giá)</small>
+                    @if ($averageRating > 0)
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="text-warning fs-5">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= floor($averageRating))
+                                        ⭐
+                                    @elseif ($i - $averageRating < 1)
+                                        <span style="position:relative; display:inline-block;">
+                                            <span style="color: #ddd;">⭐</span>
+                                            <span
+                                                style="position:absolute; left:0; overflow:hidden; width:{{ ($averageRating - floor($averageRating)) * 100 }}%;">⭐</span>
+                                        </span>
+                                    @else
+                                        <span style="color: #ddd;">⭐</span>
+                                    @endif
+                                @endfor
+                            </div>
+                            <strong>{{ $averageRating }}</strong>
+                        </div>
                     @endif
                 </div>
 
-                {{-- Thông tin giá và SKU --}}
+                {{-- Giá và SKU --}}
                 <div class="product-info mt-3">
                     <div class="mb-3">
                         <strong id="display-sku" class="small text-muted d-block mb-1">
@@ -149,137 +183,178 @@
                             {{ number_format($defaultVariant->giaban ?? 0, 0, ',', '.') }}đ
                         </h2>
 
-                        <span id="display-stock-count"
-                            class="fw-bold {{ ($defaultVariant->soluong ?? 0) > 0 ? 'text-success' : 'text-danger' }}">
-                            {{ ($defaultVariant->soluong ?? 0) > 0 ? "Còn {$defaultVariant->soluong} sản phẩm" : 'Hết hàng' }}
-                        </span>
+                        <div class="d-flex align-items-center gap-2">
+                            <span id="display-stock-count"
+                                class="badge {{ ($defaultVariant->soluong ?? 0) > 0 ? 'bg-success' : 'bg-danger' }}">
+                                {{ ($defaultVariant->soluong ?? 0) > 0 ? "Còn {$defaultVariant->soluong} sản phẩm" : 'Hết hàng' }}
+                            </span>
+                            <span class="text-muted small" id="stock-realtime-indicator">
+                                <i class="fa fa-circle text-success" style="font-size: 8px;"></i> Realtime
+                            </span>
+                        </div>
                     </div>
 
                     {{-- Nút yêu thích --}}
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="wishlist-wrapper">
-                            @auth
-                                <button type="button" class="btn-wishlist" onclick="toggleLike(this)"
-                                    data-id="{{ $product->id }}">
-                                    <i class="fa-regular fa-heart"></i>
-                                </button>
-                            @endauth
-                        </div>
-                    </div>
+                    @auth
+                        <button type="button" class="btn-wishlist {{ $isWishlisted ? 'active' : '' }}"
+                            onclick="toggleWishlist({{ $product->id }})">
+                            <i class="{{ $isWishlisted ? 'fa-solid' : 'fa-regular' }} fa-heart"></i>
+                        </button>
+                    @endauth
                 </div>
 
-                {{-- Chọn thuộc tính sản phẩm --}}
-                <div class="product-variants mt-4">
-                    @foreach ($groupedAttributes as $typeName => $values)
-                        <div class="mb-4 attribute-group" data-type="{{ $typeName }}">
-                            <h6 class="text-uppercase fw-bold" style="font-size: 0.85rem; color: #555;">
-                                {{ $typeName }}:
-                            </h6>
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach ($values as $val)
-                                    <input type="radio" class="btn-check attribute-select"
-                                        name="attr_{{ Str::slug($typeName) }}" id="val_{{ $val->id }}"
-                                        value="{{ $val->value }}" data-value-id="{{ $val->id }}"
-                                        {{ $loop->first ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-dark" for="val_{{ $val->id }}">
-                                        {{ $val->value }}
-                                    </label>
-                                @endforeach
+                {{-- Chọn biến thể --}}
+                @if ($groupedAttributes->count() > 0)
+                    <div class="product-variants mt-4">
+                        @foreach ($groupedAttributes as $typeName => $values)
+                            <div class="mb-4 attribute-group" data-type="{{ $typeName }}">
+                                <h6 class="text-uppercase fw-bold" style="font-size: 0.85rem;">
+                                    {{ $typeName }}:
+                                </h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach ($values as $val)
+                                        <input type="radio" class="btn-check attribute-select"
+                                            name="attr_{{ Str::slug($typeName) }}" id="val_{{ $val->id }}"
+                                            value="{{ $val->value }}" data-value-id="{{ $val->id }}"
+                                            {{ $loop->first ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-dark" for="val_{{ $val->id }}">
+                                            {{ $val->value }}
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
+                @endif
 
-                {{-- Form thêm vào giỏ hàng --}}
-                <form action="{{ route('carts.add-to-cart') }}" method="POST" class="mt-4">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="variant_id" id="selected-variant-id"
-                        value="{{ $defaultVariant->id ?? '' }}">
-
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="input-group me-3" style="width: 130px;">
+                {{-- Thêm vào giỏ hàng --}}
+                <div class="mt-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="input-group" style="width: 150px;">
                             <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">-</button>
-                            <input type="text" class="form-control text-center" value="1" id="quantity"
-                                name="quantity">
+                            <input type="number" class="form-control text-center" value="1" id="quantity"
+                                min="1" max="{{ $defaultVariant->soluong ?? 1 }}" readonly>
                             <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">+</button>
                         </div>
-                        @if ($defaultVariant)
-                            <button onclick="addToCart('{{ $defaultVariant->sku }}')"
-                                class="btn btn-sm rounded-circle p-1 btn-primary">
-                                <i class="fa fa-shopping-cart text-white"></i>
-                            </button>
-                        @else
-                            <button class="btn btn-secondary btn-sm" disabled>
-                                Hết hàng
-                            </button>
-                        @endif
-                        <button
-                            class="btn btn-light btn-sm rounded-circle position-absolute top-0 start-0 m-1 opacity-0 hover:opacity-100 transition-opacity"
-                            onclick="toggleFavorite({{ $product->id }})">
-                            <i class="fa fa-heart text-danger" style="font-size: 12px;"></i>
-                        </button>
-                    </div>
-                </form>
+                        @foreach ($product->sanpham_variants as $variant)
+                            @php
+                                $tonKhoVariant = $variant->soluong;
+                            @endphp
 
-                {{-- Mô tả sản phẩm --}}
-                <div class="mt-4 p-3 bg-light rounded border">
+                            @if ($tonKhoVariant > 0)
+                                <button onclick="addToCart('{{ $variant->sku }}')"
+                                    class="btn btn-sm rounded-circle p-1 btn-primary transition"
+                                    title="Thêm vào giỏ hàng">
+                                    <i class="fa fa-shopping-cart text-white" style="font-size: 11px;"></i>
+                                </button>
+                                @break
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Mô tả ngắn --}}
+                <div class="mt-4 p-3 bg-light rounded">
                     <p class="fw-bold mb-2">
                         <i class="fas fa-info-circle me-2"></i>Mô tả sản phẩm:
                     </p>
                     <div class="text-muted small">
-                        {!! $product->mota ?? 'Đang cập nhật nội dung mô tả...' !!}
+                        {!! Str::limit($product->mota ?? 'Đang cập nhật...', 300) !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Tab mô tả chi tiết --}}
+        <div class="row mt-5">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="productTab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                            data-bs-target="#description" type="button">
+                            Mô tả chi tiết
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs"
+                            type="button">
+                            Thông số kỹ thuật
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content p-4 border border-top-0" id="productTabContent">
+                    <div class="tab-pane fade show active" id="description">
+                        {!! $product->mota ?? 'Đang cập nhật nội dung...' !!}
+                    </div>
+                    <div class="tab-pane fade" id="specs">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th width="30%">SKU</th>
+                                    <td>{{ $defaultVariant->sku ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Thương hiệu</th>
+                                    <td>{{ $product->thuonghieu->tenth ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Danh mục</th>
+                                    <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Trạng thái kho</th>
+                                    <td>
+                                        <span
+                                            class="badge {{ $defaultVariant->soluong > 0 ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $defaultVariant->soluong > 0 ? 'Còn hàng' : 'Hết hàng' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
         {{-- Sản phẩm liên quan --}}
-        <div class="container mt-5">
+        <div class="mt-5">
             <h4 class="fw-bold mb-4">Sản phẩm liên quan</h4>
-
-            <div class="row row-cols-1 row-cols-md-5 g-3">
-                @foreach ($relatedProducts as $related)
+            <div class="row row-cols-2 row-cols-md-5 g-3">
+                @forelse ($relatedProducts as $related)
                     <div class="col">
-                        <div class="card h-100 border-0 shadow-sm p-2">
+                        <div class="card h-100 border-0 shadow-sm">
                             <a href="{{ route('client.products.show', $related->slug) }}">
-                                <img src="{{ asset($related->hinhnen) }}" class="card-img-top rounded"
-                                    style="height: 150px; object-fit: cover;" alt="{{ $related->tensp }}">
+                                <img src="{{ asset($related->hinhnen) }}" class="card-img-top"
+                                    style="height: 200px; object-fit: cover;" alt="{{ $related->tensp }}">
                             </a>
-
-                            <div class="card-body p-2">
-                                <h6 class="card-title mb-2 text-truncate-2" style="font-size: 0.9rem;">
+                            <div class="card-body p-3">
+                                <h6 class="card-title text-truncate-2 mb-2" style="font-size: 0.9rem;">
                                     <a href="{{ route('client.products.show', $related->slug) }}"
                                         class="text-decoration-none text-dark">
                                         {{ $related->tensp }}
                                     </a>
                                 </h6>
-
-                                <div class="mt-auto">
-                                    @php
-                                        $relatedVariant = $related->sanpham_variants->first();
-                                    @endphp
-                                    <span class="text-danger fw-bold d-block">
-                                        {{ number_format($relatedVariant->giaban ?? 0, 0, ',', '.') }}đ
+                                @php
+                                    $relatedVariant = $related->sanpham_variants->first();
+                                @endphp
+                                <span class="text-danger fw-bold d-block mb-2">
+                                    {{ number_format($relatedVariant->giaban ?? 0, 0, ',', '.') }}đ
+                                </span>
+                                <div class="d-flex align-items-center text-muted" style="font-size: 0.8rem;">
+                                    <span class="text-warning me-2">
+                                        ⭐ {{ number_format($related->binhluan_avg_danhgia ?? 0, 1) }}
                                     </span>
-                                    {{-- @if ($related->discount > 0)
-                                        <small class="text-muted text-decoration-line-through ms-1">
-                                            {{ number_format($relatedVariant->giaban / (1 - $related->discount / 100), 0, ',', '.') }}đ
-                                        </small>
-                                    @endif --}}
-                                </div>
-
-                                <div class="mt-2 d-flex align-items-center" style="font-size: 0.8rem;">
-                                    <span class="text-warning me-1">
-                                        <i class="fas fa-star"></i>
-                                        {{ number_format($related->binhluan_avg_danhgia ?? 0, 1) }}
-                                    </span>
-                                    <span class="text-muted">| {{ number_format($related->view) }} lượt xem</span>
+                                    <span>{{ number_format($related->view) }} views</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-12">
+                        <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
@@ -293,7 +368,7 @@
 
         .thumbnail-img {
             border: 2px solid transparent;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .thumbnail-img:hover,
@@ -302,15 +377,11 @@
             transform: scale(1.05);
         }
 
-        .btn-check:checked+.btn-outline-dark {
-            background-color: #212529 !important;
-            color: #fff !important;
-        }
-
         .star-rating {
             display: flex;
             flex-direction: row-reverse;
             justify-content: flex-end;
+            gap: 5px;
         }
 
         .star-rating input {
@@ -332,25 +403,21 @@
 
         .btn-wishlist {
             background: white;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             cursor: pointer;
         }
 
         .btn-wishlist i {
-            font-size: 22px;
+            font-size: 24px;
             color: #999;
-            transition: all 0.3s ease;
-        }
-
-        .btn-wishlist:hover {
-            border-color: #ff4d4d;
+            transition: all 0.3s;
         }
 
         .btn-wishlist.active {
@@ -360,11 +427,11 @@
 
         .btn-wishlist.active i {
             color: #ff4d4d !important;
-            font-weight: 900 !important;
         }
 
-        .btn-wishlist:active i {
-            transform: scale(1.4);
+        .btn-check:checked+.btn-outline-dark {
+            background-color: #212529 !important;
+            color: #fff !important;
         }
 
         .text-truncate-2 {
@@ -375,163 +442,117 @@
         }
     </style>
 @endsection
+
 @push('scripts')
     <script>
-        // Chuyển đổi ảnh chính
+        const productVariants = @json($product->sanpham_variants->load('attributesValues'));
+        let currentVariantId = {{ $defaultVariant->id ?? 'null' }}; // ✅ FIXED: Thêm let để có thể update
+
         function changeMainImage(src) {
             document.getElementById('mainImage').src = src;
-
-            // Đổi border cho thumbnail được chọn
-            document.querySelectorAll('.thumbnail-img').forEach(img => {
-                img.classList.remove('active');
-            });
+            document.querySelectorAll('.thumbnail-img').forEach(img => img.classList.remove('active'));
             event.target.classList.add('active');
         }
 
-        // Dữ liệu biến thể
-        const productVariants = @json($product->sanpham_variants->load('attributesValues'));
-
         function changeQty(val) {
-            let qty = document.getElementById('quantity');
-            let current = parseInt(qty.value);
-            if (current + val >= 1) qty.value = current + val;
+            const qtyInput = document.getElementById('quantity');
+            const max = parseInt(qtyInput.getAttribute('max')) || 999;
+            let current = parseInt(qtyInput.value);
+            let newQty = current + val;
+            if (newQty >= 1 && newQty <= max) qtyInput.value = newQty;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const skuDisplay = document.getElementById('display-sku');
-            const priceDisplay = document.getElementById('display-price');
-            const stockCountDisplay = document.getElementById('display-stock-count');
-            const variantIdInput = document.getElementById('selected-variant-id');
+        // ✅ FIXED: Cập nhật album khi chọn variant
+        function updateAlbumImages(variant) {
+            const albumContainer = document.getElementById('album-container');
+            let albumHTML = `
+                <div class="col-3">
+                    <img src="{{ asset($product->hinhnen) }}"
+                        class="img-thumbnail cursor-pointer thumbnail-img active"
+                        onclick="changeMainImage('{{ asset($product->hinhnen) }}')"
+                        style="height: 80px; width: 100%; object-fit: cover; cursor: pointer;">
+                </div>
+            `;
 
-            function updateVariantInfo() {
-                let selectedValueIds = [];
-                document.querySelectorAll('.attribute-select:checked').forEach(input => {
-                    const id = input.getAttribute('data-value-id');
-                    if (id) selectedValueIds.push(parseInt(id));
+            if (variant.album && Array.isArray(variant.album)) {
+                variant.album.forEach(img => {
+                    albumHTML += `
+                        <div class="col-3">
+                            <img src="${img.startsWith('http') ? img : '/' + img}"
+                                class="img-thumbnail cursor-pointer thumbnail-img"
+                                onclick="changeMainImage('${img.startsWith('http') ? img : '/' + img}')"
+                                style="height: 80px; width: 100%; object-fit: cover; cursor: pointer;">
+                        </div>
+                    `;
                 });
-
-                const matchedVariant = productVariants.find(variant => {
-                    const vValues = variant.attribute_values || variant.attributesValues || [];
-                    const vIds = vValues.map(v => v.id);
-                    return selectedValueIds.every(id => vIds.includes(id));
-                });
-
-                if (matchedVariant) {
-                    skuDisplay.innerText = 'SKU: ' + matchedVariant.sku;
-                    priceDisplay.innerText = new Intl.NumberFormat('vi-VN').format(matchedVariant.giaban) + 'đ';
-
-                    if (matchedVariant.soluong > 0) {
-                        stockCountDisplay.innerText = "Còn " + matchedVariant.soluong + " sản phẩm";
-                        stockCountDisplay.classList.remove('text-danger');
-                        stockCountDisplay.classList.add('text-success');
-                    } else {
-                        stockCountDisplay.innerText = "Hết hàng";
-                        stockCountDisplay.classList.remove('text-success');
-                        stockCountDisplay.classList.add('text-danger');
-                    }
-
-                    variantIdInput.value = matchedVariant.id;
-
-                    // Cập nhật album ảnh nếu variant có album riêng
-                    if (matchedVariant.album && matchedVariant.album.length > 0) {
-                        // Logic cập nhật ảnh theo variant (nếu cần)
-                    }
-                }
             }
 
-            document.querySelectorAll('.attribute-select').forEach(input => {
-                input.addEventListener('change', updateVariantInfo);
+            albumContainer.innerHTML = albumHTML;
+        }
+
+        function updateVariantInfo() {
+            let selectedValueIds = [];
+            document.querySelectorAll('.attribute-select:checked').forEach(input => {
+                const id = input.getAttribute('data-value-id');
+                if (id) selectedValueIds.push(parseInt(id));
             });
 
-            updateVariantInfo();
+            const matchedVariant = productVariants.find(variant => {
+                const vValues = variant.attributes_values || variant.attributesValues || [];
+                const vIds = vValues.map(v => v.id);
+                return selectedValueIds.every(id => vIds.includes(id)) && vIds.length === selectedValueIds.length;
+            });
+
+            if (matchedVariant) {
+                // ✅ FIXED: Cập nhật currentVariantId
+                currentVariantId = matchedVariant.id;
+
+                document.getElementById('display-sku').innerText = 'SKU: ' + matchedVariant.sku;
+                document.getElementById('display-price').innerText = new Intl.NumberFormat('vi-VN').format(matchedVariant
+                    .giaban) + 'đ';
+
+                const stockEl = document.getElementById('display-stock-count');
+                const qtyInput = document.getElementById('quantity');
+                const addBtn = document.getElementById('add-to-cart-btn');
+
+                if (matchedVariant.soluong > 0) {
+                    stockEl.innerText = `Còn ${matchedVariant.soluong} sản phẩm`;
+                    stockEl.className = 'badge bg-success';
+                    qtyInput.setAttribute('max', matchedVariant.soluong);
+                    qtyInput.value = 1; // Reset quantity
+                    if (addBtn) {
+                        addBtn.removeAttribute('disabled');
+                        addBtn.innerHTML = '<i class="fa fa-shopping-cart me-2"></i>Thêm vào giỏ hàng';
+                    }
+                } else {
+                    stockEl.innerText = "Hết hàng";
+                    stockEl.className = 'badge bg-danger';
+                    qtyInput.setAttribute('max', 0);
+                    qtyInput.value = 1;
+                    if (addBtn) {
+                        addBtn.setAttribute('disabled', 'disabled');
+                        addBtn.innerHTML = '<i class="fa fa-ban me-2"></i>Hết hàng';
+                    }
+                }
+
+                // ✅ FIXED: Cập nhật album ảnh
+                updateAlbumImages(matchedVariant);
+            }
+        }
+
+        document.querySelectorAll('.attribute-select').forEach(input => {
+            input.addEventListener('change', updateVariantInfo);
+        });
+        updateVariantInfo();
+
+        document.getElementById('toggleCommentBtn')?.addEventListener('click', function() {
+            const hidden = document.querySelectorAll('.hidden-comment');
+            const isHidden = hidden[0]?.classList.contains('d-none');
+            hidden.forEach(el => el.classList.toggle('d-none'));
+            this.innerText = isHidden ? 'Ẩn bớt' : 'Xem thêm đánh giá...';
         });
 
-        // Toggle bình luận
-        // $(document).ready(function() {
-        //     $('#toggleCommentBtn').click(function() {
-        //         let status = $(this).attr('data-status');
-        //         if (status === 'closed') {
-        //             $('.hidden-comment').removeClass('d-none');
-        //             $(this).text('Ẩn bớt');
-        //             $(this).attr('data-status', 'open');
-        //         } else {
-        //             $('.hidden-comment').addClass('d-none');
-        //             $(this).text('Xem thêm bình luận...');
-        //             $(this).attr('data-status', 'closed');
-        //             $('html, body').animate({
-        //                 scrollTop: $("#comment-container").offset().top - 100
-        //             }, 300);
-        //         }
-        //     });
-        // });
-        // Form comment validation
-        // document.getElementById('commentForm').addEventListener('submit', function(e) {
-        //     var isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
-        //     if (!isLoggedIn) {
-        //         e.preventDefault();
-        //         alert('Vui lòng đăng nhập để gửi đánh giá!');
-        //         window.location.href = "{{ route('login') }}";
-        //     }
-        // });
-        // Toggle wishlist
-        function toggleLike(element) {
-            const productId = element.getAttribute('data-id');
-            element.classList.toggle('active');
-            const icon = element.querySelector('i');
-            icon.className = element.classList.contains('active') ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-
-            fetch(`/wishlist/toggle/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => console.log(data.message))
-                .catch(err => {
-                    element.classList.toggle('active');
-                    icon.className = 'fa-regular fa-heart';
-                    alert('Vui lòng đăng nhập!');
-                });
-        }
-
-        function addToCart(sku) {
-            sku = sku.trim();
-
-            console.log('SKU gửi đi:', sku);
-
-            fetch('/gio-hang/add-to-cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        sku: sku,
-                        soluong: 1
-                    })
-                })
-                .then(res => {
-                    if (res.status === 401) {
-                        window.location.href = '/login';
-                        return;
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (data?.success) {
-                        alert('Đã thêm vào giỏ hàng!');
-                        updateCartCount(data.cart_count ?? null);
-                    } else if (data?.message) {
-                        alert(data.message);
-                    }
-                })
-                .catch(err => console.error(err));
-        }
-
-        function toggleFavorite(productId) {
+function toggleFavorite(productId) {
             fetch(`/profile/favorite/toggle/${productId}`, {
                     method: 'POST',
                     headers: {
@@ -570,5 +591,55 @@
                     alert('Có lỗi xảy ra, vui lòng thử lại!');
                 });
         }
+
+        function addToCart(sku) {
+            sku = sku.trim();
+
+            console.log('SKU gửi đi:', sku);
+
+            fetch('/gio-hang/add-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sku: sku,
+                        soluong: 1
+                    })
+                })
+                .then(res => {
+                    if (res.status === 401) {
+                        window.location.href = '/login';
+                        return;
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data?.success) {
+                        alert('Đã thêm vào giỏ hàng!');
+                        updateCartCount(data.cart_count ?? null);
+                    } else if (data?.message) {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+        setInterval(() => {
+            if (currentVariantId) {
+                fetch(`/api/variant-info?variant_id=${currentVariantId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            const stockEl = document.getElementById('display-stock-count');
+                            const qty = data.data.soluong;
+                            stockEl.innerText = qty > 0 ? `Còn ${qty} sản phẩm` : 'Hết hàng';
+                            stockEl.className = qty > 0 ? 'badge bg-success' : 'badge bg-danger';
+                        }
+                    })
+                    .catch(err => console.error('Error refreshing stock:', err));
+            }
+        }, 30000);
     </script>
 @endpush
