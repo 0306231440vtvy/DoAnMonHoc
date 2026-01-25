@@ -1,7 +1,7 @@
 @extends('client.layouts')
+@section('title', 'Trang giỏ hàng')
 @section('content')
     <div class="container py-4 py-md-5">
-
         @if (count($carts) === 0)
             <div class="text-center my-5">
                 <h4 class="text-muted">
@@ -14,7 +14,6 @@
             </div>
         @else
             <div class="row g-4">
-                <!-- LEFT -->
                 <div class="col-lg-8">
                     @foreach ($carts as $cart)
                         <div class="bg-white rounded shadow-sm p-3 mb-3">
@@ -23,21 +22,17 @@
                                     <input type="checkbox" class="form-check-input cart-checkbox" name="cart_ids[]"
                                         value="{{ $cart['cart_id'] }}" checked>
                                 </div>
-                                <!-- IMAGE -->
                                 <div class="col-3 col-md-2">
                                     <img src="{{ asset($cart['hinhnen']) }}" class="img-fluid rounded"
                                         style="height:80px; object-fit:cover;">
                                 </div>
-                                <!-- INFO -->
                                 <div class="col-9 col-md-4">
                                     <h6 class="mb-1">{{ $cart['tensp'] }}</h6>
                                     <span class="text-success fw-bold">
                                         {{ number_format($cart['giaban']) }} ₫
                                     </span>
                                 </div>
-                                <!-- QUANTITY -->
                                 <div class="col-md-3 d-flex align-items-center gap-2">
-                                    {{-- TĂNG --}}
                                     <form action="{{ route('carts.update-quantity') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="cart_id" value="{{ $cart['cart_id'] }}">
@@ -46,7 +41,6 @@
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </form>
-                                    {{-- GIẢM --}}
                                     <form action="{{ route('carts.update-quantity') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="cart_id" value="{{ $cart['cart_id'] }}">
@@ -57,11 +51,9 @@
                                     </form>
                                     <span class="fw-bold">{{ $cart['cart_quantity'] }}</span>
                                 </div>
-                                <!-- SUBTOTAL -->
                                 <div class="col-md-2 text-success fw-bold">
                                     {{ number_format($cart['subtotal']) }} ₫
                                 </div>
-                                <!-- DELETE -->
                                 <div class="action-buttons-inline" style="display: flex; gap: 8px; align-items: center;">
                                     <form action="{{ route('carts.delete') }}" method="POST" style="margin: 0;"
                                         onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
@@ -74,7 +66,6 @@
                             </div>
                         </div>
                     @endforeach
-                    <!-- SUMMARY -->
                     <div class="bg-light rounded p-3 mt-3">
                         <p class="mb-1">Tổng số lượng: <strong>{{ $totals['totalQuantity'] }}</strong></p>
                         <p class="mb-0">Tổng tiền:
@@ -84,7 +75,6 @@
                         </p>
                     </div>
                 </div>
-                <!-- RIGHT -->
                 <div class="col-lg-4">
                     <div class="bg-white rounded shadow-sm p-4 absolute" style="top:100px">
                         <h5 class="fw-bold mb-3">Tổng đơn hàng</h5>
@@ -118,7 +108,6 @@
                     selectedIds.push(parseInt(cb.value));
                 }
             });
-            // Update tổng tiền
             fetch('{{ route('carts.calculate-selected') }}', {
                     method: 'POST',
                     headers: {
@@ -142,7 +131,6 @@
         checkboxes.forEach(cb => {
             cb.addEventListener('change', updateTotals);
         });
-        // ✅ THÊM ĐOẠN NÀY: Khi submit form checkout, gửi cart_ids đã chọn
         checkoutForm.addEventListener('submit', function(e) {
             const selectedIds = [];
             checkboxes.forEach(cb => {
@@ -155,7 +143,6 @@
                 alert('Vui lòng chọn ít nhất 1 sản phẩm!');
                 return;
             }
-            // Thêm input hidden với cart_ids
             selectedIds.forEach(id => {
                 const input = document.createElement('input');
                 input.type = 'hidden';

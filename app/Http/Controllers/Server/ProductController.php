@@ -42,12 +42,13 @@ class ProductController extends Controller
             'products',
         ));
     }
-    public function show($id)
+    public function show()
     {
-        $products = $this->productRepository->findByField('id', $id, [
-            'categories',
-            'thuonghieu'
-        ]);
+        $products = $this->productRepository->getTrangThai();
+        // dd($products);
+        return view('server.pages.products.show', compact(
+            'products'
+        ));
     }
     public function create(): View
     {

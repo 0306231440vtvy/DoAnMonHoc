@@ -1,4 +1,5 @@
 @extends('client.layouts')
+@section('title', 'Trang chi tiết sản phẩm')
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
@@ -552,7 +553,7 @@
             this.innerText = isHidden ? 'Ẩn bớt' : 'Xem thêm đánh giá...';
         });
 
-function toggleFavorite(productId) {
+        function toggleFavorite(productId) {
             fetch(`/profile/favorite/toggle/${productId}`, {
                     method: 'POST',
                     headers: {
