@@ -19,6 +19,8 @@ class CartRepository extends BaseRepository
     }
     public function cartIndex($user_id)
     {
+        // giá bán trong sản phẩm là giá chuẩn
+        // giá bán trong variant là giá theo thị trường
         $items = DB::table('giohang')
             ->join('sanpham_variants', 'giohang.sku', '=', 'sanpham_variants.sku')
             ->join('sanpham', 'sanpham_variants.sanpham_id', '=', 'sanpham.id')
@@ -32,6 +34,7 @@ class CartRepository extends BaseRepository
                 'giohang.soluong as cart_quantity',
                 'sanpham.id as product_id',
                 'sanpham.tensp',
+                'sanpham.discount',
                 'sanpham.hinhnen',
                 'sanpham.slug',
                 'sanpham_variants.giaban',
@@ -60,9 +63,11 @@ class CartRepository extends BaseRepository
                     'hinhnen' => $item->hinhnen,
                     'slug' => $item->slug,
                     'giaban' => $item->giaban,
+                    'discount' => $item->discount,
                     'cart_quantity' => $item->cart_quantity,
                     'stock_quantity' => $item->stock_quantity,
-                    'subtotal' => $item->cart_quantity * $item->giaban,
+                    'subtotal' => ($item->giaban * $item->cart_quantity)
+                        * (1 - $item->discount / 100),
                     'attributes' => [],
                 ];
             }

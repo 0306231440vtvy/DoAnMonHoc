@@ -27,8 +27,10 @@ return new class extends Migration
             $table->decimal('thanhtien', 15, 2);
             // tổng đơn hàng
             $table->date('ngaydat')->default(now());
-            $table->foreignId('province_id')->nullable()->constrained('provinces')->onDelete('set null');
-            $table->foreignId('ward_id')->nullable()->constrained('wards')->onDelete('set null');
+            $table->string('province_code', 2)->nullable();
+            $table->string('ward_code', 6)->nullable();
+            $table->foreign('province_code')->references('province_code')->on('provinces')->onDelete('set null');
+            $table->foreign('ward_code')->references('ward_code')->on('wards')->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();

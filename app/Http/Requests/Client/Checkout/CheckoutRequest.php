@@ -29,9 +29,10 @@ class CheckoutRequest extends FormRequest
                 'regex:/^(0|\+84)[0-9]{9,10}$/'
             ],
             'email' => 'required|email|max:255',
-            'province_id' => 'required',
-            'ward_id' => 'required',
+            'province_code' => 'required',
+            'ward_code' => 'required',
             'phuongthuc_thanhtoan' => 'required|in:cod,bank',
+            'address' => 'required|string',
         ];
     }
 
@@ -44,9 +45,11 @@ class CheckoutRequest extends FormRequest
             'sdtnhan.regex' => 'Số điện thoại không hợp lệ',
             'email.required' => 'Vui lòng nhập email',
             'email.email' => 'Email không đúng định dạng',
-            'province_id.required' => 'Chọn tỉnh',
-            'ward_id.required' => 'Chọn xã/phường',
-            'phuongthuc_thanhtoan.required' => 'Vui lòng chọn phương thức thanh toán'
+            'province_code.required' => 'Chọn tỉnh',
+            'ward_code.required' => 'Chọn xã/phường',
+            'phuongthuc_thanhtoan.required' => 'Vui lòng chọn phương thức thanh toán',
+            'address.required' => 'Vui lòng nhập địa chỉ nhận hàng',
+            'address.string'   => 'Địa chỉ không hợp lệ',
         ];
     }
 }
