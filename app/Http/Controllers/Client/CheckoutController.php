@@ -58,6 +58,10 @@ class CheckoutController extends Controller
                 ->with('error', 'Sản phẩm không tồn tại');
         }
         $totals = $this->cartRepository->calculateTotals($selectedCarts);
+        $totalDiscount = array_reduce($selectedCarts, function ($sum, $cart) {
+            return $sum + ($cart['giaban'] * $cart['cart_quantity'] * $cart['discount'] / 100);
+        }, 0);
+
         $checkout = [
             'items' => array_map(function ($cart) {
                 // dd($cart);
@@ -68,14 +72,14 @@ class CheckoutController extends Controller
                     'gia_goc' => $cart['giaban'],
                     'thanh_tien' => $cart['subtotal'],
                     'hinhnen' => $cart['hinhnen'],
-                    'discount' => 0,
+                    'discount' => $cart['discount'],
                 ];
             }, $selectedCarts),
             'totalPrice' => $totals['totalAmount'],
             'totalQuantity' => $totals['totalQuantity'],
-            'totalDiscount' => 0,
+            'totalDiscount' => $totalDiscount,
+            'finalPrice' => $totals['totalAmount'] - $totalDiscount,
         ];
-        // dd($checkout);
         $provinces = $this->provinceRepository->index();
         return view('client.pages.checkout.index', compact(
             'provinces',
@@ -100,7 +104,8 @@ class CheckoutController extends Controller
     }
     public function store(CheckoutRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
+        $order = $this->cartService->save($request);
         return redirect()->route('checkout.success');
     }
 }

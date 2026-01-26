@@ -25,14 +25,14 @@ class HoadonSeeder extends Seeder
         }
 
         // Lấy danh sách provinces
-        $provinces = DB::table('provinces')->pluck('id')->toArray();
+        $provinces = DB::table('provinces')->pluck('province_code')->toArray();
         if (empty($provinces)) {
             $this->command->warn('❌ Không tìm thấy provinces. Vui lòng chạy ProvinceSeeder trước.');
             return;
         }
 
         // Lấy danh sách wards
-        $wards = DB::table('wards')->pluck('id')->toArray();
+        $wards = DB::table('wards')->pluck('ward_code')->toArray();
         if (empty($wards)) {
             $this->command->warn('❌ Không tìm thấy wards. Vui lòng chạy WardSeeder trước.');
             return;
@@ -92,8 +92,8 @@ class HoadonSeeder extends Seeder
             $usedPhones[] = $sdtnhan;
 
             // Chọn province và ward ngẫu nhiên
-            $province_id = $provinces[array_rand($provinces)];
-            $ward_id = $wards[array_rand($wards)];
+            $province_code = $provinces[array_rand($provinces)];
+            $ward_code = $wards[array_rand($wards)];
 
             // Tạo tổng tiền ngẫu nhiên (100k - 5M)
             $thanhtien = rand(100, 5000) * 1000;
@@ -102,13 +102,13 @@ class HoadonSeeder extends Seeder
                 'name' => $user->name,
                 'email' => $user->email,
                 'sdtnhan' => $sdtnhan,
-                'address' => 'Địa chỉ ' . rand(1, 1000) . ', ' . $province_id,
+                'address' => 'Địa chỉ ' . rand(1, 1000) . ', ' . $province_code,
                 'trangthai' => $trangthai, // ✅ FIX: Enum
                 'phuongthuc_thanhtoan' => $phuongthucThanhToan, // ✅ FIX: Enum
                 'trangthai_thanhtoan' => $trangThaiThanhToan, // ✅ FIX: Enum
                 'note' => $noteMau[array_rand($noteMau)],
-                'province_id' => $province_id, // ✅ FIX: Dùng code thay vì ID
-                'ward_id' => $ward_id, // ✅ FIX: Dùng code thay vì ID
+                'province_code' => $province_code, // ✅ FIX: Dùng code thay vì code
+                'ward_code' => $ward_code, // ✅ FIX: Dùng code thay vì code
                 'thanhtien' => $thanhtien,
                 'ngaydat' => $ngaydat,
                 'user_id' => $user->id,

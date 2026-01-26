@@ -39,6 +39,7 @@ class CartController extends Controller
         $carts = $this->cartRepository->cartIndex($user_id);
         $totals = $this->cartRepository->calculateTotals($carts);
         $cartItems = $this->cartService->pagination($request);
+        // dd($carts);
         return view('client.pages.carts.index', compact(
             'carts',
             'totals',

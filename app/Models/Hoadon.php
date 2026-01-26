@@ -13,20 +13,34 @@ class Hoadon extends Model
 
     protected $fillable = [
         'name', // Tên người nhận (thường lấy từ sdtnhan hoặc user)
-        'ngaydat',
-        'trangthai', // 0: Hủy, 1: Chờ xác nhận, 2: Đã xác nhận...
-        'sdtnhan',
-        'note',
-        'user_id',
-        //Thêm trường email, province_id, ward_id vào hóa đơn
         'email',
-        'province_id',
-        'ward_id'
+        'sdtnhan',
+
+        // địa chỉ
+        'province_code',
+        'ward_code',
+        'address',
+        'phuongthuc_thanhtoan',
+        'trangthai', // 0: Hủy, 1: Chờ xác nhận, 2: Đã xác nhận...
+        'trangthai_thanhtoan',
+        'thanhtien',
+        'ngaydat',
+
+        'user_id',
+        'note',
     ];
     // Định nghĩa hằng số trạng thái để code dễ đọc hơn (Optional)
-    const STATUS_CANCELLED = 0;
-    const STATUS_PENDING = 1;
-    const STATUS_SHIPPING = 2;
+    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_PENDING = 'pending';
+    const STATUS_CONFIRMED = 'confirmed';
+    const STATUS_PREPARING = 'preparing';
+    const STATUS_SHIPPING = 'shipping';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_COMPLETED = 'completed';
+
+    const PAYMENT_STATUS_UNPAID = 'unpaid';
+    const PAYMENT_STATUS_PAID = 'paid';
+    const PAYMENT_STATUS_REFUNDED = 'refunded';
     // 1. Quan hệ nghịch đảo: Hóa đơn thuộc về 1 User
     public function user()
     {

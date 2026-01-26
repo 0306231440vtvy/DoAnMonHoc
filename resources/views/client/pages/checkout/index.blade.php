@@ -102,10 +102,10 @@
                             </div>
                             <div>
                                 <label class="block text-gray-700 mb-2 font-medium">Số điện thoại *</label>
-                                <input type="tel" name="phone" value="{{ old('phone', Auth::user()->phone ?? '') }}"
+                                <input type="tel" name="sdtnhan" value="{{ old('sdtnhan', Auth::user()->phone ?? '') }}"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                                     placeholder="0901234567" required>
-                                @error('phone')
+                                @error('sdtnhan')
                                     <small class="text-red-600 block mb-2">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -224,11 +224,11 @@
                                         @endif
                                         <div class="product-price">
                                             <div class="price-info">
-                                                {{ number_format($item['gia_goc']) }}₫ ×
+                                                Giá gốc: {{ number_format($item['gia_goc']) }}₫
                                                 <strong>{{ $item['so_luong'] }}</strong>
                                             </div>
                                             <div class="total-price">
-                                                {{ number_format($item['thanh_tien']) }}₫
+                                                Tổng: {{ number_format($item['thanh_tien']) }}₫
                                             </div>
                                         </div>
                                     </div>
@@ -255,19 +255,23 @@
                                 </span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Tạm tính:</span>
+                                <span class="text-gray-600"> Giá gốc:</span>
                                 <span class="font-semibold text-gray-800">
-                                    {{ number_format($checkout['totalPrice']) }}₫
+                                    {{ number_format($item['gia_goc']) }}₫
                                 </span>
                             </div>
-                            @if (isset($checkout['totalDiscount']) && $checkout['totalDiscount'] > 0)
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-600">Giảm giá:</span>
-                                    <span class="font-semibold text-red-600">
-                                        -{{ number_format($checkout['totalDiscount']) }}₫
-                                    </span>
-                                </div>
-                            @endif
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Giảm giá:</span>
+                                <span class="font-semibold text-gray-800">
+                                    {{ $item['discount'] }}%
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Giá sau khi giảm:</span>
+                                <span class="font-semibold text-gray-800">
+                                    {{ number_format($checkout['finalPrice']) }}₫
+                                </span>
+                            </div>
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600">Phí vận chuyển:</span>
                                 <span class="font-semibold text-gray-800">Miễn phí</span>
