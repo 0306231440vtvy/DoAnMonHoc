@@ -41,18 +41,48 @@ class CheckoutController extends Controller
     }
     public function index(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        $cartIds = $request->get('cart_ids', []);
+        if (empty($cartIds)) {
+            return redirect()->route('carts.index')
+                ->with('error', 'Vui lòng chọn sản phẩm để thanh toán');
         }
-        $checkout = session('checkout', [
-            'items' => [],
-            'totalPrice' => 0,
-            'totalDiscount' => 0
-        ]);
+
+        $user_id = Auth::id();
+        $allCarts = $this->cartRepository->cartIndex($user_id);
+        $selectedCarts = array_filter($allCarts, function ($cart) use ($cartIds) {
+            return in_array($cart['cart_id'], $cartIds);
+        });
+
+        if (empty($selectedCarts)) {
+            return redirect()->route('carts.index')
+                ->with('error', 'Sản phẩm không tồn tại');
+        }
+        $totals = $this->cartRepository->calculateTotals($selectedCarts);
+        $checkout = [
+            'items' => array_map(function ($cart) {
+                // dd($cart);
+                return [
+                    'cart_id' => $cart['cart_id'],
+                    'ten' => $cart['tensp'],
+                    'so_luong' => $cart['cart_quantity'],
+                    'gia_goc' => $cart['giaban'],
+                    'thanh_tien' => $cart['subtotal'],
+                    'hinhnen' => $cart['hinhnen'],
+                    'discount' => 0,
+                ];
+            }, $selectedCarts),
+            'totalPrice' => $totals['totalAmount'],
+            'totalQuantity' => $totals['totalQuantity'],
+            'totalDiscount' => 0,
+        ];
+        // dd($checkout);
         $provinces = $this->provinceRepository->index();
         return view('client.pages.checkout.index', compact(
             'provinces',
-            'checkout'
+            'checkout',
+            'totals',
+            'selectedCarts',
+            'cartIds'
         ));
     }
     // API lấy phường/xã theo quận/huyện
@@ -64,42 +94,13 @@ class CheckoutController extends Controller
             ->orderBy('name')->get();
         return response()->json($wards);
     }
-    public function store(CheckoutRequest $request, CheckoutService $service)
-    {
-        $checkout = session('checkout');
-        $order = $service->createOrder(
-            Auth::id(),
-            $request->validated(),
-            $checkout
-        );
-        session()->put('order_success_id', $order['id']);
-        session()->forget('checkout');
-
-        if ($request->payment_method === 'bank') {
-            return redirect()->route('checkout.bank', $order);
-        }
-        return redirect()->route('checkout.thanhcong');
-    }
-    public function bank(HoaDon $order)
-    {
-        $order->load(['chiTiet.sanpham']);
-        return view('client.pages.checkout.bank', compact('order'));
-    }
     public function success()
     {
-        // Không cho truy cập trực tiếp
-        if (!session()->has('order_success_id')) {
-            return redirect('/')
-                ->with('error', 'Không thể truy cập trang này');
-        }
-        $orderId = session('order_success_id');
-        // Lấy hóa đơn + chi tiết + sản phẩm
-        $order = Hoadon::with(['chiTiet.sanpham'])
-            ->where('id', $orderId)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-        // Xóa session để tránh reload lại tạo đơn
-        session()->forget('order_success_id');
-        return view('client.pages.checkout.success', compact('order'));
+        return view('client.pages.checkout.success')->with('success', 'Thanh toán thành công');
+    }
+    public function store(CheckoutRequest $request)
+    {
+        dd($request->all());
+        return redirect()->route('checkout.success');
     }
 }

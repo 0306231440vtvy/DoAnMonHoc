@@ -97,6 +97,7 @@ class CartController extends Controller
         }
         // Tính tổng số lượng trong giỏ hàng
         $cartCount = Giohang::where('user_id', $user->id)->sum('soluong');
+        dd($cartCount);
         return response()->json([
             'success' => true,
             'message' => 'Đã thêm vào giỏ hàng!',

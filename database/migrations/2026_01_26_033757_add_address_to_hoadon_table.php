@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ct_hoadon', function (Blueprint $table) {
-            $table->unsignedBigInteger('variant_id')->nullable()->after('sanpham_id');
+        Schema::table('hoadon', function (Blueprint $table) {
+            $table->string('address');
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('ct_hd', function (Blueprint $table) {
+        Schema::table('hoadon', function (Blueprint $table) {
             //
         });
     }

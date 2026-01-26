@@ -23,6 +23,8 @@ class CartRepository extends BaseRepository
             ->join('sanpham_variants', 'giohang.sku', '=', 'sanpham_variants.sku')
             ->join('sanpham', 'sanpham_variants.sanpham_id', '=', 'sanpham.id')
             ->leftJoin('variant_attribute_values', 'sanpham_variants.id', '=', 'variant_attribute_values.variant_id')
+            ->leftJoin('bienthe_values', 'variant_attribute_values.bienthe_value_id', '=', 'bienthe_values.id')
+            ->leftJoin('bienthe', 'bienthe_values.bienthe_id', '=', 'bienthe.id')
             ->where('user_id', $user_id)
             ->select(
                 'giohang.id as cart_id',
@@ -34,7 +36,12 @@ class CartRepository extends BaseRepository
                 'sanpham.slug',
                 'sanpham_variants.giaban',
                 'sanpham_variants.soluong as stock_quantity',
+                'bienthe_values.value as value',
+                'bienthe.name as name',
+                'bienthe_values.code as code'
             )
+            ->orderBy('giohang.id')
+            ->orderBy('bienthe.id')
             ->get();
         return $this->groupedCart($items);
     }
@@ -44,21 +51,30 @@ class CartRepository extends BaseRepository
         foreach ($items as $item) {
             $sku = $item->sku;
             // lấy sản phẩm với mã sku
-            $grouped[$sku] = [
-                'cart_id' => $item->cart_id,
-                'sku' => $item->sku,
-                'product_id' => $item->product_id,
-                'tensp' => $item->tensp,
-                'hinhnen' => $item->hinhnen,
-                'slug' => $item->slug,
-                'giaban' => $item->giaban,
-                'cart_quantity' => $item->cart_quantity,
-                'stock_quantity' => $item->stock_quantity,
-                'subtotal' => $item->giaban * $item->cart_quantity,
-            ];
+            if (!isset($grouped[$sku])) {
+                $grouped[$sku] = [
+                    'cart_id' => $item->cart_id,
+                    'sku' => $item->sku,
+                    'product_id' => $item->product_id,
+                    'tensp' => $item->tensp,
+                    'hinhnen' => $item->hinhnen,
+                    'slug' => $item->slug,
+                    'giaban' => $item->giaban,
+                    'cart_quantity' => $item->cart_quantity,
+                    'stock_quantity' => $item->stock_quantity,
+                    'subtotal' => $item->cart_quantity * $item->giaban,
+                    'attributes' => [],
+                ];
+            }
+            if ($item->value) {
+                $grouped[$sku]['attributes'][] = [
+                    'name' => $item->bienthe_name ?? 'Thuộc tính',
+                    'value' => $item->value,
+                    'code' => $item->code ?? null
+                ];
+            }
         }
-        // dd(array_values($grouped));
-        return array_values($grouped);
+        return $grouped;
     }
     public function getSummary()
     {

@@ -25,17 +25,7 @@
 
                         <ul class="list-group mb-4">
                             <li class="list-group-item">
-                                <strong>Mã đơn hàng:</strong> {{ $order->name }}
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Ngày đặt:</strong>
-                                {{ \Carbon\Carbon::parse($order->ngaydat)->format('d/m/Y') }}
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Số điện thoại:</strong> {{ $order->sdtnhan }}
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Email:</strong> {{ $order->email }}
+                                {{-- <strong>Mã đơn hàng:</strong> {{ $order->name }} --}}
                             </li>
                             <li class="list-group-item">
                                 <strong>Trạng thái:</strong>
@@ -57,7 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($order->chiTiet as $item)
+                                {{-- @foreach ($order->chiTiet as $item)
                                     <tr>
                                         <td>{{ $item->sanpham->tensp }}</td>
                                         <td class="text-center">{{ $item->soluong }}</td>
@@ -68,13 +58,13 @@
                                             {{ number_format($item->thanhtien) }} đ
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <th colspan="3" class="text-end">Tổng tiền</th>
                                     <th class="text-end text-danger">
-                                        {{ number_format($order->chiTiet->sum('thanhtien')) }} đ
+                                        {{-- {{ number_format($order->chiTiet->sum('thanhtien')) }} đ --}}
                                     </th>
                                 </tr>
                             </tfoot>
