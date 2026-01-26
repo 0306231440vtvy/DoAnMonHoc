@@ -3,28 +3,26 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sanpham;
-use App\Models\Category;
 use App\Services\SlideService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
-use App\Models\Slide;
-use App\Services\CartService;
+use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     protected $slideService;
     protected $categoryService;
     protected $productService;
-    protected $cartService;
+    protected $cartRepository;
     public function __construct(
         SlideService $slideService,
         CategoryService $categoryService,
         ProductService $productService,
-        CartService $cartService,
+        CartRepository $cartRepository,
     ) {
-        $this->cartService = $cartService;
+        $this->cartRepository = $cartRepository;
         $this->slideService = $slideService;
         $this->categoryService = $categoryService;
         $this->productService = $productService;
@@ -46,12 +44,27 @@ class HomeController extends Controller
             'sort' => 'created_at,desc',
             'perpage' => 10,
         ]);
+
+
+        // dd($total);
         $sanphamMoi = $this->productService->pagination($sanphamMoiRequest);
         return view('client.pages.home', compact(
             'slide',
             'sanphamMoi',
-            'sanpham'
+            'sanpham',
         ));
+    }
+    public function getTotal()
+    {
+        $user_id = Auth::check();
+        $carts = $this->cartRepository->cartIndex($user_id);
+        $totals = $this->cartRepository->calculateTotals($carts);
+        return response()->json([
+            'success' => true,
+            'totalQuantity' => $totals['totalQuantity'] ?? 0,
+            'totalAmount' => $totals['totalAmount'] ?? 0,
+            'formattedAmount' => number_format($totals['totalAmount'] ?? 0) . ' ₫'
+        ]);
     }
     public function newProducts(Request $request)
     {

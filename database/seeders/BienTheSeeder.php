@@ -16,7 +16,6 @@ class BienTheSeeder extends Seeder
 
         // Tạo thuộc tính Màu sắc
         $colorId = DB::table('bienthe')->insertGetId([
-            'name' => 'Màu sắc',
             'type' => 'color',
             'trangthai' => 1,
             'created_at' => now(),
@@ -46,7 +45,6 @@ class BienTheSeeder extends Seeder
 
         // Tạo thuộc tính Kích thước
         $sizeId = DB::table('bienthe')->insertGetId([
-            'name' => 'Kích thước',
             'type' => 'size',
             'trangthai' => 1,
             'created_at' => now(),
@@ -67,7 +65,6 @@ class BienTheSeeder extends Seeder
 
         // Tạo thuộc tính Size giày
         $shoeSizeId = DB::table('bienthe')->insertGetId([
-            'name' => 'Size giày',
             'type' => 'shoe_size',
             'trangthai' => 1,
             'created_at' => now(),
@@ -88,7 +85,6 @@ class BienTheSeeder extends Seeder
 
         // Tạo thuộc tính Chất liệu
         $materialId = DB::table('bienthe')->insertGetId([
-            'name' => 'Chất liệu',
             'type' => 'material',
             'trangthai' => 1,
             'created_at' => now(),
@@ -106,7 +102,6 @@ class BienTheSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
-
         $this->command->info('✅ Đã tạo các thuộc tính biến thể');
     }
 }

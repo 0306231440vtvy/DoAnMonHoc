@@ -8,4 +8,4 @@
 
  <script src="{{ asset('client/js/main.js') }}"></script>
  <script src="{{ asset('client/library/customzime.js') }}"></script>
- <script src="{{ asset('client/library/chat.js') }}"></script>
+ <script src="{{ asset('client/library/carts.js') }}"></script>

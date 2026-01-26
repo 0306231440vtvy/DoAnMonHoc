@@ -42,7 +42,6 @@ Route::get('/category/{slug}', [HomeController::class, 'categoryShow'])->name('c
 
 // Chi tiết sản phẩm (cần tạo controller riêng)
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('client.product.detail');
-Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkouts');
 
 Route::controller(PageController::class)->group(function () {
     Route::get('thong-tin-ban-hang', 'salesInfo')->name('thong-tin-ban-hang');
@@ -64,6 +63,7 @@ Route::middleware('auth')->prefix('/')->group(function () {
     //Route cho trang giỏ hàng
     Route::prefix('gio-hang')->name('carts')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('.index');
+        Route::get('total', [CartController::class, 'getTotal'])->name('.total');
         Route::get('summary', [CartController::class, 'summary'])->name('.summary');
         Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('.add-to-cart');
         Route::post('update-quantity', [CartController::class, 'updateQuantity'])->name('.update-quantity');
@@ -108,11 +108,10 @@ Route::middleware('auth')->prefix('/')->group(function () {
     });
 
     //Thêm route cho trang thanh toán
-    Route::prefix('/checkout')->name('thanh-toan')->group(function () {
+    Route::prefix('checkout')->name('checkout')->group(function () {
         Route::get('/', [CheckoutController::class, 'index'])->name('.index');
-        Route::post('/', [CheckoutController::class, 'store'])->name('.store');
-        Route::get('bank/{order}', [CheckoutController::class, 'bank'])->name('.bank');
-        Route::get('/success', [CheckoutController::class, 'success'])->name('.thanhcong');
+        Route::get('success', [CheckoutController::class, 'success'])->name('.success');
+        Route::post('store', [CheckoutController::class, 'store'])->name('.store');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
@@ -215,7 +214,5 @@ Route::prefix('/server')->middleware(['auth', 'role:2,3'])
         Route::prefix('/comment')->name('comment')->group(function () {
             Route::get('index', [CommentController::class, 'index'])->name('.index');
             Route::delete('delete/{id}', [CommentController::class, 'delete'])->name('.delete');
-            
         });
-
     });

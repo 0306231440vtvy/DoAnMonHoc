@@ -20,24 +20,18 @@ class CheckoutRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-     public function rules(): array
+    public function rules(): array
     {
         return [
             'name' => 'required|string|min:2|max:100',
-
-            'phone' => [
+            'sdtnhan' => [
                 'required',
                 'regex:/^(0|\+84)[0-9]{9,10}$/'
             ],
-
             'email' => 'required|email|max:255',
-
             'province_id' => 'required',
             'ward_id' => 'required',
-
-            // 'address' => 'required|string|min:3|max:255',
-            'payment_method' => 'required|in:cod,bank',
-            'note'=> 'nullable|string',
+            'phuongthuc_thanhtoan' => 'required|in:cod,bank',
         ];
     }
 
@@ -46,20 +40,13 @@ class CheckoutRequest extends FormRequest
         return [
             'name.required' => 'Vui lòng nhập họ tên',
             'name.min' => 'Họ tên quá ngắn',
-
-            'phone.required' => 'Vui lòng nhập số điện thoại',
-            'phone.regex' => 'Số điện thoại không hợp lệ',
-
+            'sdtnhan.required' => 'Vui lòng nhập số điện thoại',
+            'sdtnhan.regex' => 'Số điện thoại không hợp lệ',
             'email.required' => 'Vui lòng nhập email',
             'email.email' => 'Email không đúng định dạng',
-
             'province_id.required' => 'Chọn tỉnh',
             'ward_id.required' => 'Chọn xã/phường',
-
-            // 'address.required' => 'Vui lòng nhập địa chỉ/số nhà cụ thể',
-            // 'address.min' => 'vị trí cụ thể quá ngắn',
-
-            'payment_method.required' => 'Vui lòng chọn phương thức thanh toán'
+            'phuongthuc_thanhtoan.required' => 'Vui lòng chọn phương thức thanh toán'
         ];
     }
 }

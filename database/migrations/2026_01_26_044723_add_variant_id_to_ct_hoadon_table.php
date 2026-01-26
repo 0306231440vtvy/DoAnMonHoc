@@ -9,18 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
+    public function up(): void
     {
         Schema::table('ct_hoadon', function (Blueprint $table) {
-            $table->unsignedBigInteger('variant_id')->nullable()->after('sanpham_id');
+            $table->foreignId('variant_id')->nullable()->constrained('sanpham_variants')->onDelete('set null');
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('ct_hd', function (Blueprint $table) {
+        Schema::table('ct_hoadon', function (Blueprint $table) {
             //
         });
     }

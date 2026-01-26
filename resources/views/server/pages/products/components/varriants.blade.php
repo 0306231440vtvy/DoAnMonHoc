@@ -227,7 +227,7 @@
                 <label class="form-label">Chọn Thuộc Tính <span class="text-danger">*</span></label>
                 <select class="form-control choose-attribute" onchange="onTypeChange(${id})" id="type-${id}">
                     <option value="">-- Chọn Nhóm thuộc tính --</option>
-                    ${variantTypes.map(t => `<option value="${t.id}">${t.name}</option>`).join('')}
+                    ${variantTypes.map(t => `<option value="${t.id}">${t.type}</option>`).join('')}
                 </select>
             </div>
 

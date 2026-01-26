@@ -14,7 +14,6 @@ return new class extends Migration
         //bảng thuộc tính
         Schema::create('bienthe', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('type');
             $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
