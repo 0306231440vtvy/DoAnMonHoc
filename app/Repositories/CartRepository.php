@@ -37,7 +37,7 @@ class CartRepository extends BaseRepository
                 'sanpham_variants.giaban',
                 'sanpham_variants.soluong as stock_quantity',
                 'bienthe_values.value as value',
-                'bienthe.name as name',
+                'bienthe.type as type',
                 'bienthe_values.code as code'
             )
             ->orderBy('giohang.id')
@@ -68,7 +68,7 @@ class CartRepository extends BaseRepository
             }
             if ($item->value) {
                 $grouped[$sku]['attributes'][] = [
-                    'name' => $item->bienthe_name ?? 'Thuộc tính',
+                    'type' => $item->type ?? 'Thuộc tính',
                     'value' => $item->value,
                     'code' => $item->code ?? null
                 ];

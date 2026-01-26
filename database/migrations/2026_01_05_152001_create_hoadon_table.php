@@ -14,11 +14,19 @@ return new class extends Migration
         Schema::create('hoadon', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('ngaydat');
-            $table->tinyInteger('trangthai')->default(1);
-            $table->string('sdtnhan', 10);
             $table->string('email');
-            $table->string('note')->nullable();
+            $table->string('sdtnhan', 20);
+            $table->text('address');
+
+            $table->string('trangthai')->default('pending');
+            $table->string('phuongthuc_thanhtoan')->default('cod');
+            // Trạng thái thanh toán
+            $table->string('trangthai_thanhtoan')->default('unpaid');
+
+            $table->text('note')->nullable();
+            $table->decimal('thanhtien', 15, 2);
+            // tổng đơn hàng
+            $table->date('ngaydat')->default(now());
             $table->foreignId('province_id')->nullable()->constrained('provinces')->onDelete('set null');
             $table->foreignId('ward_id')->nullable()->constrained('wards')->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');

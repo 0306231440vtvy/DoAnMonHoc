@@ -50,7 +50,7 @@
                                                 <div class="small text-muted">
                                                     @foreach ($cart['attributes'] as $attr)
                                                         <p class="mb-1">
-                                                            <strong>{{ $attr['name'] }}:</strong> {{ $attr['value'] }}
+                                                            <strong>{{ $attr['type'] }}:</strong> {{ $attr['value'] }}
                                                         </p>
                                                     @endforeach
                                                 </div>
@@ -159,7 +159,7 @@
                                 </strong>
                             </div>
                             <hr>
-                            <form id="checkout-form" action="{{ route('thanh-toan.index') }}" method="GET">
+                            <form id="checkout-form" action="{{ route('checkout.index') }}" method="GET">
                                 <div id="cart-ids-container"></div>
                                 <button type="submit" class="btn btn-success w-100 py-3 fw-bold mb-2">
                                     <i class="fa fa-credit-card me-2"></i>Đặt hàng

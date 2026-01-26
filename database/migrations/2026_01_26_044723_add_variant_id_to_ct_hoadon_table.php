@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sanpham_variants', function (Blueprint $table) {
-            $table->dropColumn('trangthai');
-            $table->tinyInteger('trangthai')->default(1);
-            $table->dropColumn('album');
-            $table->json('album')->nullable();
+        Schema::table('ct_hoadon', function (Blueprint $table) {
+            $table->foreignId('variant_id')->nullable()->constrained('sanpham_variants')->onDelete('set null');
         });
     }
 
@@ -24,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sanpham_variants', function (Blueprint $table) {
+        Schema::table('ct_hoadon', function (Blueprint $table) {
             //
         });
     }

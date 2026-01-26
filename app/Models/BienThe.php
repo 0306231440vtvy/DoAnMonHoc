@@ -10,18 +10,17 @@ class BienThe extends Model
 {
     protected $table = 'bienthe';
     protected $fillable = [
-        'name',
         'type',
         'trangthai'
     ];
-// <<<<<<< tinh
+    // <<<<<<< tinh
 
-//     public function values()
-//     {
-//         // Một loại (Màu sắc) có NHIỀU giá trị (Trắng, Đen...)
-//         return $this->hasMany(BientheValue::class, 'bienthe_id', 'id');
-//     }
-// =======
+    //     public function values()
+    //     {
+    //         // Một loại (Màu sắc) có NHIỀU giá trị (Trắng, Đen...)
+    //         return $this->hasMany(BientheValue::class, 'bienthe_id', 'id');
+    //     }
+    // =======
     public function bienthe_values(): HasMany
     {
         return $this->hasMany(BientheValue::class, 'bienthe_id');

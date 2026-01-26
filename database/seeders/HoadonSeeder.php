@@ -14,35 +14,34 @@ class HoadonSeeder extends Seeder
      */
     public function run(): void
     {
-        // Lấy danh sách users có role 'member'
+        // Lấy danh sách users (all members)
         $memberUsers = DB::table('users')
-            ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->where('roles.name', 'member')
-            ->select('users.id', 'users.name', 'users.email')
+            ->select('id', 'name', 'email')
             ->get();
 
         if ($memberUsers->isEmpty()) {
-            $this->command->warn('Không tìm thấy user có role member. Vui lòng chạy UserSeeder trước.');
+            $this->command->warn('❌ Không tìm thấy users. Vui lòng chạy UserSeeder trước.');
             return;
         }
 
         // Lấy danh sách provinces
         $provinces = DB::table('provinces')->pluck('id')->toArray();
         if (empty($provinces)) {
-            $this->command->warn('Không tìm thấy provinces. Vui lòng chạy ProvinceSeeder trước.');
+            $this->command->warn('❌ Không tìm thấy provinces. Vui lòng chạy ProvinceSeeder trước.');
             return;
         }
 
         // Lấy danh sách wards
         $wards = DB::table('wards')->pluck('id')->toArray();
         if (empty($wards)) {
-            $this->command->warn('Không tìm thấy wards. Vui lòng chạy WardSeeder trước.');
+            $this->command->warn('❌ Không tìm thấy wards. Vui lòng chạy WardSeeder trước.');
             return;
         }
 
-        $this->command->info("Tìm thấy {$memberUsers->count()} member users");
-        $this->command->info("Tìm thấy " . count($provinces) . " provinces");
-        $this->command->info("Tìm thấy " . count($wards) . " wards");
+        $this->command->info("✅ Tìm thấy {$memberUsers->count()} users");
+        $this->command->info("✅ Tìm thấy " . count($provinces) . " provinces");
+        $this->command->info("✅ Tìm thấy " . count($wards) . " wards");
+
         $noteMau = [
             'Giao hàng giờ hành chính',
             'Gọi trước khi giao',
@@ -51,7 +50,7 @@ class HoadonSeeder extends Seeder
             'Giao buổi sáng',
             'Giao buổi chiều',
             'Giao cuối tuần',
-            null, // Không có ghi chú
+            null,
             null,
             null,
         ];
@@ -59,26 +58,32 @@ class HoadonSeeder extends Seeder
         $hoadons = [];
         $usedPhones = [];
 
-        // Tạo 50 hóa đơn
+        // Tạo 300 hóa đơn
         for ($i = 1; $i <= 300; $i++) {
             $user = $memberUsers->random();
 
             // Tạo ngày đặt ngẫu nhiên trong 6 tháng gần đây
             $ngaydat = Carbon::now()->subDays(rand(0, 180))->format('Y-m-d');
 
-            // Trạng thái ngẫu nhiên nhưng có trọng số hợp lý
+            // ✅ FIX: Trạng thái enum (pending, confirmed, preparing, shipping, delivered, completed, cancelled, refunded)
             $random = rand(1, 100);
             if ($random <= 10) {
-                $trangthai = 5; // 10% Đã hủy
+                $trangthai = 'cancelled'; // 10% Đã hủy
             } elseif ($random <= 40) {
-                $trangthai = 4; // 30% Đã giao hàng
+                $trangthai = 'delivered'; // 30% Đã giao hàng
             } elseif ($random <= 60) {
-                $trangthai = 3; // 20% Đang giao hàng
+                $trangthai = 'shipping'; // 20% Đang giao hàng
             } elseif ($random <= 80) {
-                $trangthai = 2; // 20% Đã xác nhận
+                $trangthai = 'confirmed'; // 20% Đã xác nhận
             } else {
-                $trangthai = 1; // 20% Chờ xác nhận
+                $trangthai = 'pending'; // 20% Chờ xác nhận
             }
+
+            // ✅ FIX: Phương thức thanh toán enum (cod, bank_transfer, momo, vnpay, zalopay)
+            $phuongthucThanhToan = ['cod', 'bank_transfer', 'momo', 'vnpay', 'zalopay'][array_rand(['cod', 'bank_transfer', 'momo', 'vnpay', 'zalopay'])];
+
+            // ✅ FIX: Trạng thái thanh toán enum (unpaid, paid, refunded)
+            $trangThaiThanhToan = $trangthai === 'cancelled' ? 'refunded' : ($trangthai === 'delivered' ? 'paid' : 'unpaid');
 
             // Tạo số điện thoại unique
             do {
@@ -87,21 +92,25 @@ class HoadonSeeder extends Seeder
             $usedPhones[] = $sdtnhan;
 
             // Chọn province và ward ngẫu nhiên
-            $provinceId = $provinces[array_rand($provinces)];
+            $province_id = $provinces[array_rand($provinces)];
+            $ward_id = $wards[array_rand($wards)];
 
-            // Lấy wards thuộc province này (nếu có quan hệ qua districts)
-            // Nếu không có districts, chọn ward ngẫu nhiên
-            $wardId = $wards[array_rand($wards)];
+            // Tạo tổng tiền ngẫu nhiên (100k - 5M)
+            $thanhtien = rand(100, 5000) * 1000;
 
             $hoadons[] = [
-                'name' => 'HD' . str_pad($i, 6, '0', STR_PAD_LEFT),
-                'ngaydat' => $ngaydat,
-                'trangthai' => $trangthai,
-                'sdtnhan' => $sdtnhan,
+                'name' => $user->name,
                 'email' => $user->email,
+                'sdtnhan' => $sdtnhan,
+                'address' => 'Địa chỉ ' . rand(1, 1000) . ', ' . $province_id,
+                'trangthai' => $trangthai, // ✅ FIX: Enum
+                'phuongthuc_thanhtoan' => $phuongthucThanhToan, // ✅ FIX: Enum
+                'trangthai_thanhtoan' => $trangThaiThanhToan, // ✅ FIX: Enum
                 'note' => $noteMau[array_rand($noteMau)],
-                'province_id' => $provinceId,
-                'ward_id' => $wardId,
+                'province_id' => $province_id, // ✅ FIX: Dùng code thay vì ID
+                'ward_id' => $ward_id, // ✅ FIX: Dùng code thay vì ID
+                'thanhtien' => $thanhtien,
+                'ngaydat' => $ngaydat,
                 'user_id' => $user->id,
                 'created_at' => $ngaydat . ' ' . rand(8, 20) . ':' . rand(10, 59) . ':' . rand(10, 59),
                 'updated_at' => now(),
@@ -114,16 +123,16 @@ class HoadonSeeder extends Seeder
 
         // Hiển thị thống kê trạng thái
         $stats = collect($hoadons)->groupBy('trangthai')->map->count();
-        $this->command->info('Thống kê trạng thái:');
+        $this->command->info('📊 Thống kê trạng thái:');
         foreach ($stats as $status => $count) {
-            $statusName = [
-                1 => 'Chờ xác nhận',
-                2 => 'Đã xác nhận',
-                3 => 'Đang giao hàng',
-                4 => 'Đã giao hàng',
-                5 => 'Đã hủy'
-            ][$status];
-            $this->command->info("   {$statusName}: {$count} hóa đơn");
+            $this->command->info("   {$status}: {$count} hóa đơn");
+        }
+
+        // Thống kê phương thức thanh toán
+        $paymentStats = collect($hoadons)->groupBy('phuongthuc_thanhtoan')->map->count();
+        $this->command->info('💳 Thống kê phương thức thanh toán:');
+        foreach ($paymentStats as $method => $count) {
+            $this->command->info("   {$method}: {$count} hóa đơn");
         }
     }
 }

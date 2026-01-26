@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ct_hoadon', function (Blueprint $table) {
             $table->id();
+            //tổng từng sản phẩm
             $table->decimal('thanhtien', 15, 2);
             $table->integer('soluong');
             $table->tinyInteger('trangthai')->default(1);

@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignId('sanpham_id')->nullable()->constrained('sanpham')->onDelete('set null');
             $table->integer('soluong')->default(0);
             $table->decimal('giaban', 15, 2)->nullable();
-            $table->string('sku', 50)->unique()->nullable();
-            $table->tinyInteger('trangthai')->nullable(1);
+            $table->string('sku', 50)->unique();
+            $table->json('album')->nullable();
+            $table->tinyInteger('trangthai')->default(1);
             $table->timestamps();
         });
     }
@@ -27,6 +28,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('ct_hoadon', function (Blueprint $table) {
+            $table->dropForeign(['variant_id']);
+            $table->dropColumn('variant_id');
+        });
         Schema::dropIfExists('sanpham_variants');
     }
 };

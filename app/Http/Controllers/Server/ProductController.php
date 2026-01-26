@@ -61,7 +61,7 @@ class ProductController extends Controller
                 ->orderBy('value', 'asc');
         }])
             ->where('trangthai', 1)
-            ->orderBy('name')
+            ->orderBy('type')
             ->get();
         return view('server.pages.products.save', compact(
             'sku',
@@ -88,7 +88,7 @@ class ProductController extends Controller
                 ->orderBy('value', 'asc');
         }])
             ->where('trangthai', 1)
-            ->orderBy('name')
+            ->orderBy('type')
             ->get();
         $categories = $this->categoryService->getTrangThai();
         $thuonghieu = $this->thuonghieuService->getTrangThai();
