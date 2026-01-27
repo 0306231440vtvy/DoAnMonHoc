@@ -33,6 +33,9 @@ class CheckoutRequest extends FormRequest
             'ward_code' => 'required',
             'phuongthuc_thanhtoan' => 'required|in:cod,bank',
             'address' => 'required|string',
+            'note' => 'nullable|string|max:500',
+            'cart_ids' => 'required|array|min:1',
+            'cart_ids.*' => 'required|integer',
         ];
     }
 
@@ -50,6 +53,7 @@ class CheckoutRequest extends FormRequest
             'phuongthuc_thanhtoan.required' => 'Vui lòng chọn phương thức thanh toán',
             'address.required' => 'Vui lòng nhập địa chỉ nhận hàng',
             'address.string'   => 'Địa chỉ không hợp lệ',
+            'cart_ids.required' => 'Giỏ hàng trống',
         ];
     }
 }

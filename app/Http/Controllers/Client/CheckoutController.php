@@ -10,6 +10,7 @@ use App\Services\CartService;
 use App\Services\OrderService;
 use App\Models\Hoadon;
 use App\Http\Requests\CLient\Checkout\CheckoutRequest;
+use App\Jobs\SendMailOrder;
 use App\Models\Ward;
 use App\Services\CheckoutService;
 use App\Repositories\WardRepository;
@@ -24,6 +25,7 @@ class CheckoutController extends Controller
     protected $userRepository;
     protected $cartService;
     protected $orderService;
+    protected $checkoutService;
     public function __construct(
         WardRepository $wardRepository,
         ProvinceRepository $provinceRepository,
@@ -31,6 +33,7 @@ class CheckoutController extends Controller
         CartRepository $cartRepository,
         OrderService $orderService,
         CartService $cartService,
+        CheckoutService $checkoutService
     ) {
         $this->wardRepository = $wardRepository;
         $this->provinceRepository = $provinceRepository;
@@ -38,6 +41,7 @@ class CheckoutController extends Controller
         $this->cartRepository = $cartRepository;
         $this->cartService = $cartService;
         $this->orderService = $orderService;
+        $this->checkoutService = $checkoutService;
     }
     public function index(Request $request)
     {
@@ -48,44 +52,15 @@ class CheckoutController extends Controller
         }
 
         $user_id = Auth::id();
-        $allCarts = $this->cartRepository->cartIndex($user_id);
-        $selectedCarts = array_filter($allCarts, function ($cart) use ($cartIds) {
-            return in_array($cart['cart_id'], $cartIds);
-        });
-
-        if (empty($selectedCarts)) {
+        $checkout = $this->cartRepository->getCheckoutData($cartIds, $user_id);
+        if (!$checkout) {
             return redirect()->route('carts.index')
                 ->with('error', 'Sản phẩm không tồn tại');
         }
-        $totals = $this->cartRepository->calculateTotals($selectedCarts);
-        $totalDiscount = array_reduce($selectedCarts, function ($sum, $cart) {
-            return $sum + ($cart['giaban'] * $cart['cart_quantity'] * $cart['discount'] / 100);
-        }, 0);
-
-        $checkout = [
-            'items' => array_map(function ($cart) {
-                // dd($cart);
-                return [
-                    'cart_id' => $cart['cart_id'],
-                    'ten' => $cart['tensp'],
-                    'so_luong' => $cart['cart_quantity'],
-                    'gia_goc' => $cart['giaban'],
-                    'thanh_tien' => $cart['subtotal'],
-                    'hinhnen' => $cart['hinhnen'],
-                    'discount' => $cart['discount'],
-                ];
-            }, $selectedCarts),
-            'totalPrice' => $totals['totalAmount'],
-            'totalQuantity' => $totals['totalQuantity'],
-            'totalDiscount' => $totalDiscount,
-            'finalPrice' => $totals['totalAmount'] - $totalDiscount,
-        ];
         $provinces = $this->provinceRepository->index();
         return view('client.pages.checkout.index', compact(
             'provinces',
             'checkout',
-            'totals',
-            'selectedCarts',
             'cartIds'
         ));
     }
@@ -98,14 +73,38 @@ class CheckoutController extends Controller
             ->orderBy('name')->get();
         return response()->json($wards);
     }
+    public function store(CheckoutRequest $request)
+    {
+        $validated = $request->validated();
+        $user_id = Auth::id();
+        $checkout = $this->cartRepository->getCheckoutData(
+            $validated['cart_ids'],
+            $user_id
+        );
+        if (!$checkout) {
+            return redirect()->route('carts.index')
+                ->with('error', 'Sản phẩm không tồn tại');
+        }
+        $request->merge([
+            'checkout' => $checkout,
+            'thanhtien' => $checkout['totalPrice'],
+            'user_id' => $user_id
+        ]);
+        $order = $this->checkoutService->save($request);
+        if ($order) {
+            SendMailOrder::dispatch($order);
+            // Xóa giỏ hàng sau khi đặt hàng thành công
+            foreach ($request['cart_ids'] as $cartId) {
+                $this->cartRepository->trash($cartId);
+            }
+            return redirect()->route('checkout.success')
+                ->with('success', 'Đơn hàng đã được tạo thành công');
+        }
+        return redirect()->back()
+            ->with('error', 'Lỗi khi tạo đơn hàng');
+    }
     public function success()
     {
         return view('client.pages.checkout.success')->with('success', 'Thanh toán thành công');
-    }
-    public function store(CheckoutRequest $request)
-    {
-        // dd($request->all());
-        $order = $this->cartService->save($request);
-        return redirect()->route('checkout.success');
     }
 }

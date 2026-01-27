@@ -33,6 +33,7 @@ class CTHoadonSeeder extends Seeder
                 'sanpham_variants.giaban',
                 'sanpham.tensp',
                 'sanpham.hinhnen',
+                'sanpham.discount as sanpham_discount',
                 'sanpham_variants.soluong as stock'
             )
             ->get();
@@ -55,37 +56,29 @@ class CTHoadonSeeder extends Seeder
 
             foreach ($selectedVariants as $variant) {
                 $soluong = rand(1, 3); // Mỗi sản phẩm mua từ 1-3 cái
+
+                // ✅ Lấy giá từ variant
                 $dongia = $variant->giaban;
-                $thanhtien = $dongia * $soluong;
 
-                // Lấy variant_attributes (màu, size, ...)
-                $attributes = DB::table('variant_attribute_values')
-                    ->join('bienthe_values', 'variant_attribute_values.bienthe_value_id', '=', 'bienthe_values.id')
-                    ->join('bienthe', 'bienthe_values.bienthe_id', '=', 'bienthe.id')
-                    ->where('variant_attribute_values.variant_id', $variant->variant_id)
-                    ->select('bienthe.type', 'bienthe_values.value', 'bienthe_values.code')
-                    ->get();
+                // ✅ Tính discount (% từ sanpham)
+                $discountPercent = $variant->sanpham_discount ?? 0;
+                $discountAmount = $dongia * $soluong * ($discountPercent / 100);
 
-                // Chuẩn bị variant_attributes dưới dạng JSON
-                $variantAttributes = [];
-                foreach ($attributes as $attr) {
-                    $variantAttributes[] = [
-                        'type' => $attr->type,
-                        'value' => $attr->value,
-                        'code' => $attr->code,
-                    ];
-                }
+                // ✅ Tính thanhtien (sau giảm giá)
+                $giaSauGiam = $dongia * (1 - $discountPercent / 100);
+                $thanhtien = $giaSauGiam * $soluong;
 
-                // ✅ FIX: Sửa lại các fields theo đúng schema
+                // ✅ FIX: Sửa lại các fields theo schema mới
                 $ctHoadons[] = [
                     'hoadon_id' => $hoadon->id,
                     'sanpham_id' => $variant->sanpham_id,
-                    'variant_id' => $variant->variant_id, // ✅ FIX: Thêm variant_id
-                    // Số lượng & giá
-                    'soluong' => $soluong,
-                    'dongia' => $dongia,
-                    'thanhtien' => $thanhtien,
-                    // Timestamps
+                    'name' => $variant->tensp,              // ✅ Tên sản phẩm
+                    'sku' => $variant->sku,                 // ✅ SKU variant
+                    'soluong' => $soluong,                  // ✅ Số lượng
+                    'dongia' => round($dongia, 0),          // ✅ Đơn giá (giá gốc)
+                    'discount' => round($discountAmount, 0), // ✅ Số tiền giảm giá
+                    'thanhtien' => round($thanhtien, 0),    // ✅ Tổng tiền (sau giảm)
+                    'trangthai' => 1,                       // ✅ Trạng thái
                     'created_at' => $hoadon->created_at,
                     'updated_at' => $hoadon->updated_at,
                     'deleted_at' => null,
@@ -122,7 +115,7 @@ class CTHoadonSeeder extends Seeder
     {
         $this->command->info('⏳ Đang cập nhật tổng tiền hóa đơn...');
 
-        // Tính subtotal từ ct_hoadon
+        // Tính subtotal từ ct_hoadon (tổng thanhtien)
         $orderTotals = DB::table('ct_hoadon')
             ->groupBy('hoadon_id')
             ->selectRaw('hoadon_id, SUM(thanhtien) as subtotal')

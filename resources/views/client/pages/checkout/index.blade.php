@@ -216,7 +216,7 @@
                                             <div class="product-attributes">
                                                 @foreach ($item['attributes'] as $attr)
                                                     <span class="attr-badge">
-                                                        <span class="attr-label">{{ $attr['name'] }}:</span>
+                                                        <span class="attr-label">{{ $attr['type'] }}:</span>
                                                         {{ $attr['value'] }}
                                                     </span>
                                                 @endforeach

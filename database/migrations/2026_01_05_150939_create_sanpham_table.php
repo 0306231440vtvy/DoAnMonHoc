@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tensp');
             $table->string('hinhnen')->nullable();
             $table->decimal('giaban', 15, 2);
-            $table->decimal('discount', 5, 2)->default(0);
+            $table->decimal('discount', 15, 2)->default(0);
             $table->integer('view')->default(0);
             $table->string('slug');
             $table->string('mota')->nullable();
