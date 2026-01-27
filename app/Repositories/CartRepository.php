@@ -119,17 +119,6 @@ class CartRepository extends BaseRepository
         ]);
         return $result;
     }
-
-    // public function deleteCartItem($userId, $sanphamId)
-    // {
-    //     return GioHang::where('user_id', $userId)
-    //         ->where('sku', $sanphamId)
-    //         ->delete();
-    // }
-    public function clearCart($userId)
-    {
-        return DB::table('giohang')->where('user_id', $userId)->delete();
-    }
     public function calculateTotals($cartItems, $selectedIds = null)
     {
         $totalQuantity = 0;
@@ -147,4 +136,45 @@ class CartRepository extends BaseRepository
             'totalAmount' => $totalAmount
         ];
     }
+    public function getCheckoutData($cart_ids, $user_id)
+    {
+        $allCarts = $this->cartIndex($user_id);
+        $selectedCarts = array_filter($allCarts, function ($cart) use ($cart_ids) {
+            return in_array($cart['cart_id'], $cart_ids);
+        });
+        if (empty($selectedCarts)) {
+            return null;
+        }
+        $totals = $this->calculateTotals($selectedCarts);
+        $totalDiscount = array_reduce($selectedCarts, function ($sum, $cart) {
+            return $sum + ($cart['giaban'] * $cart['cart_quantity'] * $cart['discount'] / 100);
+        }, 0);
+        $checkout = [
+            'items' => array_map(function ($cart) {
+                return [
+                    'cart_id' => $cart['cart_id'],
+                    'product_id' => $cart['product_id'],
+                    'ten' => $cart['tensp'],
+                    'so_luong' => $cart['cart_quantity'],
+                    'gia_goc' => $cart['giaban'],
+                    'thanh_tien' => $cart['subtotal'],
+                    'hinhnen' => $cart['hinhnen'],
+                    'discount' => $cart['discount'],
+                    'sku' => $cart['sku'],
+                    'attributes' => $cart['attributes'],
+                ];
+            }, $selectedCarts),
+            'totalPrice' => $totals['totalAmount'] - $totalDiscount, // Tổng sau giảm
+            'totalQuantity' => $totals['totalQuantity'],
+            'totalDiscount' => $totalDiscount,
+            'totalAmount' => $totals['totalAmount'], // Tổng gốc
+            'finalPrice' => $totals['totalAmount'] - $totalDiscount,
+        ];
+
+        return $checkout;
+    }
+    //  public function deleteMultiple($cartIds)
+    // {
+    //     return Giohang::whereIn('id', $cartIds)->delete();
+    // }
 }

@@ -12,6 +12,7 @@ class ProductService extends BaseService
     protected $filterSearch = ['tensp'];
     protected $relationFilter = [
         'categories' => 'category_id',
+        'has_attribute' => 1,
     ];
     protected $complexFilter = [
         ['sanpham_variants.giaban', '>=', 'min_price'],

@@ -15,10 +15,12 @@ class CtHoadon extends Model
         'thanhtien',
         'soluong',
         'trangthai',
+        'name',
+        'sku',
+        'discount',
         'dongia',
         'hoadon_id',
         'sanpham_id',
-        'variant_id'
     ];
 
     // 1. Thuộc về Hóa đơn
@@ -34,7 +36,7 @@ class CtHoadon extends Model
     }
     public function variant()
     {
-        return $this->belongsTo(SanphamVariant::class, 'variant_id', 'id');
+        return $this->belongsTo(SanphamVariant::class, 'sku', 'sku');
     }
-    public $relationable = [];
+    public $relationable = ['hoadon'];
 }

@@ -10,17 +10,18 @@ class CartService extends BaseService
 {
     protected $repository;
     protected $with = ['variants'];
+
+    public function __construct(
+        CartRepository $repository
+    ) {
+        $this->repository = $repository;
+    }
     protected function prepageModeldata(Request $request): self
     {
         $fillable = $this->repository->getFillable();
         $payload = $request->only($fillable);
         $this->modelData = $payload;
         return $this;
-    }
-    public function __construct(
-        CartRepository $repository
-    ) {
-        $this->repository = $repository;
     }
     public function updateQuantity(int $cartId, string $type)
     {

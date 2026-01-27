@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class OrderService extends BaseService
 {
-    protected $orderRepo;
-
-    public function __construct(OrderRepository $orderRepo)
+    protected $repository;
+    protected $with = ['user', 'chiTiet'];
+    public function __construct(OrderRepository $repository)
     {
-        $this->orderRepo = $orderRepo;
+        $this->repository = $repository;
     }
     protected function prepageModeldata(Request $request): self
     {
@@ -21,12 +21,11 @@ class OrderService extends BaseService
     }
     public function getUserOrders($userId)
     {
-        return $this->orderRepo->getOrdersByUserId($userId);
+        return $this->repository->getOrdersByUserId($userId);
     }
-
     public function cancelOrder($orderId, $userId)
     {
-        $order = $this->orderRepo->findUserOrder($orderId, $userId);
+        $order = $this->repository->findUserOrder($orderId, $userId);
 
         if (!$order) {
             throw new Exception("Đơn hàng không tồn tại.");
@@ -38,25 +37,23 @@ class OrderService extends BaseService
         }
 
         // Cập nhật trạng thái sang Hủy (Ví dụ: 0 là Hủy)
-        return $this->orderRepo->update($orderId, ['status' => 0]);
+        return $this->repository->update($orderId, ['status' => 0]);
     }
-
     // Lấy danh sách cho Admin
     public function getAllOrdersAdmin($filters = [])
     {
-        return $this->orderRepo->getAllOrders($filters);
+        return $this->repository->getAllOrders($filters);
     }
 
     // Lấy chi tiết cho Admin
     public function getOrderDetailAdmin($id)
     {
-        return $this->orderRepo->getOrderDetail($id);
+        return $this->repository->getOrderDetail($id);
     }
-
     // Cập nhật trạng thái đơn hàng
     public function updateStatus($id, $status)
     {
         // Có thể thêm logic kiểm tra: ví dụ Đã hủy thì không được chuyển sang Hoàn thành...
-        return $this->orderRepo->update($id, ['trangthai' => $status]);
+        return $this->repository->update($id, ['trangthai' => $status]);
     }
 }

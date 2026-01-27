@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sanpham;
 use App\Services\SlideService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
@@ -44,9 +45,7 @@ class HomeController extends Controller
             'sort' => 'created_at,desc',
             'perpage' => 10,
         ]);
-
-
-        // dd($total);
+        // dd($sanpham);
         $sanphamMoi = $this->productService->pagination($sanphamMoiRequest);
         return view('client.pages.home', compact(
             'slide',

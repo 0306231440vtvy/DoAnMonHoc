@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Hoadon extends Model
 {
@@ -51,5 +52,13 @@ class Hoadon extends Model
     {
         return $this->hasMany(CtHoadon::class, 'hoadon_id', 'id');
     }
-    public $relationable = [];
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo('provinces', 'province_code', 'province_code');
+    }
+    public function ward(): BelongsTo
+    {
+        return $this->belongsTo('provinces', 'ward_code', 'ward_code');
+    }
+    public $relationable = ['chiTiet'];
 }
