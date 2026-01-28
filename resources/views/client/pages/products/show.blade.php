@@ -43,32 +43,7 @@
                     </div>
                 @endif
 
-                {{-- Phần bình luận --}}
-                {{-- <div id="comment-container" class="mt-4">
-                    @foreach ($product->binhluan as $index => $bl)
-                        <div class="comment {{ $index >= 2 ? 'd-none hidden-comment' : '' }}"
-                            style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding: 10px 0;">
-                            <strong>{{ $bl->user->name }}:</strong>
-                            <p>
-                                {{ $bl->noidung }}
-                                <span class="emoji-stars" style="margin-left: 10px;">
-                                    @php
-                                        $starCount = (int) ($bl->danhgia ?? 5);
-                                    @endphp
-
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($i <= $starCount)
-                                            <span style="color: gold;">⭐</span>
-                                        @else
-                                            <span style="filter: grayscale(100%); opacity: 0.2;">⭐</span>
-                                        @endif
-                                    @endfor
-                                </span>
-                            </p>
-                            <small class="text-muted">{{ $bl->created_at->diffForHumans() }}</small>
-                        </div>
-                    @endforeach
-                </div> --}}
+                
 
                 {{-- Form đánh giá --}}
                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 10px; background: #f9f9f9;">
