@@ -10,6 +10,7 @@ use App\Services\ProductService;
 use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -45,8 +46,9 @@ class HomeController extends Controller
             'sort' => 'created_at,desc',
             'perpage' => 10,
         ]);
-        // dd($sanpham);
         $sanphamMoi = $this->productService->pagination($sanphamMoiRequest);
+        // dd($sanphamMoi);
+        Log::debug('Has trangthai?', [$sanphamMoiRequest->has('trangthai')]);
         return view('client.pages.home', compact(
             'slide',
             'sanphamMoi',

@@ -15,66 +15,66 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $products = [
-            // [
-            //     'tensp' => 'Áo Thun Nam Basic Cotton',
-            //     'giaban' => 199000,
-            //     'mota' => 'Áo thun nam cotton 100% cao cấp, form regular fit thoải mái, thấm hút mồ hôi tốt',
-            //     'categories' => ['Áo Nam'], // ✅ Thay đổi: mảng categories
-            //     'thuonghieu' => 'Uniqlo',
-            //     'attributes' => ['Màu sắc', 'Kích thước'], // ✅ Thay đổi: dùng tên attribute thực tế
-            // ],
-            // [
-            //     'tensp' => 'Áo Sơ Mi Nam Dài Tay',
-            //     'giaban' => 399000,
-            //     'mota' => 'Áo sơ mi nam công sở, vải cotton mềm mại, phù hợp đi làm và dự tiệc',
-            //     'categories' => ['Áo Nam'],
-            //     'thuonghieu' => 'Zara',
-            //     'attributes' => ['Màu sắc', 'Kích thước'],
-            // ],
-            // [
-            //     'tensp' => 'Áo Polo Nam Cao Cấp',
-            //     'giaban' => 349000,
-            //     'mota' => 'Áo polo nam form slim fit, chất liệu cotton blend thoáng mát',
-            //     'categories' => ['Áo Nam'],
-            //     'thuonghieu' => 'Ralph Lauren',
-            //     'attributes' => ['Màu sắc', 'Kích thước'],
-            // ],
+            [
+                'tensp' => 'Áo Thun Nam Basic Cotton',
+                'giaban' => 199000,
+                'mota' => 'Áo thun nam cotton 100% cao cấp, form regular fit thoải mái, thấm hút mồ hôi tốt',
+                'categories' => ['Áo Nam'], // ✅ Thay đổi: mảng categories
+                'thuonghieu' => 'Uniqlo',
+                'attributes' => ['color', 'size'], // ✅ Thay đổi: dùng tên attribute thực tế
+            ],
+            [
+                'tensp' => 'Áo Sơ Mi Nam Dài Tay',
+                'giaban' => 399000,
+                'mota' => 'Áo sơ mi nam công sở, vải cotton mềm mại, phù hợp đi làm và dự tiệc',
+                'categories' => ['Áo Nam'],
+                'thuonghieu' => 'Zara',
+                'attributes' => ['color', 'size'],
+            ],
+            [
+                'tensp' => 'Áo Polo Nam Cao Cấp',
+                'giaban' => 349000,
+                'mota' => 'Áo polo nam form slim fit, chất liệu cotton blend thoáng mát',
+                'categories' => ['Áo Nam'],
+                'thuonghieu' => 'Ralph Lauren',
+                'attributes' => ['color', 'size'],
+            ],
 
-            // // GIÀY DÉP
-            // [
-            //     'tensp' => 'Giày Sneaker Nike Air Force 1',
-            //     'giaban' => 2499000,
-            //     'mota' => 'Giày sneaker Nike Air Force 1 trắng classic, da thật cao cấp',
-            //     'categories' => ['Giày Dép'],
-            //     'thuonghieu' => 'Nike',
-            //     'attributes' => ['Màu sắc', 'Size giày'],
-            // ],
-            // [
-            //     'tensp' => 'Giày Sneaker Adidas Stan Smith',
-            //     'giaban' => 2199000,
-            //     'mota' => 'Giày Adidas Stan Smith trắng xanh iconic, da thật mềm mại',
-            //     'categories' => ['Giày Dép'],
-            //     'thuonghieu' => 'Adidas',
-            //     'attributes' => ['Màu sắc', 'Size giày'],
-            // ],
+            // GIÀY DÉP
+            [
+                'tensp' => 'Giày Sneaker Nike Air Force 1',
+                'giaban' => 2499000,
+                'mota' => 'Giày sneaker Nike Air Force 1 trắng classic, da thật cao cấp',
+                'categories' => ['Giày Dép'],
+                'thuonghieu' => 'Nike',
+                'attributes' => ['color', 'shoe_size'],
+            ],
+            [
+                'tensp' => 'Giày Sneaker Adidas Stan Smith',
+                'giaban' => 2199000,
+                'mota' => 'Giày Adidas Stan Smith trắng xanh iconic, da thật mềm mại',
+                'categories' => ['Giày Dép'],
+                'thuonghieu' => 'Adidas',
+                'attributes' => ['color', 'shoe_size'],
+            ],
 
-            // // QUẦN NAM
-            // [
-            //     'tensp' => 'Quần Jean Nam Slim Fit',
-            //     'giaban' => 599000,
-            //     'mota' => 'Quần jean nam form slim fit co giãn, màu xanh đậm thời thượng',
-            //     'categories' => ['Quần Nam'],
-            //     'thuonghieu' => "Levi's",
-            //     'attributes' => ['Màu sắc', 'Kích thước'],
-            // ],
-            // [
-            //     'tensp' => 'Quần Kaki Nam Túi Hộp',
-            //     'giaban' => 459000,
-            //     'mota' => 'Quần kaki nam công sở, chất liệu kaki cao cấp, form straight thanh lịch',
-            //     'categories' => ['Quần Nam'],
-            //     'thuonghieu' => 'Tommy Hilfiger',
-            //     'attributes' => ['Màu sắc', 'Kích thước'],
-            // ],
+            // QUẦN NAM
+            [
+                'tensp' => 'Quần Jean Nam Slim Fit',
+                'giaban' => 599000,
+                'mota' => 'Quần jean nam form slim fit co giãn, màu xanh đậm thời thượng',
+                'categories' => ['Quần Nam'],
+                'thuonghieu' => "Levi's",
+                'attributes' => ['color', 'size'],
+            ],
+            [
+                'tensp' => 'Quần Kaki Nam Túi Hộp',
+                'giaban' => 459000,
+                'mota' => 'Quần kaki nam công sở, chất liệu kaki cao cấp, form straight thanh lịch',
+                'categories' => ['Quần Nam'],
+                'thuonghieu' => 'Tommy Hilfiger',
+                'attributes' => ['color', 'size'],
+            ],
             [
                 'tensp' => 'Áo Thun Nữ Croptop',
                 'giaban' => 159000,
