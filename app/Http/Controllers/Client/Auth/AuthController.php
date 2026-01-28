@@ -12,11 +12,9 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Requests\Client\Auth\ClientRegisterRequest;
 use App\Jobs\SendMailActive;
-use App\Trait\HasTransaction;
 
 class AuthController extends Controller
 {
-    use HasTransaction;
     protected $userService;
     public function __construct(
         UserService $userService
@@ -30,7 +28,6 @@ class AuthController extends Controller
     public function register(ClientRegisterRequest $request): RedirectResponse
     {
         try {
-            $this->beginTransaction();
             $data = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -42,13 +39,11 @@ class AuthController extends Controller
                     ->withErrors(['email' => 'Email này đã tồn tại trong hệ thống.Vui lòng nhập email mới.'])
                     ->withInput($request->except('password'));
             };
-            if ($user = $this->userService->save($request)) {
+            if ($user = $this->userService->create($request)) {
                 SendMailActive::dispatchSync($user);
             }
-            $this->commit();
             return redirect()->route('login')->with('success', 'Đăng ký tài khoản thành công');
         } catch (\Throwable $th) {
-            $this->rollBack();
             throw $th;
         }
     }

@@ -8,12 +8,12 @@ use App\Repositories\UserRepository;
 use App\Repositories\CartRepository;
 use App\Services\CartService;
 use App\Services\OrderService;
-use App\Models\Hoadon;
 use App\Http\Requests\CLient\Checkout\CheckoutRequest;
 use App\Jobs\SendMailOrder;
 use App\Models\Ward;
 use App\Services\CheckoutService;
 use App\Repositories\WardRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,7 +92,6 @@ class CheckoutController extends Controller
         ]);
         $order = $this->checkoutService->save($request);
         if ($order) {
-            SendMailOrder::dispatch($order);
             // Xóa giỏ hàng sau khi đặt hàng thành công
             foreach ($request['cart_ids'] as $cartId) {
                 $this->cartRepository->trash($cartId);

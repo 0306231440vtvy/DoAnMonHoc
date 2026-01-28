@@ -22,7 +22,6 @@
                 <li class="breadcrumb-item active">{{ $product->tensp }}</li>
             </ol>
         </nav>
-
         <div class="row">
             {{-- Cột trái: Hình ảnh --}}
             <div class="col-md-6 mb-4">
@@ -30,7 +29,6 @@
                     <img src="{{ asset($product->hinhnen) }}" class="img-fluid rounded main-image" id="mainImage"
                         alt="{{ $product->tensp }}">
                 </div>
-
                 {{-- Album ảnh - FIXED --}}
                 <div class="row g-2 mb-4" id="album-container">
                     <div class="col-3">

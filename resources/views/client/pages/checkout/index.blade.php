@@ -186,16 +186,6 @@
                                     <div class="text-sm text-gray-600">Thanh toán bằng tiền mặt khi nhận hàng</div>
                                 </div>
                             </label>
-                            <label
-                                class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-indigo-600 transition payment-method-label">
-                                <input type="radio" name="phuongthuc_thanhtoan" value="bank"
-                                    class="mr-3 w-5 h-5 text-indigo-600"
-                                    {{ old('phuongthuc_thanhtoan') == 'bank' ? 'checked' : '' }} required>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-gray-800">Chuyển khoản ngân hàng</div>
-                                    <div class="text-sm text-gray-600">Chuyển khoản trực tiếp vào tài khoản ngân hàng</div>
-                                </div>
-                            </label>
                         </div>
                         @error('phuongthuc_thanhtoan')
                             <small class="text-red-600 block mb-2">{{ $message }}</small>
