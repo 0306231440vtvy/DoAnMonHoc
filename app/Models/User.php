@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Trait\HasQuery;
 use App\Trait\HasTransaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasTransaction;
+    use HasFactory, Notifiable, HasTransaction, HasQuery;
 
     /**
      * Những cột được phép thêm/sửa vào database
@@ -61,4 +62,5 @@ class User extends Authenticatable
         return $this->belongsToMany(Sanpham::class, 'yeuthich', 'user_id', 'sanpham_id')
             ->withTimestamps();
     }
+    public $relationable = [];
 }

@@ -30,17 +30,17 @@ class UserService extends BaseService
         return $this->repository->findByField($column, $value);
     }
 
-    public function create($request)
+    public function create(Request $request)
     {
-        DB::beginTransaction();
         try {
+            $this->beginTransaction();
             $payload = $request->except(['_token', 'send']);
             $payload['password'] = Hash::make($payload['password']); // Mã hóa pass
             $user = $this->repository->create($payload);
-            DB::commit();
-            return true;
+            $this->commit();
+            return $user;
         } catch (\Exception $e) {
-            DB::rollBack();
+            $this->rollBack();
             return false;
         }
     }

@@ -4,17 +4,12 @@ namespace App\Repositories\User;
 
 use App\Repositories\BaseRepository;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 
 class UserRepository extends BaseRepository
 {
-    // public function getModel()
-    // {
-    //     return User::class;
-    // }
-    public function __construct(User $model)
-    {
-        // return parent::__construct($model);
+    public function __construct(
+        User $model
+    ) {
         $this->model = $model;
     }
     public function getUsers($filters = [])
